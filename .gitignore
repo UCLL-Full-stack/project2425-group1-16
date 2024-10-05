@@ -108,3 +108,6 @@ dist
 
 # LibreOffice lock files
 *.odt#
+
+# DrawIO backup files
+*.bkp
