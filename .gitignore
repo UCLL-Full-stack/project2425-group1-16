@@ -105,3 +105,6 @@ dist
 
 .DS_Store
 .vscode
+
+# LibreOffice lock files
+*.odt#
