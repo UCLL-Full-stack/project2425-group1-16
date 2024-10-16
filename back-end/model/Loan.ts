@@ -23,4 +23,44 @@ class Loan {
         this.loanedItem = p.loanedItem;
         this.loaner = p.loaner;
     }
+
+    public getStart(): Date {
+        return this.start;
+    }
+
+    public setStart(start: Date) {
+        this.start = start;
+    }
+
+    public getEnd(): Date {
+        return this.end;
+    }
+
+    public setEnd(end: Date) {
+        this.end = end;
+    }
+
+    public getState(): LoanState {
+        return this.state;
+    }
+
+    public setState(state: LoanState) {
+        this.state = state;
+    }
+
+    public getLoanedItem(): Item {
+        return this.loanedItem;
+    }
+
+    public setLoanedItem(loanedItem: Item) {
+        this.loanedItem = loanedItem;
+    }
+
+    public getLoaner(): Profile {
+        return this.loaner;
+    }
+
+    public setLoaner(loaner: Profile) {
+        this.loaner = loaner;
+    }
 }
