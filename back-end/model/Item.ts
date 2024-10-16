@@ -1,4 +1,9 @@
-class Item {
+import { Category } from "./Category";
+import { LocationTag } from "./LocationTag";
+import { Profile } from "./Profile";
+
+export class Item {
+    private id?: number;
     private name: string;
     private description: string;
     private price: number;
@@ -8,14 +13,15 @@ class Item {
     private categories: Category[];
 
     constructor(p: {
-        name: string;
-        description: string;
-        price: number;
+        id?: number,
+        name: string,
+        description: string,        price: number,
 
         location: LocationTag,
         owner: Profile,
         categories: Category[],
     }) {
+        this.id = p.id;
         this.name = p.name;
         this.description = p.description;
         this.price = p.price;
@@ -23,6 +29,10 @@ class Item {
         this.location = p.location;
         this.owner = p.owner;
         this.categories = p.categories;
+    }
+
+    public getId(): number | undefined {
+        return this.id;
     }
 
     public addCategory(category: Category) {

@@ -1,6 +1,10 @@
-type LoanState = 'pending' | 'accepted' | 'denied';
+import { Item } from "./Item";
+import { Profile } from "./Profile";
 
-class Loan {
+export type LoanState = 'pending' | 'accepted' | 'denied';
+
+export class Loan {
+    private id?: number
     private start: Date;
     private end: Date;
     private state: LoanState;
@@ -9,6 +13,7 @@ class Loan {
     private loaner: Profile;
 
     constructor(p: {
+        id?: number,
         start: Date,
         end: Date,
         state: LoanState,
@@ -16,12 +21,17 @@ class Loan {
         loanedItem: Item;
         loaner: Profile;
     }) {
+        this.id = p.id;
         this.start = p.start;
         this.end = p.end;
         this.state = p.state;
 
         this.loanedItem = p.loanedItem;
         this.loaner = p.loaner;
+    }
+
+    public getId(): number | undefined {
+        return this.id;
     }
 
     public getStart(): Date {

@@ -1,4 +1,7 @@
-class Profile {
+import { LocationTag } from "./LocationTag";
+
+export class Profile {
+    private id?: number;
     private username: string;
     private password: string;
     private email: string;
@@ -7,6 +10,7 @@ class Profile {
     private location: LocationTag;
 
     constructor(p: {
+        id?: number,
         username: string,
         password: string,
         email: string,
@@ -14,6 +18,7 @@ class Profile {
 
         location: LocationTag,
     }) {
+        this.id = p.id
         this.username = p.username;
         this.password = p.password;
         this.email = p.email;
@@ -22,6 +27,10 @@ class Profile {
         this.location = p.location;
     }
 
+
+    public getId(): number | undefined {
+        return this.id;
+    }
 
     public getUsername(): string {
         return this.username;

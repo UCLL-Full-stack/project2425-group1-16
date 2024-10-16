@@ -1,14 +1,21 @@
-class Category {
+export class Category {
+    private id?: number;
     private name: string;
 
-    private parent: Category | null;
+    private parents: Category[] | null;
 
     constructor(p: {
-        name: string;
-        parent: Category | null;
+        name: string,
+        parents: Category[] | null,
+        id?: number
     }) {
         this.name = p.name;
-        this.parent = p.parent;
+        this.parents = p.parents;
+        this.id = p.id;
+    }
+
+    public getId(): number | undefined {
+        return this.id;
     }
 
     public getName(): string {
@@ -19,11 +26,11 @@ class Category {
         this.name = name;
     }
 
-    public getParent(): Category | null {
-        return this.parent;
+    public getParents(): Category[] | null {
+        return this.parents;
     }
 
-    public setParent(parent: Category | null) {
-        this.parent = parent;
+    public setParents(parents: Category[] | null) {
+        this.parents = parents;
     }
 }
