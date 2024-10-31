@@ -1,0 +1,43 @@
+export type Item = {
+    id?: number;
+    name: string;
+    description: string;
+    price: number;
+    location: LocationTag;
+    owner: Profile;
+    categories: Category[];
+};
+
+export type LocationTag = {
+    displayName: string,
+    longtitude: number,
+    latitude: number,
+    id?: number
+};
+
+export type Profile = {
+    id?: number,
+    username: string,
+    password: string,
+    email: string,
+    phoneNumber: string,
+    location: LocationTag
+};
+
+export type Category = {
+    name: string,
+    parents: Category[] | null,
+    id?: number
+};
+
+export type Loan = {
+    id?: number,
+    start: Date,
+    end: Date,
+    state: LoanState,
+    loanedItem: Item;
+    loaner: Profile;
+};
+
+
+export type LoanState = 'pending' | 'accepted' | 'denied';
