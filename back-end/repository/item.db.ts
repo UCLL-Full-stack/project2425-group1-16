@@ -69,6 +69,12 @@ const items: Item[] = [
 
 const getAllItems = (): Item[] => items;
 
+const getItemById = ({ id }: { id: number }): Item | null => {
+    return items.find((item) => item.getId() === id) || null;
+};
+
+
 export default {
     getAllItems,
+    getItemById,
 };

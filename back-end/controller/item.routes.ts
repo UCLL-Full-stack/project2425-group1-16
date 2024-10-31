@@ -109,4 +109,33 @@ itemRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
+/**
+ * @swagger
+ * /items/{id}:
+ *   get:
+ *     summary: Get a list of all items.
+ *     parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *              required: true
+ *              description: The item id.
+ *     responses:
+ *       200:
+ *         description: An item.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Item'
+ */
+itemRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const items = await itemService.getItemById(Number(req.params.id));
+        res.status(200).json(items);
+    } catch (error) {
+        next(error);
+    }
+});
+
 export { itemRouter };

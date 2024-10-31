@@ -1,4 +1,5 @@
 import { Item } from '@/types';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 type Props = {
@@ -6,6 +7,7 @@ type Props = {
 };
 
 const ItemsOverview: React.FC<Props> = ({ items }: Props) => {
+  const router = useRouter();
   return (
     <>
       {items && (
@@ -22,11 +24,11 @@ const ItemsOverview: React.FC<Props> = ({ items }: Props) => {
             </thead>
             <tbody>
                 {items.map((item, index) => (
-                <tr key={index} onClick={() => {}} role="button">
+                <tr key={index} onClick={() => {router.push("/itemPage/"+item.id?.toString())}} role="button">
                     <td>{item.name}</td>
                     <td>{item.description}</td>
                     <td>{item.location.displayName}</td>
-                    <td>{item.price}</td>
+                    <td>{item.price}€</td>
                 </tr>
                 ))}
             </tbody>
