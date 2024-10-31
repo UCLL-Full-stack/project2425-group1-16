@@ -15,7 +15,8 @@ export class Item {
     constructor(p: {
         id?: number,
         name: string,
-        description: string,        price: number,
+        description: string,
+        price: number,
 
         location: LocationTag,
         owner: Profile,
