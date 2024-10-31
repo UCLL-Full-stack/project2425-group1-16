@@ -24,7 +24,7 @@ const ItemsOverview: React.FC<Props> = ({ items }: Props) => {
             </thead>
             <tbody>
                 {items.map((item, index) => (
-                <tr key={index} onClick={() => {router.push("/itemPage/"+item.id?.toString())}} role="button">
+                <tr key={index} onClick={() => {router.push("/itemPage/"+item.id.toString())}} role="button">
                     <td>{item.name}</td>
                     <td>{item.description}</td>
                     <td>{item.location.displayName}</td>
