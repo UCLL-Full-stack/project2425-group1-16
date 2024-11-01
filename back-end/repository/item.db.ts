@@ -58,8 +58,8 @@ const validCategory5: Category = new Category({name: validCategoryName4, parents
 const validCategories: Category[] = [validCategory, validCategory4];
 const validCategories2: Category[] = [validCategory2, validCategory3, validCategory5];
 
-const validItem: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, location: validLocation, categories: validCategories});
-const validItem2: Item = new Item({name: validName2, description: validDescription2, price: validPrice2, owner: validProfile2, location: validLocation2, categories: validCategories2});
+const validItem: Item = new Item({id: 1, name: validName, description: validDescription, price: validPrice, owner: validProfile, location: validLocation, categories: validCategories});
+const validItem2: Item = new Item({id:2, name: validName2, description: validDescription2, price: validPrice2, owner: validProfile2, location: validLocation2, categories: validCategories2});
 
 const items: Item[] = [
     validItem,
