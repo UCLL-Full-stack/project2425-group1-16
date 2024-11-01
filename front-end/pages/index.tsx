@@ -5,13 +5,15 @@ import styles from "@/styles/Home.module.css";
 import Header from "@/components/Header";
 import ItemsOverview from "@/components/items/ItemsOverview";
 import { useEffect, useState } from "react";
-import { Item } from "@/types";
+import { Item, Profile } from "@/types";
 import ItemService from "@/services/ItemService";
+import LoginPage from "@/components/profiles/LoginPage";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [items, setItems] = useState<Item[]>([])
+  const [profile, setProfile] = useState<Profile | null>(null)
 
   const getItems = async () => {
     const response = await ItemService.getAllItems();
@@ -33,10 +35,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/Lenderr.png" />
       </Head>
-      <Header/>
+      {profile && (
+        <>
+          <Header/>
+        </>
+      )}
       <main className={styles.main}>
-        <ItemsOverview items={items}/>
-      </main>
+      <LoginPage setProfile={setProfile} profile={profile}/>
+        <ItemsOverview items={items} profile={profile}/>
+      </main>  
     </>
   );
 }

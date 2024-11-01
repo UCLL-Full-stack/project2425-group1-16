@@ -82,28 +82,28 @@
 
 
 import express, { NextFunction, Request, Response } from 'express';
-import itemService from '../service/item.service';
-const itemRouter = express.Router();
+import profileService from '../service/profile.service';
+const profileRouter = express.Router();
 
 /**
  * @swagger
- * /items:
+ * /profiles:
  *   get:
- *     summary: Get a list of all items.
+ *     summary: Get a list of all profiles.
  *     responses:
  *       200:
- *         description: A list of items.
+ *         description: A list of profiles.
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                  $ref: '#/components/schemas/Item'
+ *                  $ref: '#/components/schemas/Profile'
  */
-itemRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const items = await itemService.getAllItems();
-        res.status(200).json(items);
+        const profiles = await profileService.getAllProfiles();
+        res.status(200).json(profiles);
     } catch (error) {
         next(error);
     }
@@ -111,31 +111,31 @@ itemRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 /**
  * @swagger
- * /items/{id}:
+ * /profiles/{email}:
  *   get:
- *     summary: Get an item by id.
+ *     summary: Get a profile by email.
  *     parameters:
  *          - in: path
- *            name: id
+ *            name: email
  *            schema:
- *              type: integer
+ *              type: string
  *              required: true
- *              description: The item id.
+ *              description: The profile email.
  *     responses:
  *       200:
- *         description: An item.
+ *         description: A profile.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Item'
+ *               $ref: '#/components/schemas/Profile'
  */
-itemRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+profileRouter.get('/:email', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const items = await itemService.getItemById(Number(req.params.id));
-        res.status(200).json(items);
+        const profile = await profileService.getProfileByEmail((req.params.email));
+        res.status(200).json(profile);
     } catch (error) {
         next(error);
     }
 });
 
-export { itemRouter };
+export { profileRouter };
