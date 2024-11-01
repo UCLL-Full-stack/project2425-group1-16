@@ -7,8 +7,8 @@
     });
   };
   
-  const profileService = {
+  const ProfileService = {
     getProfileByEmail,
   };
   
-  export default profileService;
+  export default ProfileService;

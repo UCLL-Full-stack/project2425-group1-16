@@ -1,4 +1,4 @@
-import profileService from "@/services/ProfileService";
+import ProfileService from "@/services/ProfileService";
 import { Profile } from "@/types";
 import { useState } from "react";
 
@@ -15,16 +15,20 @@ type Props = {
 
 
     const loginByEmailAndPassword = async () => {
-        const response = await profileService.getProfileByEmail(email);
-        if (response.status == 200) {
-            const json = await response.json();
-            setProfileObj(json);
-            if (profileObj && profileObj.password == password) {
-                setProfile(profileObj);
-            } else {
-                throw Error("Password is incorrect")
+        try {
+            const response = await ProfileService.getProfileByEmail(email);
+            if (response.status == 200) {
+                const json = await response.json();
+                setProfileObj(json);
+                if (profileObj && profileObj.password == password) {
+                    setProfile(profileObj);
+                } else {
+                    throw Error("Password is incorrect");
+                }
             }
-    }
+        } catch (error) {
+            console.log(error)
+        }
     };
 
 
