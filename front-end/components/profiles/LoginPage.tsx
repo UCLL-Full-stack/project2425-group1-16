@@ -5,16 +5,15 @@ import { useState } from "react";
 type Props = {
     profile: Profile | null;
     setProfile: (profile: Profile) => void;
-  };
+};
   
-  const LoginPage: React.FC<Props> = ({ profile, setProfile }: Props) => {
+const LoginPage: React.FC<Props> = ({ profile, setProfile }: Props) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [profileObj, setProfileObj] = useState<Profile|null>(null);
+    const [profileObj, setProfileObj] = useState<Profile | null>(null);
 
-
-
-    const loginByEmailAndPassword = async () => {
+    const loginByEmailAndPassword = async (event: React.FormEvent) => {
+        event?.preventDefault();
         try {
             const response = await ProfileService.getProfileByEmail(email);
             if (response.status == 200) {
@@ -37,7 +36,7 @@ type Props = {
         {!profile && (
           <>
             <h2>Login</h2>
-            <form onSubmit={() => {loginByEmailAndPassword()}}>
+            <form onSubmit={loginByEmailAndPassword}>
                 <div>
                     <p>Email</p>
                     <input type="text" onChange={text => setEmail(text.target.value)}/>
