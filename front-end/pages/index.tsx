@@ -36,12 +36,10 @@ export default function Home() {
         <link rel="icon" href="/Lenderr.png" />
       </Head>
       {profile && (
-        <>
-          <Header/>
-        </>
+        <Header/>
       )}
       <main className={styles.main}>
-      <LoginPage setProfile={setProfile} profile={profile}/>
+        <LoginPage setProfile={setProfile} profile={profile}/>
         <ItemsOverview items={items} profile={profile}/>
       </main>  
     </>
