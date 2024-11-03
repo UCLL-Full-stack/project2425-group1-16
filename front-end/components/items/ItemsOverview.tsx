@@ -54,7 +54,7 @@ const ItemsOverview: React.FC<Props> = ({ items, profile, selectedItem, setSelec
                     <td>{item.name}</td>
                     <td>{item.description}</td>
                     <td>{item.location.displayName}</td>
-                    <td>{item.price}€</td>
+                    <td>€ {item.price}</td>
                 </tr>
                 ))}
             </tbody>

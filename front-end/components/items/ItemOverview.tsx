@@ -24,7 +24,7 @@ const ItemOverview: React.FC<Props> = ({ item }: Props) => {
           </tr>
           <tr>
             <td>Price:</td>
-            <td>{item.price}€</td>
+            <td>€ {item.price}</td>
           </tr>
           <tr>
             <td>Location:</td>
