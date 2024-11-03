@@ -21,6 +21,7 @@ const LoginPage: React.FC<Props> = ({ profile, setProfile }: Props) => {
                 setProfileObj(json);
                 if (profileObj && profileObj.password == password) {
                     setProfile(profileObj);
+                    localStorage.setItem('loggedInProfile', JSON.stringify(profileObj));
                 } else {
                     throw Error("Password is incorrect");
                 }

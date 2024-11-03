@@ -14,6 +14,17 @@ const Header: React.FC = () => {
         <Link href="/profile" className="nav-link px-4 fs-5 text-white">
           My profile
         </Link>
+        <button 
+          // TODO: Spacing needs to be done better
+          className="nav-link px-4 fs-5 text-white bg-transparent"
+          style={{border: "none"}}    // Yes, I can't find another way to do this
+          onClick={() => {
+            localStorage.removeItem('loggedInProfile');
+            window.location.reload();
+          }}
+        >
+          Log out
+        </button>
       </nav>
     </header>
   );
