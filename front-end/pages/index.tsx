@@ -44,7 +44,7 @@ export default function Home() {
         return <ItemsOverview items={items} profile={profile} selectedItem={selectedItem} setSelectedItem={setSelectedItem} setSubPage={setSubPage} />
         
       case "PROFILE_OVERVIEW":
-        return <ProfilePage />
+        return <ProfilePage profile={profile}/>
 
       case "ITEM_OVERVIEW":
         return <ItemOverview item={selectedItem}/>
