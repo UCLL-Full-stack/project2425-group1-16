@@ -8,6 +8,7 @@ import ItemService from "@/services/ItemService";
 import LoginPage from "@/components/profiles/LoginPage";
 import PageMeta from "@/components/PageMeta";
 import ProfilePage from "@/components/profiles/ProfilePage";
+import ItemOverview from "@/components/items/ItemOverview";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,7 @@ export default function Home() {
   const [items, setItems] = useState<Item[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [subPage, setSubPage] = useState<LoadedPage>('HOME_PAGE');
+  const [selectedItem, setSelectedItem] = useState<Item|null>(null);
 
   const getItems = async () => {
     const response = await ItemService.getAllItems();
@@ -39,10 +41,13 @@ export default function Home() {
     switch (subPage) {
       default: 
       case "HOME_PAGE":
-        return <ItemsOverview items={items} profile={profile} />
+        return <ItemsOverview items={items} profile={profile} selectedItem={selectedItem} setSelectedItem={setSelectedItem} setSubPage={setSubPage} />
         
       case "PROFILE_OVERVIEW":
         return <ProfilePage />
+
+      case "ITEM_OVERVIEW":
+        return <ItemOverview item={selectedItem}/>
     }
   };
 
