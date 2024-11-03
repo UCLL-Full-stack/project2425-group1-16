@@ -1,6 +1,10 @@
-import Link from 'next/link';
+import { LoadedPage } from '@/types';
 
-const Header: React.FC = () => {
+type Props = {
+  activePageSetter: (page: LoadedPage) => void,
+};
+
+const Header: React.FC<Props> = ({activePageSetter}: Props) => {
   return (
     <header className="p-3 mb-3 border-bottom bg-dark bg-gradient">
       <a className="fs-2 d-flex justify-content-center mb-2 mb-lg-0 text-white-50 text-decoration-none">
@@ -8,12 +12,22 @@ const Header: React.FC = () => {
         Lenderr
       </a>
       <nav className="nav justify-content-center">
-        <Link href="/" className="nav-link px-4 fs-5 text-white">
+        <button
+          className="nav-link px-4 fs-5 text-white bg-transparent"
+          style={{border: "none"}}
+          onClick={() => activePageSetter("HOME_PAGE")}
+        >
           Home
-        </Link>
-        <Link href="/profile" className="nav-link px-4 fs-5 text-white">
-          My profile
-        </Link>
+        </button>
+
+        <button
+          className="nav-link px-4 fs-5 text-white bg-transparent"
+          style={{border: "none"}}
+          onClick={() => activePageSetter("PROFILE_OVERVIEW")}
+        >
+          My Profile
+        </button>
+
         <button 
           // TODO: Spacing needs to be done better
           className="nav-link px-4 fs-5 text-white bg-transparent"

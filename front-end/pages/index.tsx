@@ -1,19 +1,21 @@
-import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Header from "@/components/Header";
 import ItemsOverview from "@/components/items/ItemsOverview";
 import { useEffect, useState } from "react";
-import { Item, Profile } from "@/types";
+import { Item, LoadedPage, Profile } from "@/types";
 import ItemService from "@/services/ItemService";
 import LoginPage from "@/components/profiles/LoginPage";
+import PageMeta from "@/components/PageMeta";
+import ProfilePage from "@/components/profiles/ProfilePage";
 
 const inter = Inter({ subsets: ["latin"] });
+
 
 export default function Home() {
   const [items, setItems] = useState<Item[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [subPage, setSubPage] = useState<LoadedPage>('HOME_PAGE');
 
   const getItems = async () => {
     const response = await ItemService.getAllItems();
@@ -33,20 +35,28 @@ export default function Home() {
     getItems();   
   }, []);
 
+  const presentSubPage = (subPage: LoadedPage): JSX.Element => {
+    switch (subPage) {
+      default: 
+      case "HOME_PAGE":
+        return <ItemsOverview items={items} profile={profile} />
+        
+      case "PROFILE_OVERVIEW":
+        return <ProfilePage />
+    }
+  };
+
   return (
     <>
-      <Head>
-        <title>Lenderr</title>
-        <meta name="description" content="The lenderr website" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/Lenderr.png" />
-      </Head>
+      <PageMeta />
       {profile && (
-        <Header/>
+        <Header activePageSetter={setSubPage}/>
       )}
       <main className={styles.main}>
         <LoginPage setProfile={setProfile} profile={profile}/>
-        <ItemsOverview items={items} profile={profile}/>
+        {
+          presentSubPage(subPage) 
+        }
       </main>  
     </>
   );

@@ -40,4 +40,6 @@ export type Loan = {
 };
 
 
-export type LoanState = 'pending' | 'accepted' | 'denied';
+export type LoanState = 'PENDING' | 'ACCEPTED' | 'DENIED';
+
+export type LoadedPage = 'HOME_PAGE' | 'PROFILE_OVERVIEW';
