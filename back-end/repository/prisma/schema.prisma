@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+    id              Int             @id @default(autoincrement())
+    username        String          @unique
+    password        String
+    email           String          @unique
+    phone_number    String          @unique
+    location_id     Int
+
+    loans           Loan[]
+    location        LocationTag     @relation(fields: [location_id], references: [id])
+}
+
+model Item {
+    id              Int             @id @default(autoincrement())
+    name            String
+    description     String
+    price           Float
+    location_id     Int
+
+    loaned_in       Loan[]
+    location        LocationTag     @relation(fields: [location_id], references: [id])
+}
+
+enum LoanState {
+    PENDING
+    ACCEPTED
+    DENIED
+}
+
+model Loan {
+    id              Int             @id @default(autoincrement())
+    item_id         Int             @unique
+    profile_id      Int             @unique
+    start           DateTime
+    end             DateTime
+    state           LoanState
+
+    item            Item            @relation(fields: [item_id], references: [id])
+    profile         Profile         @relation(fields: [profile_id], references: [id])
+}
+
+model LocationTag {
+    id              Int             @id @default(autoincrement())
+    display_name    String
+    latitude        Float
+    longitude       Float
+
+    profiles        Profile[]
+    items           Item[]
+}
+
+model Category {
+    id              Int             @id @default(autoincrement())
+    name            String          @unique
+
+    parents         Category[]      @relation("CategoryToCategory")
+    children        Category[]      @relation("CategoryToCategory")
+}
