@@ -9,6 +9,7 @@ import LoginPage from "@/components/profiles/LoginPage";
 import PageMeta from "@/components/PageMeta";
 import ProfilePage from "@/components/profiles/ProfilePage";
 import ItemOverview from "@/components/items/ItemOverview";
+import OwnedItems from "@/components/items/OwnedItems";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,6 +39,10 @@ export default function Home() {
   }, []);
 
   const presentSubPage = (subPage: LoadedPage): JSX.Element => {
+    if (profile == null) {
+      return <p>You are currently logged out.</p>
+    }
+
     switch (subPage) {
       default: 
       case "HOME_PAGE":
@@ -48,6 +53,9 @@ export default function Home() {
 
       case "ITEM_OVERVIEW":
         return <ItemOverview item={selectedItem}/>
+      
+      case "OWNED_ITEMS":
+        return <OwnedItems profile={profile} />
     }
   };
 

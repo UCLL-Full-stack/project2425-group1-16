@@ -28,6 +28,14 @@ const Header: React.FC<Props> = ({activePageSetter}: Props) => {
           My Profile
         </button>
 
+        <button
+          className="nav-link px-4 fs-5 text-white bg-transparent"
+          style={{border: "none"}}
+          onClick={() => activePageSetter("OWNED_ITEMS")}
+        >
+          My Items
+        </button>
+
         <button 
           // TODO: Spacing needs to be done better
           className="nav-link px-4 fs-5 text-white bg-transparent"
