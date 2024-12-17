@@ -12,11 +12,13 @@ model Profile {
     username        String          @unique
     password        String
     email           String          @unique
-    phone_number    String          @unique
-    location_id     Int
-
+    phoneNumber     String          @unique
+    
+    items           Item[]
     loans           Loan[]
-    location        LocationTag     @relation(fields: [location_id], references: [id])
+    location        LocationTag     @relation(fields: [locationId], references: [id])
+
+    locationId      Int
 }
 
 model Item {
@@ -24,10 +26,14 @@ model Item {
     name            String
     description     String
     price           Float
-    location_id     Int
 
-    loaned_in       Loan[]
-    location        LocationTag     @relation(fields: [location_id], references: [id])
+    loanedIn        Loan[]
+    location        LocationTag     @relation(fields: [locationId], references: [id])
+    owner           Profile         @relation(fields: [ownerId], references: [id])
+    categories      Category[]
+    
+    locationId      Int
+    ownerId         Int
 }
 
 enum LoanState {
@@ -38,19 +44,20 @@ enum LoanState {
 
 model Loan {
     id              Int             @id @default(autoincrement())
-    item_id         Int             @unique
-    profile_id      Int             @unique
     start           DateTime
     end             DateTime
-    state           LoanState
 
-    item            Item            @relation(fields: [item_id], references: [id])
-    profile         Profile         @relation(fields: [profile_id], references: [id])
+    state           LoanState
+    item            Item            @relation(fields: [itemId], references: [id])
+    profile         Profile         @relation(fields: [profileId], references: [id])
+
+    itemId          Int             @unique
+    profileId       Int             @unique
 }
 
 model LocationTag {
     id              Int             @id @default(autoincrement())
-    display_name    String
+    displayName     String
     latitude        Float
     longitude       Float
 
@@ -64,4 +71,6 @@ model Category {
 
     parents         Category[]      @relation("CategoryToCategory")
     children        Category[]      @relation("CategoryToCategory") 
+
+    items           Item[]
 }

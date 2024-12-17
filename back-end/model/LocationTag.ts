@@ -1,19 +1,16 @@
+import { LocationTag as LocationTagPrisma } from '@prisma/client';
+
 export class LocationTag {
     private id?: number;
     private displayName: string;
-    private longtitude: number;
+    private longitude: number;
     private latitude: number;
 
-    constructor(p: {
-        displayName: string,
-        longtitude: number,
-        latitude: number,
-        id?: number
-    }) {
-        this.id = p.id;
-        this.displayName = p.displayName;
-        this.longtitude = p.longtitude;
-        this.latitude = p.latitude;
+    constructor({ displayName, longitude, latitude, id }: { displayName: string, longitude: number, latitude: number, id?: number }) {
+        this.id = id;
+        this.displayName = displayName;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public getId(): number | undefined {
@@ -29,11 +26,11 @@ export class LocationTag {
     }
 
     public getLongtitude(): number {
-        return this.longtitude;
+        return this.longitude;
     }
 
     public setLongtitude(longtitude: number) {
-        this.longtitude = longtitude;
+        this.longitude = longtitude;
     }
 
     public getLatitude(): number {
@@ -42,5 +39,18 @@ export class LocationTag {
 
     public setLatitude(latitude: number) {
         this.latitude = latitude;
+    }
+
+    public equals(other: LocationTag): boolean {
+        return (
+            this.id === other.getId() &&
+            this.latitude === other.getLatitude() &&
+            this.longitude === other.getLongtitude() &&
+            this.displayName === other.getDisplayName()
+        );
+    }
+
+    static from({ displayName , longitude, latitude, id }: LocationTagPrisma): LocationTag {
+        return new LocationTag({ displayName, longitude, latitude, id });        
     }
 }

@@ -1,5 +1,10 @@
 import { LocationTag } from "./LocationTag";
 
+import { 
+    Profile as ProfilePrisma,
+    LocationTag as LocationTagPrisma,
+} from '@prisma/client';
+
 export class Profile {
     private id?: number;
     private username: string;
@@ -70,5 +75,27 @@ export class Profile {
 
     public setLocation(location: LocationTag) {
         this.location = location;
+    }
+
+    public equals(other: Profile): boolean {
+        return (
+            this.id === other.getId() &&
+            this.username === other.getEmail() &&
+            this.email === other.getEmail() &&
+            this.phoneNumber === other.getPhoneNumber() &&
+            this.password === other.password &&
+            this.location === other.getLocation()
+        );
+    }
+
+    static from({ id, username, password, email, phoneNumber, location }: ProfilePrisma & { location: LocationTagPrisma }) {
+        return new Profile({
+            id,
+            username,
+            password,
+            email,
+            phoneNumber,
+            location: LocationTag.from(location)
+        });
     }
 }

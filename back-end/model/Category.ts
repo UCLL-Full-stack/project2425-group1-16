@@ -1,17 +1,17 @@
+import { Category as CategoryPrisma } from '@prisma/client';
+
 export class Category {
     private id?: number;
     private name: string;
 
-    private parents: Category[] | null;
+    private parents: Category[];
+    private children: Category[];
 
-    constructor(p: {
-        name: string,
-        parents: Category[] | null,
-        id?: number
-    }) {
-        this.name = p.name;
-        this.parents = p.parents;
-        this.id = p.id;
+    constructor({ name, parents, children, id }: { name: string, parents?: Category[], children?: Category[], id?: number }) {
+        this.name = name;
+        this.parents = parents ?? [];
+        this.children = children ?? [];
+        this.id = id;
     }
 
     public getId(): number | undefined {
@@ -30,7 +30,26 @@ export class Category {
         return this.parents;
     }
 
-    public setParents(parents: Category[] | null) {
+    public setParents(parents: Category[]) {
         this.parents = parents;
+    }
+
+    public getChildren(): Category[] {
+        return this.children;
+    }
+
+    public setChildren(children: Category[]) {
+        this.children = children;
+    }
+
+    public equals(other: Category): boolean {
+        return (
+            this.id === other.getId() &&
+            this.name === other.getName()
+        );
+    }
+
+    static from({ id, name }: CategoryPrisma): Category {
+        return new Category({ name, id });
     }
 }

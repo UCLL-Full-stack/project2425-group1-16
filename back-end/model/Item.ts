@@ -2,6 +2,13 @@ import { Category } from "./Category";
 import { LocationTag } from "./LocationTag";
 import { Profile } from "./Profile";
 
+import { 
+    Item as ItemPrisma,
+    Profile as ProfilePrisma,
+    LocationTag as LocationTagPrisma,
+    Category as CategoryPrisma
+} from '@prisma/client';
+
 export class Item {
     private id?: number;
     private name: string;
@@ -86,5 +93,28 @@ export class Item {
 
     public setCategories(categories: Category[]) {
         this.categories = categories;
+    }
+
+    public equals(other: Item): boolean {
+        return (
+            this.id === other.getId() &&
+            this.name === other.getName() &&
+            this.price === other.getPrice() &&
+            this.description === other.getDescription() &&
+            this.location === other.getLocation() &&
+            this.owner === other.getOwner()
+        );
+    }
+
+    static from({ id, name, description, price, owner, location, categories }: ItemPrisma & { owner: ProfilePrisma, location: LocationTagPrisma, categories: CategoryPrisma[] }) {
+        return new Item({
+            id,
+            name,
+            description,
+            price,
+            location: LocationTag.from(location),
+            owner: Profile.from({ ...owner, location }),
+            categories: categories.map((category) => Category.from(category))
+        });
     }
 }

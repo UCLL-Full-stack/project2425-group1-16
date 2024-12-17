@@ -1,7 +1,15 @@
 import { Item } from "./Item";
 import { Profile } from "./Profile";
 
-export type LoanState = 'pending' | 'accepted' | 'denied';
+import { 
+    Loan as LoanPrisma,
+    Profile as ProfilePrisma,
+    Item as ItemPrisma,
+    LocationTag as LocationTagPrisma,
+    Category as CategoryPrisma
+} from '@prisma/client';
+
+export type LoanState = 'PENDING' | 'ACCEPTED' | 'DENIED';
 
 export class Loan {
     private id?: number
@@ -72,5 +80,35 @@ export class Loan {
 
     public setLoaner(loaner: Profile) {
         this.loaner = loaner;
+    }
+
+    public equals(other: Loan): boolean {
+        return (
+            this.id === other.getId() &&
+            this.start === other.getStart() &&
+            this.end === other.getEnd() &&
+            this.state === other.getState() &&
+            this.loanedItem === other.getLoanedItem() &&
+            this.loaner === other.getLoaner()
+        );
+    }
+
+    static from(
+        { id, start, end, state, loaner, loanedItem }: LoanPrisma & 
+            { 
+                loaner: ProfilePrisma & { location: LocationTagPrisma },
+                loanedItem: ItemPrisma & {
+                    owner: ProfilePrisma, location: LocationTagPrisma, categories: CategoryPrisma[] 
+                }
+            }
+        ) {
+        return new Loan({
+            id, 
+            start,
+            end,
+            state,
+            loaner: Profile.from(loaner),
+            loanedItem: Item.from(loanedItem)
+        });
     }
 }
