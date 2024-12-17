@@ -22,7 +22,7 @@ model Profile {
     
     items           Item[]
     loans           Loan[]
-    location        LocationTag     @relation(fields: [locationId], references: [id])
+    locationTag     LocationTag     @relation(fields: [locationId], references: [id])
 
     locationId      Int
 }
@@ -34,7 +34,7 @@ model Item {
     price           Float
 
     loanedIn        Loan[]
-    location        LocationTag     @relation(fields: [locationId], references: [id])
+    locationTag     LocationTag     @relation(fields: [locationId], references: [id])
     owner           Profile         @relation(fields: [ownerId], references: [id])
     categories      Category[]
     

@@ -50,7 +50,7 @@ export class LocationTag {
         );
     }
 
-    static from({ displayName , longitude, latitude, id }: LocationTagPrisma): LocationTag {
+    static from({ displayName, longitude, latitude, id }: LocationTagPrisma): LocationTag {
         return new LocationTag({ displayName, longitude, latitude, id });        
     }
 }

@@ -15,19 +15,19 @@ export class Item {
     private description: string;
     private price: number;
 
-    private location: LocationTag;
+    private locationTag: LocationTag;
     private owner: Profile;
     private categories: Category[];
 
     constructor(
-        { id, name, description, price, location, owner, categories }
+        { id, name, description, price, locationTag, owner, categories }
     : {
         id?: number,
         name: string,
         description: string,
         price: number,
 
-        location: LocationTag,
+        locationTag: LocationTag,
         owner: Profile,
         categories: Category[],
     }) {
@@ -36,7 +36,7 @@ export class Item {
         this.description = description;
         this.price = price;
 
-        this.location = location;
+        this.locationTag = locationTag;
         this.owner = owner;
         this.categories = categories;
     }
@@ -73,12 +73,12 @@ export class Item {
         this.price = price;
     }
 
-    public getLocation(): LocationTag {
-        return this.location;
+    public getLocationTag(): LocationTag {
+        return this.locationTag;
     }
 
-    public setLocation(location: LocationTag) {
-        this.location = location;
+    public setLocationTag(location: LocationTag) {
+        this.locationTag = location;
     }
 
     public getOwner(): Profile {
@@ -103,20 +103,26 @@ export class Item {
             this.name === other.getName() &&
             this.price === other.getPrice() &&
             this.description === other.getDescription() &&
-            this.location === other.getLocation() &&
+            this.locationTag === other.getLocationTag() &&
             this.owner === other.getOwner()
         );
     }
 
-    static from({ id, name, description, price, owner, location, categories }: ItemPrisma & { owner: ProfilePrisma, location: LocationTagPrisma, categories: CategoryPrisma[] }) {
+    static from(
+        {id, name, description, price, locationTag, owner, categories}
+        : ItemPrisma & {
+            owner: ProfilePrisma & { locationTag: LocationTagPrisma }, 
+            locationTag: LocationTagPrisma, 
+            categories: CategoryPrisma[]
+        }) {
         return new Item({
             id,
             name,
             description,
             price,
-            location: LocationTag.from(location),
-            owner: Profile.from({ ...owner, location }),
+            locationTag: LocationTag.from(locationTag),
+            owner: Profile.from(owner),
             categories: categories.map((category) => Category.from(category))
-        });
+        })
     }
 }

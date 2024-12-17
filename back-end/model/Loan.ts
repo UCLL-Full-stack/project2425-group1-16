@@ -95,14 +95,15 @@ export class Loan {
     }
 
     static from(
-        { id, start, end, state, loaner, loanedItem }: LoanPrisma & 
-            { 
-                loaner: ProfilePrisma & { location: LocationTagPrisma },
-                loanedItem: ItemPrisma & {
-                    owner: ProfilePrisma, location: LocationTagPrisma, categories: CategoryPrisma[] 
-                }
-            }
-        ) {
+        { id, start, end, state, loaner, loanedItem }
+        : LoanPrisma & {
+            loaner: ProfilePrisma & { locationTag: LocationTagPrisma },
+            loanedItem: ItemPrisma & {
+                owner: ProfilePrisma & { locationTag: LocationTagPrisma },
+                locationTag: LocationTagPrisma,
+                categories: CategoryPrisma[]
+            },
+        }) {
         return new Loan({
             id, 
             start,

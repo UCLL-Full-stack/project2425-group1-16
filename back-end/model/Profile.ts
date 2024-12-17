@@ -17,7 +17,7 @@ export class Profile {
     private location: LocationTag;
 
     constructor(
-        { id, username, password, email, phoneNumber, role, location }
+        { id, username, password, email, phoneNumber, role, locationTag }
     : {
         id?: number,
         username: string,
@@ -26,7 +26,7 @@ export class Profile {
         phoneNumber: string,
         role: Role,
 
-        location: LocationTag,
+        locationTag: LocationTag,
     }) {
         this.id = id
         this.username = username;
@@ -35,7 +35,7 @@ export class Profile {
         this.phoneNumber = phoneNumber;
         this.role = role;
 
-        this.location = location;
+        this.location = locationTag;
     }
 
 
@@ -75,11 +75,11 @@ export class Profile {
         this.phoneNumber = phoneNumber;
     }
 
-    public getLocation(): LocationTag {
+    public getLocationTag(): LocationTag {
         return this.location;
     }
 
-    public setLocation(location: LocationTag) {
+    public setLocationTag(location: LocationTag) {
         this.location = location;
     }
 
@@ -98,11 +98,11 @@ export class Profile {
             this.email === other.getEmail() &&
             this.phoneNumber === other.getPhoneNumber() &&
             this.password === other.password &&
-            this.location === other.getLocation()
+            this.location === other.getLocationTag()
         );
     }
 
-    static from({ id, username, password, email, phoneNumber, role, location }: ProfilePrisma & { location: LocationTagPrisma }) {
+    static from({id, username, password, email, phoneNumber, role, locationTag}: ProfilePrisma & { locationTag: LocationTagPrisma }): Profile {
         return new Profile({
             id,
             username,
@@ -110,7 +110,7 @@ export class Profile {
             email,
             phoneNumber,
             role,
-            location: LocationTag.from(location)
+            locationTag: LocationTag.from(locationTag)
         });
     }
 }
