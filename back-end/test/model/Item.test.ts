@@ -27,13 +27,13 @@ const validPhoneNumber2: string = "0467724913";
 const validLocation: LocationTag = new LocationTag({
     displayName: "Leuven",
     latitude: 50.8775,
-    longtitude: 4.70444
+    longitude: 4.70444
 })
 
 const validLocation2: LocationTag = new LocationTag({
     displayName: "Brussel",
     latitude: 50.84667,
-    longtitude: 4.35472
+    longitude: 4.35472
 })
 
 const validProfile: Profile = new Profile({username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, location: validLocation});
@@ -45,9 +45,9 @@ const validCategoryName3: string = "Elektronica";
 const validCategoryName4: string = "Verlichting";
 const validCategoryName5: string = "Decoratie";
 
-const validCategory: Category = new Category({name: validCategoryName, parents: null});
-const validCategory2: Category = new Category({name: validCategoryName3, parents: null});
-const validCategory3: Category = new Category({name: validCategoryName5, parents: null});
+const validCategory: Category = new Category({name: validCategoryName});
+const validCategory2: Category = new Category({name: validCategoryName3});
+const validCategory3: Category = new Category({name: validCategoryName5});
 
 const validParents: Category[] = [validCategory];
 const validParents2: Category[] = [validCategory2, validCategory3];
