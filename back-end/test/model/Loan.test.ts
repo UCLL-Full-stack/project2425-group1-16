@@ -46,8 +46,8 @@ const validLocation2: LocationTag = new LocationTag({
     longitude: 4.35472
 })
 
-const validProfile: Profile = new Profile({username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, location: validLocation});
-const validProfile2: Profile = new Profile({username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, location: validLocation2});
+const validProfile: Profile = new Profile({username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, locationTag: validLocation});
+const validProfile2: Profile = new Profile({username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, locationTag: validLocation2});
 
 const validCategoryName: string = "Tuingereedschap";
 const validCategoryName2: string = "Grasmaaiers";
@@ -68,8 +68,8 @@ const validCategory5: Category = new Category({name: validCategoryName4, parents
 const validCategories: Category[] = [validCategory, validCategory4];
 const validCategories2: Category[] = [validCategory2, validCategory3, validCategory5];
 
-const validItem: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, location: validLocation, categories: validCategories});
-const validItem2: Item = new Item({name: validName2, description: validDescription2, price: validPrice2, owner: validProfile2, location: validLocation2, categories: validCategories2});
+const validItem: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, locationTag: validLocation, categories: validCategories});
+const validItem2: Item = new Item({name: validName2, description: validDescription2, price: validPrice2, owner: validProfile2, locationTag: validLocation2, categories: validCategories2});
 
 const validLoan: Loan = new Loan({start: validStart, end: validEnd, state: validState, loanedItem: validItem, loaner: validProfile2});
 

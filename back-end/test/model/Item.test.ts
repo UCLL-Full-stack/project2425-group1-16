@@ -41,7 +41,7 @@ const validProfile: Profile = new Profile({
     password: validPassword,
     email: validEmail,
     phoneNumber: validPhoneNumber,
-    location: validLocation,
+    locationTag: validLocation,
     role: 'USER'
 });
 const validProfile2: Profile = new Profile({
@@ -49,7 +49,7 @@ const validProfile2: Profile = new Profile({
     password: validPassword2,
     email: validEmail2,
     phoneNumber: validPhoneNumber2,
-    location: validLocation2,
+    locationTag: validLocation2,
     role: 'ADMIN'
 });
 
@@ -72,16 +72,16 @@ const validCategory5: Category = new Category({name: validCategoryName4, parents
 const validCategories: Category[] = [validCategory, validCategory4];
 const validCategories2: Category[] = [validCategory2, validCategory3, validCategory5];
 
-const validItem: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, location: validLocation, categories: validCategories});
+const validItem: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, locationTag: validLocation, categories: validCategories});
 
 test(`given: valid values for item; when: item is created; then: item is created with those values`, () => {
-    const item: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, location: validLocation, categories: validCategories});
+    const item: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, locationTag: validLocation, categories: validCategories});
     expect(item.getId()).toBeUndefined();
     expect(item.getName()).toEqual(validName);
     expect(item.getDescription()).toEqual(validDescription);
     expect(item.getPrice()).toEqual(validPrice);
     expect(item.getOwner()).toEqual(validProfile);
-    expect(item.getLocation()).toEqual(validLocation);
+    expect(item.getLocationTag()).toEqual(validLocation);
     expect(item.getCategories()).toEqual(validCategories);
 })
 
@@ -90,13 +90,13 @@ test(`given: a valid item and valid item values; when: item is edited with those
     validItem.setDescription(validDescription2);
     validItem.setPrice(validPrice2);
     validItem.setOwner(validProfile2);
-    validItem.setLocation(validLocation2);
+    validItem.setLocationTag(validLocation2);
     validItem.setCategories(validCategories2);
     expect(validItem.getId()).toBeUndefined();
     expect(validItem.getName()).toEqual(validName2);
     expect(validItem.getDescription()).toEqual(validDescription2);
     expect(validItem.getPrice()).toEqual(validPrice2);
     expect(validItem.getOwner()).toEqual(validProfile2);
-    expect(validItem.getLocation()).toEqual(validLocation2);
+    expect(validItem.getLocationTag()).toEqual(validLocation2);
     expect(validItem.getCategories()).toEqual(validCategories2);
 })
