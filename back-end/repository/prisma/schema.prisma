@@ -63,5 +63,5 @@ model Category {
     name            String          @unique
 
     parents         Category[]      @relation("CategoryToCategory")
-    children        Category[]      @relation("CategoryToCategory")
+    children        Category[]      @relation("CategoryToCategory") 
 }
