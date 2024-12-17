@@ -16,13 +16,13 @@ const validPhoneNumber2: string = "0467724913";
 const validLocation: LocationTag = new LocationTag({
     displayName: "Leuven",
     latitude: 50.8775,
-    longtitude: 4.70444
+    longitude: 4.70444
 })
 
 const validLocation2: LocationTag = new LocationTag({
     displayName: "Brussel",
     latitude: 50.84667,
-    longtitude: 4.35472
+    longitude: 4.35472
 })
 
 const validProfile: Profile = new Profile({id: 1, username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, location: validLocation});
