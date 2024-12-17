@@ -16,7 +16,9 @@ export class Profile {
 
     private location: LocationTag;
 
-    constructor(p: {
+    constructor(
+        { id, username, password, email, phoneNumber, role, location }
+    : {
         id?: number,
         username: string,
         password: string,
@@ -26,14 +28,14 @@ export class Profile {
 
         location: LocationTag,
     }) {
-        this.id = p.id
-        this.username = p.username;
-        this.password = p.password;
-        this.email = p.email;
-        this.phoneNumber = p.phoneNumber;
-        this.role = p.role;
+        this.id = id
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
 
-        this.location = p.location;
+        this.location = location;
     }
 
 

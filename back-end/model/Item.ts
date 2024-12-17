@@ -19,7 +19,9 @@ export class Item {
     private owner: Profile;
     private categories: Category[];
 
-    constructor(p: {
+    constructor(
+        { id, name, description, price, location, owner, categories }
+    : {
         id?: number,
         name: string,
         description: string,
@@ -29,14 +31,14 @@ export class Item {
         owner: Profile,
         categories: Category[],
     }) {
-        this.id = p.id;
-        this.name = p.name;
-        this.description = p.description;
-        this.price = p.price;
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
 
-        this.location = p.location;
-        this.owner = p.owner;
-        this.categories = p.categories;
+        this.location = location;
+        this.owner = owner;
+        this.categories = categories;
     }
 
     public getId(): number | undefined {

@@ -20,7 +20,8 @@ export class Loan {
     private loanedItem: Item;
     private loaner: Profile;
 
-    constructor(p: {
+    constructor({ id, start, end, state, loanedItem, loaner }
+    : {
         id?: number,
         start: Date,
         end: Date,
@@ -29,13 +30,13 @@ export class Loan {
         loanedItem: Item;
         loaner: Profile;
     }) {
-        this.id = p.id;
-        this.start = p.start;
-        this.end = p.end;
-        this.state = p.state;
+        this.id = id;
+        this.start = start;
+        this.end = end;
+        this.state = state;
 
-        this.loanedItem = p.loanedItem;
-        this.loaner = p.loaner;
+        this.loanedItem = loanedItem;
+        this.loaner = loaner;
     }
 
     public getId(): number | undefined {
