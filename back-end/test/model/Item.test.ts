@@ -36,8 +36,22 @@ const validLocation2: LocationTag = new LocationTag({
     longitude: 4.35472
 })
 
-const validProfile: Profile = new Profile({username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, location: validLocation});
-const validProfile2: Profile = new Profile({username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, location: validLocation2});
+const validProfile: Profile = new Profile({
+    username: validUsername,
+    password: validPassword,
+    email: validEmail,
+    phoneNumber: validPhoneNumber,
+    location: validLocation,
+    role: 'USER'
+});
+const validProfile2: Profile = new Profile({
+    username: validUsername2,
+    password: validPassword2,
+    email: validEmail2,
+    phoneNumber: validPhoneNumber2,
+    location: validLocation2,
+    role: 'ADMIN'
+});
 
 const validCategoryName: string = "Tuingereedschap";
 const validCategoryName2: string = "Grasmaaiers";
