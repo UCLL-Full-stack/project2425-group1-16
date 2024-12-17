@@ -1,5 +1,5 @@
-import { LocationTag } from "../model/LocationTag";
-import { Profile } from "../model/Profile";
+import { LocationTag } from "../model/locationTag";
+import { Profile } from "../model/profile";
 
 const validUsername: string = "Michiel05";
 const validUsername2: string = "Kevin04";
@@ -25,8 +25,8 @@ const validLocation2: LocationTag = new LocationTag({
     longitude: 4.35472
 })
 
-const validProfile: Profile = new Profile({id: 1, username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, location: validLocation});
-const validProfile2: Profile = new Profile({id: 2, username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, location: validLocation2});
+const validProfile: Profile = new Profile({id: 1, username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, locationTag: validLocation});
+const validProfile2: Profile = new Profile({id: 2, username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, locationTag: validLocation2});
 
 const profiles: Profile[] = [
     validProfile,

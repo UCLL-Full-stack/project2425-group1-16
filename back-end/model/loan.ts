@@ -1,5 +1,5 @@
-import { Item } from "./Item";
-import { Profile } from "./Profile";
+import { Item } from "./item";
+import { Profile } from "./profile";
 
 import { 
     Loan as LoanPrisma,

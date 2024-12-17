@@ -1,4 +1,4 @@
-import { Item } from '../model/Item';
+import { Item } from '../model/item';
 import itemDb from '../repository/item.db';
 
 const getAllItems = (): Item[] => itemDb.getAllItems();

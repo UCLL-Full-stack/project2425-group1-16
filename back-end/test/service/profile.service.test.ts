@@ -1,7 +1,7 @@
-import { Category } from "../../model/Category";
-import { Item } from "../../model/Item";
-import { LocationTag } from "../../model/LocationTag";
-import { Profile } from "../../model/Profile";
+import { Category } from "../../model/category";
+import { Item } from "../../model/item";
+import { LocationTag } from "../../model/locationTag";
+import { Profile } from "../../model/profile";
 import itemDb from "../../repository/item.db";
 import profileDb from "../../repository/profile.db";
 import itemService from "../../service/item.service";

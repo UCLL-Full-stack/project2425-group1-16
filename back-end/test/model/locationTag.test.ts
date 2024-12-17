@@ -1,4 +1,4 @@
-import { LocationTag } from "../../model/LocationTag"
+import { LocationTag } from "../../model/locationTag"
 
 const validDisplayName: string = "Leuven";
 const validLatitude: number = 50.8775;

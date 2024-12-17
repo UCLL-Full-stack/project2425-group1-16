@@ -1,5 +1,5 @@
-import { Category } from "../model/Category";
-import { LocationTag } from "../model/LocationTag";
+import { Category } from "../model/category";
+import { LocationTag } from "../model/locationTag";
 
 const locationLeuven = new LocationTag({
     displayName: "Martelarenplein, Leuven",

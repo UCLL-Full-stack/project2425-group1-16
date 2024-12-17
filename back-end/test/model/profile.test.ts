@@ -1,5 +1,5 @@
-import { LocationTag } from "../../model/LocationTag";
-import { Profile } from "../../model/Profile";
+import { LocationTag } from "../../model/locationTag";
+import { Profile } from "../../model/profile";
 
 const validUsername: string = "Michiel05";
 const validUsername2: string = "Kevin04";

@@ -1,8 +1,8 @@
-import { Category } from "../../model/Category";
-import { Item } from "../../model/Item";
-import { Loan, LoanState } from "../../model/Loan";
-import { LocationTag } from "../../model/LocationTag";
-import { Profile } from "../../model/Profile";
+import { Category } from "../../model/category";
+import { Item } from "../../model/item";
+import { Loan, LoanState } from "../../model/loan";
+import { LocationTag } from "../../model/locationTag";
+import { Profile } from "../../model/profile";
 
 const validStart: Date = new Date(2024, 10, 16);
 const validStart2: Date = new Date(2024, 10, 15);

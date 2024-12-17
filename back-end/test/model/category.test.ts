@@ -1,4 +1,4 @@
-import { Category } from "../../model/Category";
+import { Category } from "../../model/category";
 
 const validName: string = "Tuingereedschap";
 const validName2: string = "Grasmaaiers";

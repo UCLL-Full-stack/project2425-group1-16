@@ -1,5 +1,5 @@
 import { Role } from "../types";
-import { LocationTag } from "./LocationTag";
+import { LocationTag } from "./locationTag";
 
 import { 
     Profile as ProfilePrisma,

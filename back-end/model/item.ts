@@ -1,6 +1,6 @@
-import { Category } from "./Category";
-import { LocationTag } from "./LocationTag";
-import { Profile } from "./Profile";
+import { Category } from "./category";
+import { LocationTag } from "./locationTag";
+import { Profile } from "./profile";
 
 import { 
     Item as ItemPrisma,
