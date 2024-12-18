@@ -20,15 +20,15 @@ test(`given: valid values for locationTag; when: locationTag is created; then: l
     expect(location.getId()).toBeUndefined();
     expect(location.getDisplayName()).toEqual(validDisplayName);
     expect(location.getLatitude()).toEqual(validLatitude);
-    expect(location.getLongtitude()).toEqual(validLongitude);
+    expect(location.getLongitude()).toEqual(validLongitude);
 })
 
 test(`given: a valid locationTag and valid locationTag values; when: locationTag is edited with those values; then: locationTag now has these new values`, () => {
     validLocation.setDisplayName(validDisplayName2);
     validLocation.setLatitude(validLatitude2);
-    validLocation.setLongtitude(validLongitude2);
+    validLocation.setLongitude(validLongitude2);
     expect(validLocation.getId()).toBeUndefined();
     expect(validLocation.getDisplayName()).toEqual(validDisplayName2);
     expect(validLocation.getLatitude()).toEqual(validLatitude2);
-    expect(validLocation.getLongtitude()).toEqual(validLongitude2);
+    expect(validLocation.getLongitude()).toEqual(validLongitude2);
 })

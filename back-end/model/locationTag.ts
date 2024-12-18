@@ -25,12 +25,12 @@ export class LocationTag {
         this.displayName = displayName;
     }
 
-    public getLongtitude(): number {
+    public getLongitude(): number {
         return this.longitude;
     }
 
-    public setLongtitude(longtitude: number) {
-        this.longitude = longtitude;
+    public setLongitude(longitude: number) {
+        this.longitude = longitude;
     }
 
     public getLatitude(): number {
@@ -45,7 +45,7 @@ export class LocationTag {
         return (
             this.id === other.getId() &&
             this.latitude === other.getLatitude() &&
-            this.longitude === other.getLongtitude() &&
+            this.longitude === other.getLongitude() &&
             this.displayName === other.getDisplayName()
         );
     }
