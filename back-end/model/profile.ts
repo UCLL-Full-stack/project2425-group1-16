@@ -14,7 +14,7 @@ export class Profile {
     private phoneNumber: string;
     private role: Role;
 
-    private location: LocationTag;
+    private locationTag: LocationTag;
 
     constructor(
         { id, username, password, email, phoneNumber, role, locationTag }
@@ -35,7 +35,7 @@ export class Profile {
         this.phoneNumber = phoneNumber;
         this.role = role;
 
-        this.location = locationTag;
+        this.locationTag = locationTag;
     }
 
 
@@ -76,11 +76,11 @@ export class Profile {
     }
 
     public getLocationTag(): LocationTag {
-        return this.location;
+        return this.locationTag;
     }
 
     public setLocationTag(location: LocationTag) {
-        this.location = location;
+        this.locationTag = location;
     }
 
     public getRole(): Role {
@@ -98,7 +98,7 @@ export class Profile {
             this.email === other.getEmail() &&
             this.phoneNumber === other.getPhoneNumber() &&
             this.password === other.password &&
-            this.location === other.getLocationTag()
+            this.locationTag === other.getLocationTag()
         );
     }
 
