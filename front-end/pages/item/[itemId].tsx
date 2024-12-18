@@ -29,6 +29,7 @@ export default function ItemPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [addItemModal, setAddItemModal] = useState<boolean>(false);
   const [item, setItem] = useState<Item|null>(null);
+  const { t } = useTranslation();
 
   
 
@@ -57,7 +58,7 @@ export default function ItemPage() {
 
   const presentSubPage = (subPage: LoadedPage)=> {
     if (profile == null) {
-      return <p>You are currently logged out.</p>
+      return <p>{t('currentlyLoggedOut')}</p>
     }
 
     switch (subPage) {

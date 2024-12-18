@@ -1,5 +1,6 @@
 {
   "language": "Language",
+  "currentlyLoggedOut": "You are currently logged out.",
   "header": {
     "tags": {
       "profile": "My profile",

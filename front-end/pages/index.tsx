@@ -29,6 +29,7 @@ export default function Home() {
   const [subPage, setSubPage] = useState<LoadedPage>('HOME_PAGE');
   const [selectedItemId, setSelectedItemId] = useState<number|null>(null);
   const [addItemModal, setAddItemModal] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   const getItems = async () => {
     const response = await ItemService.getAllItems();
@@ -50,7 +51,7 @@ export default function Home() {
 
   const presentSubPage = (subPage: LoadedPage) => {
     if (profile == null) {
-      return <p>You are currently logged out.</p>
+      return <p>{t('currentlyLoggedOut')}</p>
     }
 
     switch (subPage) {
