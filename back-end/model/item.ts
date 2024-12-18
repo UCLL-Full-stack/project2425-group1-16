@@ -31,6 +31,8 @@ export class Item {
         owner: Profile,
         categories: Category[],
     }) {
+        this.validate({ name, description, price, locationTag, owner, categories });
+
         this.id = id;
         this.name = name;
         this.description = description;
@@ -39,6 +41,24 @@ export class Item {
         this.locationTag = locationTag;
         this.owner = owner;
         this.categories = categories;
+    }
+
+    validate({ name, description, price, locationTag, owner, categories }
+    : {
+        name: string,
+        description: string,
+        price: number,
+
+        locationTag: LocationTag,
+        owner: Profile,
+        categories: Category[],
+    }) {
+       if (!name?.trim())                   throw new Error('Name cannot be empty.');
+       if (description?.trim().length < 10) throw new Error('The description has to be at least ten characters long.');
+       if (price <= 0)                      throw new Error('Price cannot be negative or zero.');
+       if (!locationTag)                    throw new Error('A location is needed for this item.');
+       if (!owner)                          throw new Error('An owner is needed for this item.');
+       if (categories?.length < 1)          throw new Error('There need to be at least one category for this item.');
     }
 
     public getId(): number | undefined {

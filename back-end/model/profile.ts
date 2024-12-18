@@ -28,6 +28,8 @@ export class Profile {
 
         locationTag: LocationTag,
     }) {
+        this.validate({ username, password, email, phoneNumber, role, locationTag });
+
         this.id = id
         this.username = username;
         this.password = password;
@@ -38,6 +40,31 @@ export class Profile {
         this.locationTag = locationTag;
     }
 
+    validate({ username, password, email, phoneNumber, role, locationTag }
+    : {
+        username: string,
+        password: string,
+        email: string,
+        phoneNumber: string,
+        role: Role,
+        locationTag: LocationTag,
+    }) {
+        if (!username?.trim())      throw new Error('A username must be given.');
+        if (!password?.trim())      throw new Error('A password must be given.');
+        if (!email?.trim())         throw new Error('A email must be given.');
+        if (!phoneNumber?.trim())   throw new Error('A phone number must be given.');
+        if (!role)                  throw new Error('A role must be given.');
+        if (!locationTag)           throw new Error('A location must be given.');
+
+        if (!phoneNumber.trim().match(/^\+?\d{8,15}$/)) 
+            throw new Error('A phone number can only consist of numbers, and be 8 to 15 characters in length.');
+        if (password.trim().length < 8)
+            throw new Error('A password has to be at least 8 characters in lenght.');
+        if (!password.trim().match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!-/:-@\\[-`\\{-~]).*$/))
+            throw new Error('Your password is not strong enough (needs at least 1 upper- & lowercase letter, 1 number, and 1 special character).');
+        if (!email.trim().match(/^\w@\w+\.\w+$/))
+            throw new Error('Invalid email');
+    }
 
     public getId(): number | undefined {
         return this.id;

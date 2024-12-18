@@ -7,10 +7,17 @@ export class LocationTag {
     private latitude: number;
 
     constructor({ displayName, longitude, latitude, id }: { displayName: string, longitude: number, latitude: number, id?: number }) {
+        this.validate({ displayName, longitude, latitude });
+
         this.id = id;
         this.displayName = displayName;
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+    validate({ displayName, longitude, latitude }: { displayName: string, longitude: number, latitude: number }) {
+        if (!displayName?.trim()) throw new Error('Display name has to be given.');
+        if (Math.abs(longitude) > 180.0 || Math.abs(latitude) > 180.0) throw new Error('Longitude and latitude must be between -180 and 180 degrees.');
     }
 
     public getId(): number | undefined {

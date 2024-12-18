@@ -8,10 +8,16 @@ export class Category {
     private children: Category[];
 
     constructor({ name, parents, children, id }: { name: string, parents?: Category[], children?: Category[], id?: number }) {
+        this.validate({ name });
+
         this.name = name;
         this.parents = parents ?? [];
         this.children = children ?? [];
         this.id = id;
+    }
+
+    validate({ name  }: { name: string }) {
+        if (!name?.trim()) throw new Error("Name cannot be empty!");
     }
 
     public getId(): number | undefined {

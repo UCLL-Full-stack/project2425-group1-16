@@ -126,7 +126,7 @@
 
 import express, { NextFunction, Request, Response } from 'express';
 import profileService from '../service/profile.service';
-import { ProfileInput } from '../types';
+import { LoginInput, ProfileInput } from '../types';
 const profileRouter = express.Router();
 
 /**
@@ -237,7 +237,8 @@ profileRouter.post('/signup', async (req: Request, res: Response, next: NextFunc
  */
 profileRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const authResponse = await profileService.authenticate(req.body);
+        const loginData = <LoginInput>req.body;
+        const authResponse = await profileService.authenticate(loginData);
         res.status(200).json(authResponse);
     } catch (error) {
         next(error);
