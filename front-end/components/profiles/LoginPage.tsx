@@ -1,27 +1,27 @@
 import ProfileService from "@/services/ProfileService";
-import { Profile } from "@/types";
+import { Profile, TokenObj } from "@/types";
 import { useState } from "react";
 
 type Props = {
-    profile: Profile | null;
-    setProfile: (profile: Profile) => void;
+    profileId: number | null;
+    setProfileId: (profileId: number) => void;
 };
   
-const LoginPage: React.FC<Props> = ({ profile, setProfile }: Props) => {
+const LoginPage: React.FC<Props> = ({ profileId, setProfileId }: Props) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [profileObj, setProfileObj] = useState<Profile | null>(null);
+    const [tokenObj, setTokenObj] = useState<TokenObj|null>(null);
 
     const loginByEmailAndPassword = async (event: React.FormEvent) => {
         event?.preventDefault();
         try {
-            const response = await ProfileService.getProfileByEmail(email);
+            const response = await ProfileService.login({email: email, password: password});
             if (response.status == 200) {
                 const json = await response.json();
-                setProfileObj(json);
-                if (profileObj && profileObj.password == password) {
-                    setProfile(profileObj);
-                    localStorage.setItem('loggedInProfile', JSON.stringify(profileObj));
+                setTokenObj(json);
+                if (tokenObj) {
+                    setProfileId(tokenObj.userId);
+                    sessionStorage.setItem('loggedInToken', JSON.stringify(tokenObj));
                 } else {
                     throw Error("Password is incorrect");
                 }
@@ -34,7 +34,7 @@ const LoginPage: React.FC<Props> = ({ profile, setProfile }: Props) => {
 
     return (
       <>
-        {!profile && (
+        {!profileId && (
           <>
             <h2>Login</h2>
             <form onSubmit={loginByEmailAndPassword}>

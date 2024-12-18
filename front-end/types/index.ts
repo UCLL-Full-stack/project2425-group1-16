@@ -39,6 +39,14 @@ export type Loan = {
     loaner: Profile;
 };
 
+export type TokenObj = {
+    token: string,
+    userId: number,
+    role: Role
+};
+
+
+export type Role = 'USER' | 'ADMIN' | 'SUPERADMIN'
 
 export type LoanState = 'PENDING' | 'ACCEPTED' | 'DENIED';
 

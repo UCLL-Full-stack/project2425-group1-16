@@ -25,7 +25,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const router = useRouter();
   const [items, setItems] = useState<Item[]>([]);
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profileId, setProfileId] = useState<number | null>(null);
   const [subPage, setSubPage] = useState<LoadedPage>('HOME_PAGE');
   const [selectedItemId, setSelectedItemId] = useState<number|null>(null);
   const [addItemModal, setAddItemModal] = useState<boolean>(false);
@@ -43,41 +43,41 @@ export default function Home() {
     // I'd love to load the stored profile on page load, but the 
     // local profile parsing has to happen *after* the page has loaded.
     // Otherwise, localStorage doesn't exist, because it's trying to run it server-side????
-    const loggedInProfile = localStorage.getItem('loggedInProfile');
-    if (loggedInProfile) { setProfile(JSON.parse(loggedInProfile)); }
+    const loggedInToken = sessionStorage.getItem('loggedInToken');
+    if (loggedInToken) { setProfileId(JSON.parse(loggedInToken).userId); }
     setAddItemModal(false)
     getItems();   
   }, []);
 
   const presentSubPage = (subPage: LoadedPage) => {
-    if (profile == null) {
+    if (profileId == null) {
       return <p>{t('currentlyLoggedOut')}</p>
     }
 
     switch (subPage) {
       default: 
       case "HOME_PAGE":
-        return <ItemsOverview items={items} profile={profile} selectedItemId={selectedItemId} setSelectedItemId={setSelectedItemId} setSubPage={setSubPage} />
+        return <ItemsOverview items={items} profileId={profileId} selectedItemId={selectedItemId} setSelectedItemId={setSelectedItemId} setSubPage={setSubPage} />
         
       case "PROFILE_OVERVIEW":
-        return <ProfilePage profile={profile}/>
+        return <ProfilePage profileId={profileId}/>
 
       case "ITEM_OVERVIEW":
         router.push('/item/'+selectedItemId)
       
       case "OWNED_ITEMS":
-        return <OwnedItems profile={profile} />
+        return <OwnedItems profileId={profileId} />
     }
   };
 
   return (
     <>
       <PageMeta />
-      {profile && (
+      {profileId && (
         <Header activePageSetter={setSubPage} addItemModalSetter={setAddItemModal}/>
       )}
       <main className={styles.main}>
-        <LoginPage setProfile={setProfile} profile={profile}/>
+        <LoginPage setProfileId={setProfileId} profileId={profileId}/>
         {
           presentSubPage(subPage) 
         }

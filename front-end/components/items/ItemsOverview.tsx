@@ -6,13 +6,13 @@ import { useTranslation } from 'react-i18next';
 
 type Props = {
   items: Item[];
-  profile: Profile | null;
+  profileId: number | null;
   selectedItemId: number | null;
   setSelectedItemId: (number: number) => void;
   setSubPage: (subpage: LoadedPage) => void;
 };
 
-const ItemsOverview: React.FC<Props> = ({ items, profile, selectedItemId, setSelectedItemId, setSubPage }: Props) => {
+const ItemsOverview: React.FC<Props> = ({ items, profileId, selectedItemId, setSelectedItemId, setSubPage }: Props) => {
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -28,7 +28,7 @@ const ItemsOverview: React.FC<Props> = ({ items, profile, selectedItemId, setSel
 
   return (
     <>
-      {items && profile && (
+      {items && profileId && (
         <>
             <h2>{t('item.title')}</h2>
             <table className="table table-hover">

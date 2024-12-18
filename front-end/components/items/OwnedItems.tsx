@@ -3,17 +3,17 @@ import { Item, Profile } from "@/types"
 import { useState } from "react"
 
 type Props = {
-    profile: Profile,
+    profileId: number,
 }
 
-const OwnedItems: React.FC<Props> = ({ profile }: Props) => {
+const OwnedItems: React.FC<Props> = ({ profileId }: Props) => {
     const [items, setItems] = useState<Item[]>([]);
     
     const loadOwnedItems = async () => {
-        if (profile.id == null) {
+        if (profileId == null) {
             throw new Error("Profile has no ID!");
         }
-        const response = await ItemService.getItemsByOwner(profile.id);
+        const response = await ItemService.getItemsByOwner(profileId);
     };
 
     return (<>

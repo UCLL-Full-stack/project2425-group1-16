@@ -1,12 +1,32 @@
+import ProfileService from "@/services/ProfileService";
 import { Profile } from "@/types";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type Props = {
-    profile: Profile | null,
+    profileId: number | null,
 } 
 
-const ProfilePage: React.FC<Props> = ({ profile }: Props) => {
+const ProfilePage: React.FC<Props> = ({ profileId }: Props) => {
     const { t } = useTranslation();
+    const [profile, setProfile] = useState<Profile|null>(null);
+
+    const getProfileById = async (id: number) => {
+        try {
+            const response = await ProfileService.getProfileById(id);
+            if (response.status == 200) {
+                const json = await response.json();
+                setProfile(json);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        if (profileId) {getProfileById(profileId)};
+    }, []);
+
     return (
         profile ?
             <table>
