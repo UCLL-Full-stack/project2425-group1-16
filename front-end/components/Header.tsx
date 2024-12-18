@@ -1,4 +1,7 @@
 import { LoadedPage } from '@/types';
+import { t } from 'i18next';
+import {useTranslation} from "next-i18next";
+import Language from './language/Language';
 
 type Props = {
   activePageSetter: (page: LoadedPage) => void,
@@ -6,6 +9,7 @@ type Props = {
 };
 
 const Header: React.FC<Props> = ({activePageSetter, addItemModalSetter}: Props) => {
+  const { t } = useTranslation();
   return (
     <header className="p-3 mb-3 border-bottom bg-dark bg-gradient">
       <a className="fs-2 d-flex justify-content-center mb-2 mb-lg-0 text-white-50 text-decoration-none">
@@ -26,7 +30,7 @@ const Header: React.FC<Props> = ({activePageSetter, addItemModalSetter}: Props) 
           style={{border: "none"}}
           onClick={() => activePageSetter("PROFILE_OVERVIEW")}
         >
-          My Profile
+          {t('header.tags.profile')}
         </button>
 
         <button
@@ -34,7 +38,7 @@ const Header: React.FC<Props> = ({activePageSetter, addItemModalSetter}: Props) 
           style={{border: "none"}}
           onClick={() => activePageSetter("OWNED_ITEMS")}
         >
-          My Items
+          {t('header.tags.items')}
         </button>
 
         <button 
@@ -43,7 +47,7 @@ const Header: React.FC<Props> = ({activePageSetter, addItemModalSetter}: Props) 
           style={{border: "none"}}    // Yes, I can't find another way to do this
           onClick={() => {addItemModalSetter(true)}}
         >
-          Add item
+          {t('header.tags.addItem')}
         </button>
 
         <button 
@@ -55,8 +59,9 @@ const Header: React.FC<Props> = ({activePageSetter, addItemModalSetter}: Props) 
             window.location.reload();
           }}
         >
-          Log out
+          {t('header.tags.addItem')}
         </button>
+        <Language/>
       </nav>
     </header>
   );

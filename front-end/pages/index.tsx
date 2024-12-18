@@ -13,6 +13,10 @@ import OwnedItems from "@/components/items/OwnedItems";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import AddItemModal from "@/components/items/AddItemModal";
+import {GetServerSideProps} from "next";
+import {serverSideTranslations} from "next-i18next/serverSideTranslations";
+import {useTranslation} from "next-i18next";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -79,3 +83,13 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { locale } = context;
+
+  return {
+      props: {
+          ...(await serverSideTranslations(locale ?? "en", ["common"])),
+      },
+  };
+};

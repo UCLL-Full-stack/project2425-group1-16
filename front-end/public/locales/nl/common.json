@@ -1,0 +1,11 @@
+{
+  "language": "Taal",
+  "header": {
+    "tags": {
+      "profile": "Mijn profiel",
+      "items": "Mijn artikels",
+      "addItem": "Artikel toevoegen",
+      "logout": "Log uit"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "language": "Language",
+  "header": {
+    "tags": {
+      "profile": "My profile",
+      "items": "My items",
+      "addItem": "Add item",
+      "logout": "Log out"
+    }
+  }
+}
