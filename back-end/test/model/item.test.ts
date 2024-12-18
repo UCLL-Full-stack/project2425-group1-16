@@ -1,7 +1,7 @@
-import { Category } from "../../model/Category";
-import { Item } from "../../model/Item";
-import { LocationTag } from "../../model/LocationTag";
-import { Profile } from "../../model/Profile";
+import { Category } from "../../model/category";
+import { Item } from "../../model/item";
+import { LocationTag } from "../../model/locationTag";
+import { Profile } from "../../model/profile";
 
 const validName: string = "Grasmaaier";
 const validName2: string = "Sfeerverlichting";
@@ -27,17 +27,31 @@ const validPhoneNumber2: string = "0467724913";
 const validLocation: LocationTag = new LocationTag({
     displayName: "Leuven",
     latitude: 50.8775,
-    longtitude: 4.70444
+    longitude: 4.70444
 })
 
 const validLocation2: LocationTag = new LocationTag({
     displayName: "Brussel",
     latitude: 50.84667,
-    longtitude: 4.35472
+    longitude: 4.35472
 })
 
-const validProfile: Profile = new Profile({username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, location: validLocation});
-const validProfile2: Profile = new Profile({username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, location: validLocation2});
+const validProfile: Profile = new Profile({
+    username: validUsername,
+    password: validPassword,
+    email: validEmail,
+    phoneNumber: validPhoneNumber,
+    locationTag: validLocation,
+    role: 'USER'
+});
+const validProfile2: Profile = new Profile({
+    username: validUsername2,
+    password: validPassword2,
+    email: validEmail2,
+    phoneNumber: validPhoneNumber2,
+    locationTag: validLocation2,
+    role: 'ADMIN'
+});
 
 const validCategoryName: string = "Tuingereedschap";
 const validCategoryName2: string = "Grasmaaiers";
@@ -45,9 +59,9 @@ const validCategoryName3: string = "Elektronica";
 const validCategoryName4: string = "Verlichting";
 const validCategoryName5: string = "Decoratie";
 
-const validCategory: Category = new Category({name: validCategoryName, parents: null});
-const validCategory2: Category = new Category({name: validCategoryName3, parents: null});
-const validCategory3: Category = new Category({name: validCategoryName5, parents: null});
+const validCategory: Category = new Category({name: validCategoryName});
+const validCategory2: Category = new Category({name: validCategoryName3});
+const validCategory3: Category = new Category({name: validCategoryName5});
 
 const validParents: Category[] = [validCategory];
 const validParents2: Category[] = [validCategory2, validCategory3];
@@ -58,16 +72,16 @@ const validCategory5: Category = new Category({name: validCategoryName4, parents
 const validCategories: Category[] = [validCategory, validCategory4];
 const validCategories2: Category[] = [validCategory2, validCategory3, validCategory5];
 
-const validItem: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, location: validLocation, categories: validCategories});
+const validItem: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, locationTag: validLocation, categories: validCategories});
 
 test(`given: valid values for item; when: item is created; then: item is created with those values`, () => {
-    const item: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, location: validLocation, categories: validCategories});
+    const item: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, locationTag: validLocation, categories: validCategories});
     expect(item.getId()).toBeUndefined();
     expect(item.getName()).toEqual(validName);
     expect(item.getDescription()).toEqual(validDescription);
     expect(item.getPrice()).toEqual(validPrice);
     expect(item.getOwner()).toEqual(validProfile);
-    expect(item.getLocation()).toEqual(validLocation);
+    expect(item.getLocationTag()).toEqual(validLocation);
     expect(item.getCategories()).toEqual(validCategories);
 })
 
@@ -76,13 +90,13 @@ test(`given: a valid item and valid item values; when: item is edited with those
     validItem.setDescription(validDescription2);
     validItem.setPrice(validPrice2);
     validItem.setOwner(validProfile2);
-    validItem.setLocation(validLocation2);
+    validItem.setLocationTag(validLocation2);
     validItem.setCategories(validCategories2);
     expect(validItem.getId()).toBeUndefined();
     expect(validItem.getName()).toEqual(validName2);
     expect(validItem.getDescription()).toEqual(validDescription2);
     expect(validItem.getPrice()).toEqual(validPrice2);
     expect(validItem.getOwner()).toEqual(validProfile2);
-    expect(validItem.getLocation()).toEqual(validLocation2);
+    expect(validItem.getLocationTag()).toEqual(validLocation2);
     expect(validItem.getCategories()).toEqual(validCategories2);
 })

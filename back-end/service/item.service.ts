@@ -1,10 +1,10 @@
-import { Item } from '../model/Item';
+import { Item } from '../model/item';
 import itemDb from '../repository/item.db';
 
-const getAllItems = (): Item[] => itemDb.getAllItems();
+const getAllItems = async (): Promise<Item[]> => await itemDb.getAllItems();
 
-const getItemById = (id: number): Item => {
-    const item = itemDb.getItemById({ id });
+const getItemById = async (id: number): Promise<Item> => {
+    const item = await itemDb.getItemById({ itemId: id });
     if (item == null) {
         throw Error("No item found for this id")
     }

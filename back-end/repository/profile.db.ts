@@ -1,45 +1,34 @@
-import { LocationTag } from "../model/LocationTag";
-import { Profile } from "../model/Profile";
+import { Profile } from "../model/profile";
+import database from "./database";
 
-const validUsername: string = "Michiel05";
-const validUsername2: string = "Kevin04";
-
-const validPassword: string = "K5/#G6es:M(z8,";
-const validPassword2: string = "K4/#G6es:M(z8,";
-
-const validEmail2: string = "Kevin.Hiers@domain.be";
-const validEmail: string = "Michiel.Nijs@domain.be";
-
-const validPhoneNumber: string = "0467725913";
-const validPhoneNumber2: string = "0467724913";
-
-const validLocation: LocationTag = new LocationTag({
-    displayName: "Leuven",
-    latitude: 50.8775,
-    longtitude: 4.70444
-})
-
-const validLocation2: LocationTag = new LocationTag({
-    displayName: "Brussel",
-    latitude: 50.84667,
-    longtitude: 4.35472
-})
-
-const validProfile: Profile = new Profile({id: 1, username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, location: validLocation});
-const validProfile2: Profile = new Profile({id: 2, username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, location: validLocation2});
-
-const profiles: Profile[] = [
-    validProfile,
-    validProfile2
-]
-
-
-const getAllProfiles = (): Profile[] => profiles;
-
-const getProfileByEmail = ({ email }: { email: string }): Profile | null => {
-    return profiles.find((profile) => profile.getEmail() === email) || null;
+const getAllProfiles = async (): Promise<Profile[]> => {
+    try {
+        const profilesPrisma = await database.profile.findMany({
+            include: {
+                locationTag: true
+            }
+        });
+        return profilesPrisma.map((profilePrisma) => Profile.from(profilePrisma));
+    } catch (error) {
+        console.error(`Database error: ${error}`);
+        throw new Error(`Database error: ${error}`);
+    }
 };
 
+const getProfileByEmail = async ({ email }: { email: string }): Promise<Profile | null> => {
+    try {
+        const profilePrisma = await database.profile.findUnique({
+            where: {
+                email
+            },
+            include: { locationTag: true }
+        })
+        return profilePrisma ? Profile.from(profilePrisma) : null;
+    } catch (error) {
+        console.error(`Database error: ${error}`);
+        throw new Error(`Database error: ${error}`);
+    }
+};
 
 export default {
     getAllProfiles,

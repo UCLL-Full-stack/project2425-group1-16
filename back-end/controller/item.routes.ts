@@ -15,8 +15,8 @@
  *              format: int64
  *            displayName:
  *              type: string
- *              description: Location display name.
- *            longtitude:
+ *              description: A description of the location.
+ *            longitude:
  *              type: number
  *              format: float
  *            latitude:
@@ -40,7 +40,7 @@
  *            phonenumber:
  *              type: string
  *              description: Phonenumber
- *            location:
+ *            locationTag:
  *              $ref: '#/components/schemas/LocationTag'
  *      Category:
  *          type: object
@@ -53,6 +53,12 @@
  *              description: Category name.
  *            parents:
  *              type: array
+ *              description: Categories underneath which this category can be found.
+ *              items:
+ *                 $ref: '#/components/schemas/Category'
+ *            children:
+ *              type: array
+ *              description: Categories underneath this one.
  *              items:
  *                 $ref: '#/components/schemas/Category'
  *      Item:
@@ -70,7 +76,7 @@
  *            price:
  *              type: number
  *              format: float
- *            location:
+ *            locationTag:
  *              $ref: '#/components/schemas/LocationTag'
  *            owner:
  *              $ref: '#/components/schemas/Profile'

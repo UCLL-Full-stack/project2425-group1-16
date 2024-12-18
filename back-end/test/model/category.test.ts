@@ -1,4 +1,4 @@
-import { Category } from "../../model/Category";
+import { Category } from "../../model/category";
 
 const validName: string = "Tuingereedschap";
 const validName2: string = "Grasmaaiers";
@@ -6,9 +6,9 @@ const validName3: string = "Elektronica";
 const validName4: string = "Verlichting";
 const validName5: string = "Decoratie";
 
-const validCategory: Category = new Category({name: validName, parents: null});
-const validCategory2: Category = new Category({name: validName3, parents: null});
-const validCategory3: Category = new Category({name: validName5, parents: null});
+const validCategory: Category = new Category({name: validName});
+const validCategory2: Category = new Category({name: validName3});
+const validCategory3: Category = new Category({name: validName5});
 
 const validParents: Category[] = [validCategory];
 const validParents2: Category[] = [validCategory2, validCategory3];
