@@ -50,7 +50,7 @@ const main = async () => {
     const user = await prisma.profile.create({
         data: {
             username: 'exampleUser',
-            password: await bcrypt.hash('exampleUserPass', 12),
+            password: await bcrypt.hash('Password123%', 12),
             email: 'exampleUser@example.com',
             phoneNumber: '1234567890',
             role: 'USER',
@@ -61,7 +61,7 @@ const main = async () => {
     const admin = await prisma.profile.create({
         data: {
             username: 'exampleAdmin',
-            password: await bcrypt.hash('exampleAdminPass', 12),
+            password: await bcrypt.hash('Password123%', 12),
             email: 'exampleAdmin@example.com',
             phoneNumber: '1234567891',
             role: 'ADMIN',
@@ -72,7 +72,7 @@ const main = async () => {
     const superAdmin = await prisma.profile.create({
         data: {
             username: 'exampleSuperAdmin',
-            password: await bcrypt.hash('exampleSuperAdminPass', 12),
+            password: await bcrypt.hash('Password123%', 12),
             email: 'exampleSuperAdmin@example.com',
             phoneNumber: '1234567892',
             role: 'SUPERADMIN',

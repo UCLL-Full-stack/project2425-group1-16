@@ -30,6 +30,8 @@ export class Loan {
         loanedItem: Item;
         loaner: Profile;
     }) {
+        this.validate({ start, end, state, loanedItem, loaner });
+
         this.id = id;
         this.start = start;
         this.end = end;
@@ -37,6 +39,22 @@ export class Loan {
 
         this.loanedItem = loanedItem;
         this.loaner = loaner;
+    }
+
+    validate({ start, end, state, loanedItem, loaner }
+    : {
+        start: Date,
+        end: Date,
+        state: LoanState,
+
+        loanedItem: Item;
+        loaner: Profile;
+    }) {
+        if (!start || !end) throw new Error('Start and end dates for the loan are required.');
+        if (start > end)    throw new Error('The start date must be before the end date.');
+        if (!loanedItem)    throw new Error('A loaned item is required.');
+        if (!loaner)        throw new Error('A loaner is required.');
+        if (!state)         throw new Error('A loan state is required.');
     }
 
     public getId(): number | undefined {
