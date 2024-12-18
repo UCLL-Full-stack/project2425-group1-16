@@ -4,17 +4,20 @@ import bcrypt from 'bcrypt';
 import { AuthenticationResponse, LoginInput, ProfileInput } from "../types";
 import { generateJwtToken } from "../util/jwt";
 import { LocationTag } from "../model/locationTag";
-import { profile } from "console";
 
 const getAllProfiles = async (): Promise<Profile[]> => await profileDb.getAllProfiles();
 
 const getProfileByEmail = async (email: string): Promise<Profile> => {
     const profile = await profileDb.getProfileByEmail({ email });
-    if (profile == null) {
-        throw Error("No profile found for this email")
-    }
+    if (profile == null) throw new Error("No profile found for this email.");
     return profile;
 };
+
+const getProfileById = async (id: number): Promise<Profile> => {
+    const profile = await profileDb.getProfileById({ id });
+    if (profile == null) throw new Error("No profile found with this ID.");
+    return profile;
+}
 
 const authenticate = async ({ email, password }: LoginInput): Promise<AuthenticationResponse> => {
     const AUTH_ERROR = new Error("We couldn't log you in. Please check your credentials.");
@@ -61,6 +64,7 @@ const signupUser = async ({
 export default {
     getAllProfiles,
     getProfileByEmail,
+    getProfileById,
     authenticate,
     signupUser
 };

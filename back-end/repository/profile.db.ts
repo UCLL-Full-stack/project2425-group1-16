@@ -32,6 +32,21 @@ const getProfileByEmail = async ({ email }: { email: string }): Promise<Profile 
     }
 };
 
+const getProfileById = async ({ id }: { id: number }): Promise<Profile | null> => {
+    try {
+        const profilePrisma = await database.profile.findUnique({
+            where: {
+                id
+            },
+            include: { locationTag: true }
+        });
+        return profilePrisma ? Profile.from(profilePrisma) : null;
+    } catch (error) {
+        console.error(`Database error: ${error}`);
+        throw new Error(`Database error: ${error}`);
+    }
+};
+
 const createUser = async (profile: Profile): Promise<Profile> => {
     try {
         let foundLocationTag: LocationTag | null | undefined;
@@ -69,5 +84,6 @@ const createUser = async (profile: Profile): Promise<Profile> => {
 export default {
     getAllProfiles,
     getProfileByEmail,
+    getProfileById,
     createUser
 };

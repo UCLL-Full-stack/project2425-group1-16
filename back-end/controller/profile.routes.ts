@@ -157,6 +157,37 @@ profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
 
 /**
  * @swagger
+ * /profiles/getById/{id}:
+ *  get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get a profile by its ID
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: number
+ *              required: true
+ *              description: The ID associated with the profile.
+ *      responses:
+ *          200:
+ *              description: Success.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Profile'
+ */
+profileRouter.get('/getById/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const profile = await profileService.getProfileById(Number(req.params.id));
+        res.status(200).json(profile);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
  * /profiles/{email}:
  *  get:
  *      security:
