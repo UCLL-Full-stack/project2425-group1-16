@@ -6,13 +6,33 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { itemRouter } from './controller/item.routes';
 import { profileRouter } from './controller/profile.routes';
+import helmet from 'helmet';
+import { expressjwt } from 'express-jwt';
 
 const app = express();
+
+app.use(helmet());
+
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        connectSrc: ["'self'", 'https://api.ucll.be'],
+    }
+}))
+
 dotenv.config();
 const port = process.env.APP_PORT || 3000;
 
-app.use(cors({ origin: 'http://localhost:8080' }    ));
+app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(bodyParser.json());
+
+app.use(
+    expressjwt({
+        secret: process.env.JWT_SECRET || 'aaaaawagga',
+        algorithms: ['HS256'],
+    }).unless({
+        path: [/\/api-docs(\/.*)?/, '/profiles/login', '/profiles/signup', '/status']
+    })
+)
 
 app.use('/items', itemRouter);
 app.use('/profiles', profileRouter);

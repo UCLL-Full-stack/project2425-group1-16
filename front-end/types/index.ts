@@ -10,7 +10,7 @@ export type Item = {
 
 export type LocationTag = {
     displayName: string,
-    longtitude: number,
+    longitude: number,
     latitude: number,
     id?: number
 };

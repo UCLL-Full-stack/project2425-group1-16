@@ -95,6 +95,8 @@ const itemRouter = express.Router();
  * @swagger
  * /items:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all items.
  *     responses:
  *       200:
@@ -119,6 +121,8 @@ itemRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * @swagger
  * /items/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get an item by id.
  *     parameters:
  *          - in: path

@@ -1,5 +1,7 @@
 import { Profile } from "../model/profile";
 import database from "./database";
+import locationTagDb from "./locationTag.db";
+import { LocationTag } from "../model/locationTag";
 
 const getAllProfiles = async (): Promise<Profile[]> => {
     try {
@@ -30,7 +32,42 @@ const getProfileByEmail = async ({ email }: { email: string }): Promise<Profile 
     }
 };
 
+const createUser = async (profile: Profile): Promise<Profile> => {
+    try {
+        let foundLocationTag: LocationTag | null | undefined;
+        if (profile.getLocationTag().getId() == null) {
+            foundLocationTag = await locationTagDb.getLocationTagByCoords({
+                longitude: profile.getLocationTag().getLongitude(),
+                latitude: profile.getLocationTag().getLatitude(),
+            });
+        }
+
+        if (foundLocationTag == undefined && profile.getLocationTag().getId() == undefined) {
+            throw new Error('No suitable source for profile location');
+        }
+
+        const createdUser = await database.profile.create({
+            data: {
+                username: profile.getUsername(),
+                password: profile.getPassword(),
+                email: profile.getEmail(),
+                phoneNumber: profile.getPhoneNumber(),
+                role: profile.getRole(),
+                locationTag: {
+                    connect: { id: profile.getLocationTag().getId() ?? foundLocationTag!.getId()}
+                }
+            },
+            include: { locationTag: true }
+        });
+        return Profile.from(createdUser);
+    } catch (error) {
+        console.error(`Database error: ${error}`);
+        throw new Error(`Database error: ${error}`);
+    }
+};
+
 export default {
     getAllProfiles,
     getProfileByEmail,
+    createUser
 };

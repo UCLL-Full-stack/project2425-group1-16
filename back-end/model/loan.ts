@@ -1,3 +1,4 @@
+import { LoanState } from "../types";
 import { Item } from "./item";
 import { Profile } from "./profile";
 
@@ -9,7 +10,6 @@ import {
     Category as CategoryPrisma
 } from '@prisma/client';
 
-export type LoanState = 'PENDING' | 'ACCEPTED' | 'DENIED';
 
 export class Loan {
     private id?: number
