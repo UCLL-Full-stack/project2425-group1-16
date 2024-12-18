@@ -26,7 +26,7 @@ export default function ItemPage() {
   const router = useRouter();
   const { itemId } = router.query;
   const [subPage, setSubPage] = useState<LoadedPage>('ITEM_OVERVIEW');
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profileId, setProfileId] = useState<number | null>(null);
   const [addItemModal, setAddItemModal] = useState<boolean>(false);
   const [item, setItem] = useState<Item|null>(null);
   const { t } = useTranslation();
@@ -51,13 +51,13 @@ export default function ItemPage() {
     // I'd love to load the stored profile on page load, but the 
     // local profile parsing has to happen *after* the page has loaded.
     // Otherwise, localStorage doesn't exist, because it's trying to run it server-side????
-    const loggedInProfile = localStorage.getItem('loggedInProfile');
-    if (loggedInProfile) { setProfile(JSON.parse(loggedInProfile)); }
+    const loggedInToken = sessionStorage.getItem('loggedInToken');
+    if (loggedInToken) { setProfileId(JSON.parse(loggedInToken).userId); }
     setAddItemModal(false) 
   }, []);
 
   const presentSubPage = (subPage: LoadedPage)=> {
-    if (profile == null) {
+    if (profileId == null) {
       return <p>{t('currentlyLoggedOut')}</p>
     }
 
@@ -80,7 +80,7 @@ export default function ItemPage() {
   return (
     <>
       <PageMeta />
-      {profile && (
+      {profileId && (
         <Header activePageSetter={setSubPage} addItemModalSetter={setAddItemModal}/>
       )}
       <main className={styles.main}>
