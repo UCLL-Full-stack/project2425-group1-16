@@ -24,11 +24,16 @@ const getAllItems = async () => {
       },
     })
   };
+
+  const addItem = async () => {
+    
+  }
   
   const ItemService = {
     getAllItems,
     getItemById,
     getItemsByOwner,
+    addItem,
   };
   
   export default ItemService;
