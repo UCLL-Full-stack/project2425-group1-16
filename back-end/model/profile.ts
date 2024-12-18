@@ -62,7 +62,7 @@ export class Profile {
             throw new Error('A password has to be at least 8 characters in lenght.');
         if (!password.trim().match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!-/:-@\\[-`\\{-~]).*$/))
             throw new Error('Your password is not strong enough (needs at least 1 upper- & lowercase letter, 1 number, and 1 special character).');
-        if (!email.trim().match(/^\w@\w+\.\w+$/))
+        if (!email.trim().match(/^\w+@\w+\.\w+$/))
             throw new Error('Invalid email');
     }
 
