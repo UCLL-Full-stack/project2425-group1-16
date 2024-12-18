@@ -54,8 +54,8 @@ model Loan {
     end             DateTime
 
     state           LoanState
-    item            Item            @relation(fields: [itemId], references: [id])
-    profile         Profile         @relation(fields: [profileId], references: [id])
+    loanedItem      Item            @relation(fields: [itemId], references: [id])
+    loaner          Profile         @relation(fields: [profileId], references: [id])
 
     itemId          Int             @unique
     profileId       Int             @unique
