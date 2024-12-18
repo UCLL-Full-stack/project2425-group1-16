@@ -1,102 +1,144 @@
-import { Category } from "../../model/category";
-import { Item } from "../../model/item";
-import { LocationTag } from "../../model/locationTag";
-import { Profile } from "../../model/profile";
+import { Item } from '../../model/item';
+import { Category } from '../../model/category';
+import { LocationTag } from '../../model/locationTag';
+import { Profile } from '../../model/profile';
 
-const validName: string = "Grasmaaier";
-const validName2: string = "Sfeerverlichting";
+describe('Item', () => {
+    let locationTag: LocationTag;
+    let owner: Profile;
+    let category: Category;
 
-const validDescription: string = "Dit is een grasmaaier";
-const validDescription2: string = "Dit is wat sfeerverlichting";
+    beforeEach(() => {
+        locationTag = new LocationTag({ displayName: 'Location', longitude: 0.324, latitude: -5.4 });
+        owner = new Profile({ 
+            username: 'Owner',
+            email: 'owner@example.com',
+            password: 'Password123%',
+            phoneNumber: '957400245',
+            role: 'USER',
+            locationTag: locationTag
+        });
+        category = new Category({ id: 1, name: 'Category' });
+    });
 
-const validPrice: number = 10;
-const validPrice2: number = 20;
+    it('should create an item with valid properties', () => {
+        const item = new Item({
+            name: 'Item Name',
+            description: 'This is a valid description.',
+            price: 100,
+            locationTag,
+            owner,
+            categories: [category]
+        });
 
-const validUsername: string = "Michiel05";
-const validUsername2: string = "Kevin04";
+        expect(item.getName()).toBe('Item Name');
+        expect(item.getDescription()).toBe('This is a valid description.');
+        expect(item.getPrice()).toBe(100);
+        expect(item.getLocationTag()).toBe(locationTag);
+        expect(item.getOwner()).toBe(owner);
+        expect(item.getCategories()).toEqual([category]);
+    });
 
-const validPassword: string = "K5/#G6es:M(z8,";
-const validPassword2: string = "K4/#G6es:M(z8,";
+    it('should throw an error if name is empty', () => {
+        expect(() => new Item({
+            name: '',
+            description: 'This is a valid description.',
+            price: 100,
+            locationTag,
+            owner,
+            categories: [category]
+        })).toThrow('Name cannot be empty.');
+    });
 
-const validEmail2: string = "Kevin.Hiers@domain.be";
-const validEmail: string = "Michiel.Nijs@domain.be";
+    it('should throw an error if description is too short', () => {
+        expect(() => new Item({
+            name: 'Item Name',
+            description: 'Short',
+            price: 100,
+            locationTag,
+            owner,
+            categories: [category]
+        })).toThrow('The description has to be at least ten characters long.');
+    });
 
-const validPhoneNumber: string = "0467725913";
-const validPhoneNumber2: string = "0467724913";
+    it('should throw an error if price is zero or negative', () => {
+        expect(() => new Item({
+            name: 'Item Name',
+            description: 'This is a valid description.',
+            price: 0,
+            locationTag,
+            owner,
+            categories: [category]
+        })).toThrow('Price cannot be negative or zero.');
 
-const validLocation: LocationTag = new LocationTag({
-    displayName: "Leuven",
-    latitude: 50.8775,
-    longitude: 4.70444
-})
+        expect(() => new Item({
+            name: 'Item Name',
+            description: 'This is a valid description.',
+            price: -10,
+            locationTag,
+            owner,
+            categories: [category]
+        })).toThrow('Price cannot be negative or zero.');
+    });
 
-const validLocation2: LocationTag = new LocationTag({
-    displayName: "Brussel",
-    latitude: 50.84667,
-    longitude: 4.35472
-})
+    it('should throw an error if categories are missing', () => {
+        expect(() => new Item({
+            name: 'Item Name',
+            description: 'This is a valid description.',
+            price: 100,
+            locationTag,
+            owner,
+            categories: []
+        })).toThrow('There need to be at least one category for this item.');
+    });
 
-const validProfile: Profile = new Profile({
-    username: validUsername,
-    password: validPassword,
-    email: validEmail,
-    phoneNumber: validPhoneNumber,
-    locationTag: validLocation,
-    role: 'USER'
+    it('should add a category', () => {
+        const otherCategory = new Category({ id: 2, name: 'Other Category' });
+        const item = new Item({
+            name: 'Item Name',
+            description: 'This is a valid description.',
+            price: 100,
+            locationTag,
+            owner,
+            categories: [otherCategory]
+        });
+
+        item.addCategory(category);
+        expect(item.getCategories()).toEqual([otherCategory, category]);
+    });
+
+    it('should check equality correctly', () => {
+        const item1 = new Item({
+            id: 1,
+            name: 'Item Name',
+            description: 'This is a valid description.',
+            price: 100,
+            locationTag,
+            owner,
+            categories: [category]
+        });
+
+        const item2 = new Item({
+            id: 1,
+            name: 'Item Name',
+            description: 'This is a valid description.',
+            price: 100,
+            locationTag,
+            owner,
+            categories: [category]
+        });
+
+        const item3 = new Item({
+            id: 2,
+            name: 'Different Item',
+            description: 'This is another description.',
+            price: 200,
+            locationTag,
+            owner,
+            categories: [category]
+        });
+
+        expect(item1.equals(item2)).toBe(true);
+        expect(item1.equals(item3)).toBe(false);
+    });
 });
-const validProfile2: Profile = new Profile({
-    username: validUsername2,
-    password: validPassword2,
-    email: validEmail2,
-    phoneNumber: validPhoneNumber2,
-    locationTag: validLocation2,
-    role: 'ADMIN'
-});
-
-const validCategoryName: string = "Tuingereedschap";
-const validCategoryName2: string = "Grasmaaiers";
-const validCategoryName3: string = "Elektronica";
-const validCategoryName4: string = "Verlichting";
-const validCategoryName5: string = "Decoratie";
-
-const validCategory: Category = new Category({name: validCategoryName});
-const validCategory2: Category = new Category({name: validCategoryName3});
-const validCategory3: Category = new Category({name: validCategoryName5});
-
-const validParents: Category[] = [validCategory];
-const validParents2: Category[] = [validCategory2, validCategory3];
-
-const validCategory4: Category = new Category({name: validCategoryName2, parents: validParents});
-const validCategory5: Category = new Category({name: validCategoryName4, parents: validParents2});
-
-const validCategories: Category[] = [validCategory, validCategory4];
-const validCategories2: Category[] = [validCategory2, validCategory3, validCategory5];
-
-const validItem: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, locationTag: validLocation, categories: validCategories});
-
-test(`given: valid values for item; when: item is created; then: item is created with those values`, () => {
-    const item: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, locationTag: validLocation, categories: validCategories});
-    expect(item.getId()).toBeUndefined();
-    expect(item.getName()).toEqual(validName);
-    expect(item.getDescription()).toEqual(validDescription);
-    expect(item.getPrice()).toEqual(validPrice);
-    expect(item.getOwner()).toEqual(validProfile);
-    expect(item.getLocationTag()).toEqual(validLocation);
-    expect(item.getCategories()).toEqual(validCategories);
-})
-
-test(`given: a valid item and valid item values; when: item is edited with those values; then: item now has these new values`, () => {
-    validItem.setName(validName2);
-    validItem.setDescription(validDescription2);
-    validItem.setPrice(validPrice2);
-    validItem.setOwner(validProfile2);
-    validItem.setLocationTag(validLocation2);
-    validItem.setCategories(validCategories2);
-    expect(validItem.getId()).toBeUndefined();
-    expect(validItem.getName()).toEqual(validName2);
-    expect(validItem.getDescription()).toEqual(validDescription2);
-    expect(validItem.getPrice()).toEqual(validPrice2);
-    expect(validItem.getOwner()).toEqual(validProfile2);
-    expect(validItem.getLocationTag()).toEqual(validLocation2);
-    expect(validItem.getCategories()).toEqual(validCategories2);
-})
