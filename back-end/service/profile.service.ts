@@ -1,7 +1,7 @@
 import { Profile } from "../model/profile";
 import profileDb from "../repository/profile.db";
 import bcrypt from 'bcrypt';
-import { AuthenticationResponse, ProfileInput } from "../types";
+import { AuthenticationResponse, LoginInput, ProfileInput } from "../types";
 import { generateJwtToken } from "../util/jwt";
 import { LocationTag } from "../model/locationTag";
 import { profile } from "console";
@@ -16,7 +16,7 @@ const getProfileByEmail = async (email: string): Promise<Profile> => {
     return profile;
 };
 
-const authenticate = async ({ email, password }: ProfileInput): Promise<AuthenticationResponse> => {
+const authenticate = async ({ email, password }: LoginInput): Promise<AuthenticationResponse> => {
     const AUTH_ERROR = new Error("We couldn't log you in. Please check your credentials.");
 
     const profile = await profileDb.getProfileByEmail({ email });
