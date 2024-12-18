@@ -7,5 +7,27 @@
       "addItem": "Add item",
       "logout": "Log out"
     }
+  },
+  "profile": {
+    "tags": {
+      "name": "Name",
+      "mail": "E-mail",
+      "phone": "Phone number",
+      "location": "Location"
+    }
+  },
+  "item": {
+    "add": "Add item",
+    "title": "Current items near you",
+    "tags": {
+      "name": "Name",
+      "description": "Description",
+      "location": "Location",
+      "price": "Price"
+    }
+  },
+  "buttons": {
+    "close": "Close",
+    "save": "Save"
   }
 }

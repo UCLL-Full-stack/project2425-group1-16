@@ -3,6 +3,7 @@ import { Item, Profile } from '@/types';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ItemService from '@/services/ItemService';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   show: boolean;
@@ -16,6 +17,7 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
     const [nameError, setNameError] = useState<boolean>(false);
     const [descriptionError, setDescriptionError] = useState<boolean>(false);
     const [priceError, setPriceError] = useState<boolean>(false);
+    const { t } = useTranslation();
 
     const resetErrors = () => {
         setNameError(false);
@@ -57,30 +59,30 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
     return (
         <Modal show={show} onHide={()=>{addItemModalSetter(false)}}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Item</Modal.Title>
+                <Modal.Title>{t('item.add')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form id="addItem" onSubmit={()=>{submitModal}}>
                     <div>
-                        <p>Name</p>
+                        <p>{t('item.tags.name')}</p>
                         <input type="text" onChange={text => setName(text.target.value)}/>
                     </div>
                     <div>
-                        <p>Description</p>
+                        <p>{t('item.tags.description')}</p>
                         <input type="text" onChange={text => setDescription(text.target.value)}/>
                     </div>
                     <div>
-                        <p>Price</p>
+                        <p>{t('item.tags.price')}</p>
                         <input type="number" onChange={text => setPrice(text.target.valueAsNumber)}/>
                     </div>
                 </form>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={()=>{addItemModalSetter(false)}}>
-                    Close
+                    {t('buttons.close')}
                 </Button>
                 <Button variant="primary" type="submit" form='addItem'>
-                    Add item
+                    {t('item.add')}
                 </Button>
             </Modal.Footer>
         </Modal>

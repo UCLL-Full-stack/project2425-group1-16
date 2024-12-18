@@ -7,5 +7,27 @@
       "addItem": "Artikel toevoegen",
       "logout": "Log uit"
     }
+  },
+  "profile": {
+    "tags": {
+      "name": "Naam",
+      "mail": "E-mail",
+      "phone": "Telefoonnummer",
+      "location": "Locatie"
+    }
+  },
+  "item": {
+    "add": "Artikel toevoegen",
+    "title": "Artikels in jouw buurt",
+    "tags": {
+      "name": "Naam",
+      "description": "Beschrijving",
+      "location": "Locatie",
+      "price": "Prijs"
+    }
+  },
+  "buttons": {
+    "close": "Sluiten",
+    "save": "Opslaan"
   }
 }
