@@ -3,7 +3,7 @@ export type Item = {
     name: string;
     description: string;
     price: number;
-    location: LocationTag;
+    locationTag: LocationTag;
     owner: Profile;
     categories: Category[];
 };
@@ -21,7 +21,7 @@ export type Profile = {
     password: string,
     email: string,
     phoneNumber: string,
-    location: LocationTag
+    locationTag: LocationTag
 };
 
 export type Category = {

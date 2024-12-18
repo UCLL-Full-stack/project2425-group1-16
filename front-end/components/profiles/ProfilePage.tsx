@@ -44,7 +44,7 @@ const ProfilePage: React.FC<Props> = ({ profileId }: Props) => {
                 </tr>
                 <tr>
                     <td>{t('profile.tags.location')}</td>
-                    <td>{profile.location.displayName}</td>
+                    <td>{profile.locationTag.displayName}</td>
                 </tr>
             </table>
         :

@@ -55,11 +55,11 @@ const Header: React.FC<Props> = ({activePageSetter, addItemModalSetter}: Props) 
           className="nav-link px-4 fs-5 text-white bg-transparent"
           style={{border: "none"}}    // Yes, I can't find another way to do this
           onClick={() => {
-            localStorage.removeItem('loggedInProfile');
+            sessionStorage.removeItem('loggedInToken');
             window.location.reload();
           }}
         >
-          {t('header.tags.addItem')}
+          {t('header.tags.logout')}
         </button>
         <Language/>
       </nav>

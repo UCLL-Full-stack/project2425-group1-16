@@ -45,7 +45,7 @@ const ItemsOverview: React.FC<Props> = ({ items, profileId, selectedItemId, setS
                 <tr key={index} onClick={() => {goToOverviewPage(item.id)}} role="button">
                     <td>{item.name}</td>
                     <td>{item.description}</td>
-                    <td>{item.location.displayName}</td>
+                    <td>{item.locationTag.displayName}</td>
                     <td>€ {item.price}</td>
                 </tr>
                 ))}
