@@ -1,11 +1,10 @@
 import { Profile } from "../model/profile";
 import profileDb from "../repository/profile.db";
 
+const getAllProfiles = async (): Promise<Profile[]> => await profileDb.getAllProfiles();
 
-const getAllProfiles = (): Profile[] => profileDb.getAllProfiles();
-
-const getProfileByEmail = (email: string): Profile => {
-    const profile = profileDb.getProfileByEmail({ email });
+const getProfileByEmail = async (email: string): Promise<Profile> => {
+    const profile = await profileDb.getProfileByEmail({ email });
     if (profile == null) {
         throw Error("No profile found for this email")
     }
@@ -13,4 +12,7 @@ const getProfileByEmail = (email: string): Profile => {
 }
 
 
-export default { getAllProfiles, getProfileByEmail };
+export default {
+    getAllProfiles,
+    getProfileByEmail
+};
