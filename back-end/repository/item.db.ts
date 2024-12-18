@@ -19,7 +19,7 @@ const getAllItems = async (): Promise<Item[]> => {
     }
 };
 
-const getItemById = async (itemId: number): Promise<Item | null> => {
+const getItemById = async ({ itemId }: { itemId: number }): Promise<Item | null> => {
     try {
         const itemPrisma = await database.item.findUnique({
             where: {
