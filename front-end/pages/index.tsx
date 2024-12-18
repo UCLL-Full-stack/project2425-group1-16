@@ -10,6 +10,9 @@ import PageMeta from "@/components/PageMeta";
 import ProfilePage from "@/components/profiles/ProfilePage";
 import ItemOverview from "@/components/items/ItemOverview";
 import OwnedItems from "@/components/items/OwnedItems";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import AddItemModal from "@/components/items/AddItemModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +22,7 @@ export default function Home() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [subPage, setSubPage] = useState<LoadedPage>('HOME_PAGE');
   const [selectedItem, setSelectedItem] = useState<Item|null>(null);
+  const [addItemModal, setAddItemModal] = useState<boolean>(false);
 
   const getItems = async () => {
     const response = await ItemService.getAllItems();
@@ -34,7 +38,7 @@ export default function Home() {
     // Otherwise, localStorage doesn't exist, because it's trying to run it server-side????
     const loggedInProfile = localStorage.getItem('loggedInProfile');
     if (loggedInProfile) { setProfile(JSON.parse(loggedInProfile)); }
-    
+    setAddItemModal(false)
     getItems();   
   }, []);
 
@@ -63,13 +67,14 @@ export default function Home() {
     <>
       <PageMeta />
       {profile && (
-        <Header activePageSetter={setSubPage}/>
+        <Header activePageSetter={setSubPage} addItemModalSetter={setAddItemModal}/>
       )}
       <main className={styles.main}>
         <LoginPage setProfile={setProfile} profile={profile}/>
         {
           presentSubPage(subPage) 
         }
+        <AddItemModal show={addItemModal} addItemModalSetter={setAddItemModal}/>
       </main>  
     </>
   );
