@@ -1,8 +1,15 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 const main = async () => {
+    await prisma.loan.deleteMany();
+    await prisma.item.deleteMany();
+    await prisma.profile.deleteMany();
+    await prisma.category.deleteMany();
+    await prisma.locationTag.deleteMany();
+
     const locationLeuven = await prisma.locationTag.create({
         data: {
             displayName: "Martelarenplein, Leuven",
@@ -43,8 +50,8 @@ const main = async () => {
     const user = await prisma.profile.create({
         data: {
             username: 'exampleUser',
-            password: 'examplePassword',
-            email: 'example@example.com',
+            password: await bcrypt.hash('exampleUserPass', 12),
+            email: 'exampleUser@example.com',
             phoneNumber: '1234567890',
             role: 'USER',
             locationTag: { connect: { id: locationLeuven.id } }
@@ -54,9 +61,9 @@ const main = async () => {
     const admin = await prisma.profile.create({
         data: {
             username: 'exampleAdmin',
-            password: 'examplePassword',
-            email: 'example@example.com',
-            phoneNumber: '1234567890',
+            password: await bcrypt.hash('exampleAdminPass', 12),
+            email: 'exampleAdmin@example.com',
+            phoneNumber: '1234567891',
             role: 'ADMIN',
             locationTag: { connect: { id: locationHeist.id } }
         }
@@ -65,9 +72,9 @@ const main = async () => {
     const superAdmin = await prisma.profile.create({
         data: {
             username: 'exampleSuperAdmin',
-            password: 'examplePassword',
-            email: 'example@example.com',
-            phoneNumber: '1234567890',
+            password: await bcrypt.hash('exampleSuperAdminPass', 12),
+            email: 'exampleSuperAdmin@example.com',
+            phoneNumber: '1234567892',
             role: 'SUPERADMIN',
             locationTag: { connect: { id: noLocation.id } }
         }

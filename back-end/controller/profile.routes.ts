@@ -22,6 +22,9 @@
  *            latitude:
  *              type: number
  *              format: float
+ *      Role:
+ *          type: string
+ *          enum: [USER, ADMIN, SUPERADMIN]
  *      Profile:
  *          type: object
  *          properties:
@@ -37,11 +40,35 @@
  *            email:
  *              type: string
  *              description: Email
- *            phonenumber:
+ *            phoneNumber:
  *              type: string
  *              description: Phonenumber
  *            locationTag:
  *              $ref: '#/components/schemas/LocationTag'
+ *            role:
+ *              $ref: '#/components/schemas/Role'
+ *      ProfileInput:
+ *          type: object
+ *          properties:
+ *            username:
+ *              type: string
+ *              description: Username.
+ *            password:
+ *              type: string
+ *              description: Password.
+ *            email:
+ *              type: string
+ *              description: Email
+ *            phoneNumber:
+ *              type: string
+ *              description: Phonenumber
+ *      LoginInput:
+ *          type: object
+ *          properties:
+ *              email: 
+ *                  type: string
+ *              password: 
+ *                  type: string
  *      Category:
  *          type: object
  *          properties:
@@ -84,17 +111,30 @@
  *              type: array
  *              items:
  *                 $ref: '#/components/schemas/Category'
+ *      AuthResponse:
+ *          type: object
+ *          properties:
+ *              token:
+ *                  type: string
+ *              userId:
+ *                  type: number
+ *                  format: int64
+ *              role:
+ *                  $ref: '#/components/schemas/Role' 
  */
 
 
 import express, { NextFunction, Request, Response } from 'express';
 import profileService from '../service/profile.service';
+import { ProfileInput } from '../types';
 const profileRouter = express.Router();
 
 /**
  * @swagger
  * /profiles:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Get a list of all profiles.
  *     responses:
  *       200:
@@ -118,27 +158,87 @@ profileRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
 /**
  * @swagger
  * /profiles/{email}:
- *   get:
- *     summary: Get a profile by email.
- *     parameters:
+ *  get:
+ *      security:
+ *          - bearerAuth: []   
+ *      summary: Get a profile by email.
+ *      parameters:
  *          - in: path
  *            name: email
  *            schema:
  *              type: string
  *              required: true
  *              description: The profile email.
- *     responses:
- *       200:
- *         description: A profile.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Profile'
+ *      responses:
+ *        200:
+ *          description: A profile.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/components/schemas/Profile'
  */
 profileRouter.get('/:email', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const profile = await profileService.getProfileByEmail((req.params.email));
+        const profile = await profileService.getProfileByEmail(req.params.email);
         res.status(200).json(profile);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /profiles/signup:
+ *  post:
+ *      summary: Sign up the user.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/ProfileInput'
+ *      responses:
+ *          200:
+ *              description: Success.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AuthResponse'
+ *      
+ */
+profileRouter.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const profileInput = <ProfileInput>req.body;
+        const authResponse = await profileService.signupUser(profileInput);
+        res.status(200).json(authResponse);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /profiles/login:
+ *  post:
+ *      summary: Log in to an existing account.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/LoginInput'
+ *      responses:
+ *          200:
+ *              description: Success. 
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AuthResponse'
+ */
+profileRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const authResponse = await profileService.authenticate(req.body);
+        res.status(200).json(authResponse);
     } catch (error) {
         next(error);
     }
