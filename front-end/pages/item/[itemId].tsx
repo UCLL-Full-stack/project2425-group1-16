@@ -22,21 +22,29 @@ import { useRouter } from "next/router";
 const inter = Inter({ subsets: ["latin"] });
 
 
-export default function Home() {
+export default function ItemPage() {
   const router = useRouter();
-  const [items, setItems] = useState<Item[]>([]);
+  const { itemId } = router.query;
+  const [subPage, setSubPage] = useState<LoadedPage>('ITEM_OVERVIEW');
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [subPage, setSubPage] = useState<LoadedPage>('HOME_PAGE');
-  const [selectedItemId, setSelectedItemId] = useState<number|null>(null);
   const [addItemModal, setAddItemModal] = useState<boolean>(false);
+  const [item, setItem] = useState<Item|null>(null);
 
-  const getItems = async () => {
-    const response = await ItemService.getAllItems();
+  
+
+  const getItemById = async (id: number) => {
+    const response = await ItemService.getItemById(id.toString());
     if (response.status == 200) {
-      const json = await response.json();
-      setItems(json);
+        const json = await response.json();
+        setItem(json);
     }
   };
+
+
+  useEffect(()=> {
+    if (Number(itemId)) {getItemById(Number(itemId))}
+  }, [itemId])
+
 
   useEffect(() => {
     // I'd love to load the stored profile on page load, but the 
@@ -44,11 +52,10 @@ export default function Home() {
     // Otherwise, localStorage doesn't exist, because it's trying to run it server-side????
     const loggedInProfile = localStorage.getItem('loggedInProfile');
     if (loggedInProfile) { setProfile(JSON.parse(loggedInProfile)); }
-    setAddItemModal(false)
-    getItems();   
+    setAddItemModal(false) 
   }, []);
 
-  const presentSubPage = (subPage: LoadedPage) => {
+  const presentSubPage = (subPage: LoadedPage)=> {
     if (profile == null) {
       return <p>You are currently logged out.</p>
     }
@@ -56,16 +63,16 @@ export default function Home() {
     switch (subPage) {
       default: 
       case "HOME_PAGE":
-        return <ItemsOverview items={items} profile={profile} selectedItemId={selectedItemId} setSelectedItemId={setSelectedItemId} setSubPage={setSubPage} />
+        router.push('/');
         
       case "PROFILE_OVERVIEW":
-        return <ProfilePage profile={profile}/>
+        router.push('/');
 
       case "ITEM_OVERVIEW":
-        router.push('/item/'+selectedItemId)
+        return <ItemOverview item={item}/>
       
       case "OWNED_ITEMS":
-        return <OwnedItems profile={profile} />
+        router.push('/');
     }
   };
 
@@ -76,7 +83,6 @@ export default function Home() {
         <Header activePageSetter={setSubPage} addItemModalSetter={setAddItemModal}/>
       )}
       <main className={styles.main}>
-        <LoginPage setProfile={setProfile} profile={profile}/>
         {
           presentSubPage(subPage) 
         }

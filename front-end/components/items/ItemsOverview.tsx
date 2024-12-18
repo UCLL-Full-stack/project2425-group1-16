@@ -7,32 +7,22 @@ import { useTranslation } from 'react-i18next';
 type Props = {
   items: Item[];
   profile: Profile | null;
-  selectedItem: Item | null;
-  setSelectedItem: (item: Item) => void;
+  selectedItemId: number | null;
+  setSelectedItemId: (number: number) => void;
   setSubPage: (subpage: LoadedPage) => void;
 };
 
-const ItemsOverview: React.FC<Props> = ({ items, profile, selectedItem, setSelectedItem, setSubPage }: Props) => {
+const ItemsOverview: React.FC<Props> = ({ items, profile, selectedItemId, setSelectedItemId, setSubPage }: Props) => {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const getItemById = async (id: number) => {
-    const response = await ItemService.getItemById(id.toString());
-    if (response.status == 200) {
-        const json = await response.json();
-        setSelectedItem(json);
-    }
-};
 
   const goToOverviewPage = async (itemId: number | undefined) => {
     if (itemId == null) {
       
     } else {
-      await getItemById(itemId);
-      if (selectedItem != null) {
-        setSelectedItem(selectedItem);
-        setSubPage("ITEM_OVERVIEW");
-      }
+      setSelectedItemId(itemId);
+      setSubPage("ITEM_OVERVIEW");
     }
   }
 
