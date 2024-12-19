@@ -121,11 +121,11 @@ export class Profile {
     public equals(other: Profile): boolean {
         return (
             this.id === other.getId() &&
-            this.username === other.getEmail() &&
+            this.username === other.getUsername() &&
             this.email === other.getEmail() &&
             this.phoneNumber === other.getPhoneNumber() &&
-            this.password === other.password &&
-            this.locationTag === other.getLocationTag()
+            this.password === other.getPassword() &&
+            this.locationTag.equals(other.getLocationTag())
         );
     }
 

@@ -123,8 +123,8 @@ export class Item {
             this.name === other.getName() &&
             this.price === other.getPrice() &&
             this.description === other.getDescription() &&
-            this.locationTag === other.getLocationTag() &&
-            this.owner === other.getOwner()
+            this.locationTag.equals(other.getLocationTag()) &&
+            this.owner.equals(other.getOwner())
         );
     }
 
