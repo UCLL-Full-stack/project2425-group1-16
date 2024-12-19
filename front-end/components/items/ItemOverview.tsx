@@ -30,7 +30,7 @@ const ItemOverview: React.FC<Props> = ({ item }: Props) => {
           </tr>
           <tr>
             <td>{t('item.tags.location')}:</td>
-            <td>{item.location.displayName}</td>
+            <td>{item.locationTag.displayName}</td>
           </tr>
         </table>
       )}
