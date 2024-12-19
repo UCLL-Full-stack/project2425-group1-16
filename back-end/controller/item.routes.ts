@@ -84,11 +84,37 @@
  *              type: array
  *              items:
  *                 $ref: '#/components/schemas/Category'
+ *      ItemAddInput:
+ *          type: object
+ *          properties:
+ *              name:
+ *                  type: string
+ *                  description: The name for the item.
+ *              description:
+ *                  type: string
+ *                  description: A description of the item.
+ *              price:
+ *                  type: number
+ *                  format: float
+ *                  description: The price of the item per day.
+ *              locationTag:
+ *                  $ref: '#/components/schemas/LocationTag'
+ *                  description: The location at which the item is available.
+ *              categories:
+ *                  type: array
+ *                  description: The categories of which the item is part of.
+ *                  items:
+ *                      $ref: '#/components/schemas/Category'
+ *              ownerId:
+ *                  type: number
+ *                  format: int64
+ *                  description: The id of the owner of this item.
  */
 
 
 import express, { NextFunction, Request, Response } from 'express';
 import itemService from '../service/item.service';
+import { ItemAddInput } from '../types';
 const itemRouter = express.Router();
 
 /**
@@ -143,6 +169,37 @@ itemRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
     try {
         const items = await itemService.getItemById(Number(req.params.id));
         res.status(200).json(items);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /items:
+ *  post:
+ *      security:
+ *       - bearerAuth: []
+ *      summary: Add a new item.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/ItemAddInput'
+ *      responses:
+ *          200:
+ *              description: Success.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Item'
+ */
+itemRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const item = <ItemAddInput>req.body;
+        const newItem = await itemService.addItem(item);
+        res.status(200).json(newItem);
     } catch (error) {
         next(error);
     }

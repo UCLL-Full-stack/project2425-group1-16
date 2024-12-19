@@ -36,6 +36,15 @@ export type LoginInput = {
     password: string,
 }
 
+export type ItemAddInput = {
+    name: string,
+    description: string,
+    price: number,
+    locationTag: LocationTagInput,
+    categories: CategoryInput[],
+    ownerId: number,
+}
+
 export type ItemInput = {
     id?: number,
     name: string,

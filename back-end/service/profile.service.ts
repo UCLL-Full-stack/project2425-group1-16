@@ -14,6 +14,7 @@ const getProfileByEmail = async (email: string): Promise<Profile> => {
 };
 
 const getProfileById = async (id: number): Promise<Profile> => {
+    if (id == null) throw new Error('No profile id was given.');
     const profile = await profileDb.getProfileById({ id });
     if (profile == null) throw new Error("No profile found with this ID.");
     return profile;
@@ -37,7 +38,7 @@ const authenticate = async ({ email, password }: LoginInput): Promise<Authentica
 };
 
 const signupUser = async ({
-    username, password, email, phoneNumber, role
+    username, password, email, phoneNumber
 }: ProfileInput): Promise<AuthenticationResponse> => {
     
     const inDb = await profileDb.getProfileByEmail({ email });
