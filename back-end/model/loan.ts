@@ -104,11 +104,11 @@ export class Loan {
     public equals(other: Loan): boolean {
         return (
             this.id === other.getId() &&
-            this.start === other.getStart() &&
-            this.end === other.getEnd() &&
+            this.start.getTime() === other.getStart().getTime() &&
+            this.end.getTime() === other.getEnd().getTime() &&
             this.state === other.getState() &&
-            this.loanedItem === other.getLoanedItem() &&
-            this.loaner === other.getLoaner()
+            this.loanedItem.equals(other.getLoanedItem()) &&
+            this.loaner.equals(other.getLoaner())
         );
     }
 

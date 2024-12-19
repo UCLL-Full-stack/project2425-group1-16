@@ -36,7 +36,7 @@ export class Item {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.price = price;
+        this.price = Number(price);
 
         this.locationTag = locationTag;
         this.owner = owner;
