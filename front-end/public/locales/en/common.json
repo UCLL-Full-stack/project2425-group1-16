@@ -22,6 +22,7 @@
     "add": "Add item",
     "book": "Book item",
     "title": "Current items near you",
+    "your": "Your items",
     "tags": {
       "name": "Name",
       "description": "Description",

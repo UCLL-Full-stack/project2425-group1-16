@@ -69,7 +69,7 @@ export default function Home() {
         router.push('/item/'+selectedItemId)
       
       case "OWNED_ITEMS":
-        return <OwnedItems profileId={profileId} />
+        return <OwnedItems profileId={profileId} setSelectedItemId={setSelectedItemId} setSubPage={setSubPage}/>
     }
   };
 

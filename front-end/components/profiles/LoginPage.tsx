@@ -1,5 +1,6 @@
 import ProfileService from "@/services/ProfileService";
 import { Profile, TokenObj } from "@/types";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 type Props = {
@@ -11,6 +12,7 @@ const LoginPage: React.FC<Props> = ({ profileId, setProfileId }: Props) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [tokenObj, setTokenObj] = useState<TokenObj|null>(null);
+    const router = useRouter();
 
     const loginByEmailAndPassword = async (event: React.FormEvent) => {
         event?.preventDefault();
@@ -46,8 +48,12 @@ const LoginPage: React.FC<Props> = ({ profileId, setProfileId }: Props) => {
                     <p>Password</p>
                     <input type="text" onChange={text => setPassword(text.target.value)}/>
                 </div>
-                <button type="submit">Login</button>
+                <div>
+                    <button type="submit">Login</button>
+                    <button onClick={()=>{router.push('/register')}}>Register</button>
+                </div>
             </form>
+            
           </>
         )}
       </>

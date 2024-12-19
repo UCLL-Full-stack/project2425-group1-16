@@ -72,7 +72,7 @@ export default function ItemPage() {
         router.push('/');
 
       case "ITEM_OVERVIEW":
-        return <ItemOverview item={item} bookItemModalSetter={setBookItemModal}/>
+        return <ItemOverview item={item} bookItemModalSetter={setBookItemModal} profileId={profileId}/>
       
       case "OWNED_ITEMS":
         router.push('/');
