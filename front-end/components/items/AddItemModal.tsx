@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Item, Profile } from '@/types';
+import React, { useEffect, useState } from 'react';
+import { Category, Item, Profile } from '@/types';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ItemService from '@/services/ItemService';
 import { useTranslation } from 'react-i18next';
 import CurrencyInput from 'react-currency-input-field';
+import CategoryService from '@/services/CategoryService';
 
 type Props = {
   show: boolean;
@@ -12,14 +13,34 @@ type Props = {
 };
 
 const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
+    const [profileId, setProfileId] = useState<number|null>(null);
     const [name, setName] = useState<string|null>(null);
     const [description, setDescription] = useState<string|null>(null);
     const [price, setPrice] = useState<string>("");
     const [category, setCategory] = useState<string|null>(null);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [nameError, setNameError] = useState<boolean>(false);
     const [descriptionError, setDescriptionError] = useState<boolean>(false);
     const [priceError, setPriceError] = useState<boolean>(false);
     const { t } = useTranslation();
+
+    const getCategories = async () => {
+        try {
+            const response = await CategoryService.getAllCategories();
+            if (response.status == 200) {
+                const json = await response.json();
+                setCategories(json);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        const token = sessionStorage.getItem('loggedInToken');
+        if (token) {setProfileId(JSON.parse(token).userId)}
+        if (profileId) {getCategories()}
+    }, [AddItemModal]);
 
     const resetErrors = () => {
         setNameError(false);
@@ -80,8 +101,9 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
                     <div>
                         <p>{t('item.tags.category')}</p>
                         <select onChange={choice => setCategory(choice.target.value)}>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
+                            {categories.map((c, index) => (
+                            <option key={index} value={c.name}>{c.name}</option>
+                            ))}
                         </select>
                     </div>
                 </form>
