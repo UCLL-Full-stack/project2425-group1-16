@@ -35,12 +35,16 @@ const main = async () => {
     });
 
 
+    const categoryDecoration  = await prisma.category.create({ data: { name: 'Decoration' } });
     const categoryElectronics = await prisma.category.create({ data: { name: 'Electronics' } });
-    const categoryLamps       = await prisma.category.create(
-        { data: {
+    const categoryLamps       = await prisma.category.create({
+        data: {
             name: 'Lamps', 
             parents: {
-                connect: { id: categoryElectronics.id }
+                connect: [
+                    { id: categoryElectronics.id },
+                    { id: categoryDecoration.id }
+                ]
             }
         }
     });
@@ -76,6 +80,39 @@ const main = async () => {
             email: 'exampleSuperAdmin@example.com',
             phoneNumber: '1234567892',
             role: 'SUPERADMIN',
+            locationTag: { connect: { id: noLocation.id } }
+        }
+    });
+
+    const item1 = await prisma.item.create({
+        data: {
+            name: 'Laptop',
+            description: 'A high-performance laptop',
+            price: 25.0,
+            categories: { connect: { id: categoryElectronics.id } },
+            owner: { connect: { id: user.id } },
+            locationTag: { connect: { id: locationLeuven.id } }
+        }
+    });
+
+    const item2 = await prisma.item.create({
+        data: {
+            name: 'Desk Lamp',
+            description: 'A bright desk lamp',
+            price: 12.0,
+            categories: { connect: { id: categoryLamps.id } },
+            owner: { connect: { id: admin.id } },
+            locationTag: { connect: { id: locationHeist.id } }
+        }
+    });
+
+    const item3 = await prisma.item.create({
+        data: {
+            name: 'Garden Shovel',
+            description: 'A sturdy garden shovel',
+            price: 10.0,
+            categories: { connect: { id: categoryGardening.id } },
+            owner: { connect: { id: superAdmin.id } },
             locationTag: { connect: { id: noLocation.id } }
         }
     });
