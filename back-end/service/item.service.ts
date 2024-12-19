@@ -13,9 +13,17 @@ const getAllItems = async (): Promise<Item[]> => await itemDb.getAllItems();
 const getItemById = async (id: number): Promise<Item> => {
     const item = await itemDb.getItemById({ itemId: id });
     if (item == null) {
-        throw Error("No item found for this id")
+        throw Error("No item found for this id.")
     }
     return item;
+}
+
+const getItemsByOwner = async (id: number): Promise<Item[]> => {
+    const owner = await profileDb.getProfileById({ id });
+    if (!owner) throw new Error('Owner not found.');
+    if (!owner.getId()) throw new Error('No id is included in this owner.');
+
+    return await itemDb.getItemsByOwnerId({ id: owner.getId()! });
 }
 
 const addItem = async (item: ItemAddInput): Promise<Item> => {
@@ -50,5 +58,6 @@ const addItem = async (item: ItemAddInput): Promise<Item> => {
 export default {
     getAllItems,
     getItemById,
+    getItemsByOwner,
     addItem
 };
