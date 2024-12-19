@@ -1,31 +1,53 @@
-import { Category } from "../../model/category";
+import { Category } from '../../model/category';
 
-const validName: string = "Tuingereedschap";
-const validName2: string = "Grasmaaiers";
-const validName3: string = "Elektronica";
-const validName4: string = "Verlichting";
-const validName5: string = "Decoratie";
+describe('Category', () => {
+    it('should create a category with valid name', () => {
+        const category = new Category({ name: 'Electronics' });
+        expect(category.getName()).toBe('Electronics');
+    });
 
-const validCategory: Category = new Category({name: validName});
-const validCategory2: Category = new Category({name: validName3});
-const validCategory3: Category = new Category({name: validName5});
+    it('should throw an error if name is empty', () => {
+        expect(() => new Category({ name: '' })).toThrow('Name cannot be empty!');
+    });
 
-const validParents: Category[] = [validCategory];
-const validParents2: Category[] = [validCategory2, validCategory3];
+    it('should set and get parents correctly', () => {
+        const parentCategory = new Category({ name: 'Parent' });
+        const category = new Category({ name: 'Child', parents: [parentCategory] });
+        expect(category.getParents()).toEqual([parentCategory]);
+    });
 
-const validCategory4: Category = new Category({name: validName2, parents: validParents});
+    it('should set and get children correctly', () => {
+        const childCategory = new Category({ name: 'Child' });
+        const category = new Category({ name: 'Parent', children: [childCategory] });
+        expect(category.getChildren()).toEqual([childCategory]);
+    });
 
-test(`given: valid values for category; when: category is created; then: category is created with those values`, () => {
-    const category: Category = new Category({name: validName2, parents: validParents});
-    expect(category.getId()).toBeUndefined();
-    expect(category.getName()).toEqual(validName2);
-    expect(category.getParents()).toEqual(validParents);
-})
+    it('should set and get name correctly', () => {
+        const category = new Category({ name: 'Initial' });
+        category.setName('Updated');
+        expect(category.getName()).toBe('Updated');
+    });
 
-test(`given: a valid category and valid category values; when: category is edited with those values; then: category now has these new values`, () => {
-    validCategory4.setName(validName4);
-    validCategory4.setParents(validParents2);
-    expect(validCategory4.getId()).toBeUndefined();
-    expect(validCategory4.getName()).toEqual(validName4);
-    expect(validCategory4.getParents()).toEqual(validParents2);
-})
+    it('should set and get parents correctly', () => {
+        const parentCategory = new Category({ name: 'Parent' });
+        const category = new Category({ name: 'Child' });
+        category.setParents([parentCategory]);
+        expect(category.getParents()).toEqual([parentCategory]);
+    });
+
+    it('should set and get children correctly', () => {
+        const childCategory = new Category({ name: 'Child' });
+        const category = new Category({ name: 'Parent' });
+        category.setChildren([childCategory]);
+        expect(category.getChildren()).toEqual([childCategory]);
+    });
+
+    it('should check equality correctly', () => {
+        const category1 = new Category({ name: 'Category', id: 1 });
+        const category2 = new Category({ name: 'Category', id: 1 });
+        const category3 = new Category({ name: 'Different Category', id: 2 });
+
+        expect(category1.equals(category2)).toBe(true);
+        expect(category1.equals(category3)).toBe(false);
+    });
+});
