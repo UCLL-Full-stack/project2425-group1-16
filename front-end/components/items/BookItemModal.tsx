@@ -32,7 +32,7 @@ const BookItemModal: React.FC<Props> = ({ show, bookItemModalSetter, item }: Pro
                 <Modal.Title>{t('item.book')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Send an email to the owner to arrange the details!</p>
+                <p>{t('item.mailPrompt')}</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={()=>{bookItemModalSetter(false)}}>

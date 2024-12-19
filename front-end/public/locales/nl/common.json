@@ -28,7 +28,8 @@
       "location": "Locatie",
       "price": "Prijs",
       "category": "Categorie"
-    }
+    },
+    "mailPrompt": "Verzend een email naar de eigenaar om de details te bespreken!"
   },
   "buttons": {
     "close": "Sluiten",

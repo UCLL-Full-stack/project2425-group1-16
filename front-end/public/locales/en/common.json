@@ -28,7 +28,8 @@
       "location": "Location",
       "price": "Price",
       "category": "Category"
-    }
+    },
+    "mailPrompt": "Send an email to the owner to arrange the details!"
   },
   "buttons": {
     "close": "Close",
