@@ -15,7 +15,8 @@
       "name": "Name",
       "mail": "E-mail",
       "phone": "Phone number",
-      "location": "Location"
+      "location": "Location",
+      "admin": "Admin"
     }
   },
   "item": {

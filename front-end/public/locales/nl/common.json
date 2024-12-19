@@ -15,7 +15,8 @@
       "name": "Naam",
       "mail": "E-mail",
       "phone": "Telefoonnummer",
-      "location": "Locatie"
+      "location": "Locatie",
+      "admin": "Admin"
     }
   },
   "item": {

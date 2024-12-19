@@ -3,6 +3,8 @@ import { Category, Item } from '@/types';
 import { useTranslation } from 'react-i18next';
 import CurrencyInput from 'react-currency-input-field';
 import CategoryService from '@/services/CategoryService';
+import ItemService from '@/services/ItemService';
+import { useRouter } from 'next/router';
 
 type Props = {
   bookItemModalSetter : (bool: boolean) => void,
@@ -17,6 +19,7 @@ const ItemOverview: React.FC<Props> = ({ item, bookItemModalSetter, profileId }:
   const [price, setPrice] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [categories, setCategories] = useState<Category[]>([]);
+  const router = useRouter();
   
   const getCategories = async () => {
     try {
@@ -41,6 +44,21 @@ const ItemOverview: React.FC<Props> = ({ item, bookItemModalSetter, profileId }:
     
   }, [item])
   
+  const deleteItem = async () => {
+    if (item?.id) {
+      try {
+        const response = await ItemService.deleteItem(item?.id);
+        if (response.status == 200) {
+          router.push('/')
+        } else {
+          throw new Error("Delete failed")
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
   return (
     <>
       {item && profileId && item.owner.id != profileId && (
@@ -75,6 +93,7 @@ const ItemOverview: React.FC<Props> = ({ item, bookItemModalSetter, profileId }:
         </>
       )}
       {item && profileId && item.owner.id == profileId && (
+        <>
         <form id="editItem" onSubmit={()=>{}}>
           <div>
             <p>{t('item.tags.name')}</p>
@@ -100,6 +119,10 @@ const ItemOverview: React.FC<Props> = ({ item, bookItemModalSetter, profileId }:
             {t('buttons.save')}
           </button>
         </form>
+        <button onClick={()=>{deleteItem()}}>
+          Delete
+        </button>
+        </>
       )}
     </>
   );

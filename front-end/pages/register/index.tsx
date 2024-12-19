@@ -17,6 +17,7 @@ import {GetServerSideProps} from "next";
 import {serverSideTranslations} from "next-i18next/serverSideTranslations";
 import {useTranslation} from "next-i18next";
 import { useRouter } from "next/router";
+import RegisterPage from "@/components/profiles/RegisterPage";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,7 +27,7 @@ export default function Register() {
         <>
           <PageMeta />
           <main className={styles.main}>
-            
+            <RegisterPage/>
           </main>  
         </>
       );
