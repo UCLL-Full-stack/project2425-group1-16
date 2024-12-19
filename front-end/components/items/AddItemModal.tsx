@@ -60,19 +60,18 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
         if (!price) {
             setPriceError(true);
         }
-        if (!nameError && !descriptionError && !priceError && name && description && price) {
+        if (!category) {
+            
+        }
+        if (!nameError && !descriptionError && !priceError && name && description && price && category) {
             const tokenObj = localStorage.getItem('loggedInToken')
             if (tokenObj) {
                const profileId: number = JSON.parse(tokenObj).userId;
-            //    const newItem: Item = {name: name, description: description, price: price, location: currentUser.location, owner: currentUser, categories: }
-            //     try {
-            //         const response = await ItemService.addItem(newItem);
-            //         if (response.status == 200) {
-            //             const json = await response.json();
-            //         }
-            //     } catch (error) {
-            //         console.log(error)
-            //     }
+                try {
+                    const response = await ItemService.addItem({name: name, description: description, price: price, category: category, ownerId: profileId}) 
+                } catch (error) {
+                    console.log(error)
+                }
             } else {
                 throw new Error("How did we get here?")
             }
@@ -102,7 +101,7 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
                         <p>{t('item.tags.category')}</p>
                         <select onChange={choice => setCategory(choice.target.value)}>
                             {categories.map((c, index) => (
-                            <option key={index} value={c.name}>{c.name}</option>
+                            <option key={index} value={c.id}>{c.name}</option>
                             ))}
                         </select>
                     </div>
