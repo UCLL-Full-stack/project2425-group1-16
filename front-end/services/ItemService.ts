@@ -28,7 +28,7 @@ const getAllItems = async () => {
     const loggedInToken = sessionStorage.getItem('loggedInToken');
     let token = ""
     if (loggedInToken) { token = (JSON.parse(loggedInToken).token); }
-    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/byOwner/' + owner_id, {
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/items/byOwner/' + owner_id, {
       method: "GET",
       headers: {
         'Content-type': 'application/json',
@@ -40,12 +40,26 @@ const getAllItems = async () => {
   const addItem = async () => {
     
   }
+
+  const deleteItem = async (id: number) => {
+    const loggedInToken = sessionStorage.getItem('loggedInToken');
+    let token = ""
+    if (loggedInToken) { token = (JSON.parse(loggedInToken).token); }
+    return await fetch(process.env.NEXT_PUBLIC_API_URL + '/items/delete/' + id, {
+      method: "DELETE",
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+    })
+  }
   
   const ItemService = {
     getAllItems,
     getItemById,
     getItemsByOwner,
     addItem,
+    deleteItem,
   };
   
   export default ItemService;

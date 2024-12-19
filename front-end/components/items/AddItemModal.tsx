@@ -96,7 +96,7 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
                     </div>
                     <div>
                         <p>{t('item.tags.price')}</p>
-                        <CurrencyInput decimalsLimit={2} fixedDecimalLength={2} prefix='€' placeholder='0' onValueChange={(value, name, values) => {if (values?.float) {setPrice(values.float.toString())} else {setPrice("")}}}/>
+                        <CurrencyInput decimalsLimit={2} prefix='€' placeholder='0' onValueChange={(value, name, values) => {if (values?.float) {setPrice(values.float.toString())} else {setPrice("")}}}/>
                     </div>
                     <div>
                         <p>{t('item.tags.category')}</p>

@@ -1,5 +1,6 @@
 {
   "language": "Taal",
+  "sendMail": "Stuur mail",
   "currentlyLoggedOut": "Je bent momenteel uitgelogd",
   "header": {
     "tags": {
@@ -14,20 +15,23 @@
       "name": "Naam",
       "mail": "E-mail",
       "phone": "Telefoonnummer",
-      "location": "Locatie"
+      "location": "Locatie",
+      "admin": "Admin"
     }
   },
   "item": {
     "add": "Artikel toevoegen",
     "book": "Artikel boeken",
     "title": "Artikels in jouw buurt",
+    "your": "Jouw artikels",
     "tags": {
       "name": "Naam",
       "description": "Beschrijving",
       "location": "Locatie",
-      "price": "Prijs",
+      "price": "Prijs /dag",
       "category": "Categorie"
-    }
+    },
+    "mailPrompt": "Verzend een email naar de eigenaar om de details te bespreken!"
   },
   "buttons": {
     "close": "Sluiten",

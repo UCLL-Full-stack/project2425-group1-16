@@ -3,7 +3,7 @@ import styles from "@/styles/Home.module.css";
 import Header from "@/components/Header";
 import ItemsOverview from "@/components/items/ItemsOverview";
 import { useEffect, useState } from "react";
-import { Item, LoadedPage, Profile } from "@/types";
+import { Item, LoadedPage, Profile, Role } from "@/types";
 import ItemService from "@/services/ItemService";
 import LoginPage from "@/components/profiles/LoginPage";
 import PageMeta from "@/components/PageMeta";
@@ -17,6 +17,7 @@ import {GetServerSideProps} from "next";
 import {serverSideTranslations} from "next-i18next/serverSideTranslations";
 import {useTranslation} from "next-i18next";
 import { useRouter } from "next/router";
+import AdminSelector from "@/components/profiles/AdminSelector";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,6 +27,7 @@ export default function Home() {
   const router = useRouter();
   const [items, setItems] = useState<Item[]>([]);
   const [profileId, setProfileId] = useState<number | null>(null);
+  const [role, setRole] = useState<Role|null>(null);
   const [subPage, setSubPage] = useState<LoadedPage>('HOME_PAGE');
   const [selectedItemId, setSelectedItemId] = useState<number|null>(null);
   const [addItemModal, setAddItemModal] = useState<boolean>(false);
@@ -44,7 +46,7 @@ export default function Home() {
     // local profile parsing has to happen *after* the page has loaded.
     // Otherwise, localStorage doesn't exist, because it's trying to run it server-side????
     const loggedInToken = sessionStorage.getItem('loggedInToken');
-    if (loggedInToken) { setProfileId(JSON.parse(loggedInToken).userId); }
+    if (loggedInToken) { setProfileId(JSON.parse(loggedInToken).userId); setRole(JSON.parse(loggedInToken).role);}
     setAddItemModal(false)
   }, []);
 
@@ -63,13 +65,18 @@ export default function Home() {
         return <ItemsOverview items={items} profileId={profileId} selectedItemId={selectedItemId} setSelectedItemId={setSelectedItemId} setSubPage={setSubPage} />
         
       case "PROFILE_OVERVIEW":
-        return <ProfilePage profileId={profileId}/>
+        return (
+          <>
+            <ProfilePage profileId={profileId}/>
+            {role && role == "SUPERADMIN" && <AdminSelector profileId={profileId}/>}
+          </>
+        );
 
       case "ITEM_OVERVIEW":
         router.push('/item/'+selectedItemId)
       
       case "OWNED_ITEMS":
-        return <OwnedItems profileId={profileId} />
+        return <OwnedItems profileId={profileId} setSelectedItemId={setSelectedItemId} setSubPage={setSubPage}/>
     }
   };
 

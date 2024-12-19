@@ -1,5 +1,6 @@
 {
   "language": "Language",
+  "sendMail": "Send mail",
   "currentlyLoggedOut": "You are currently logged out.",
   "header": {
     "tags": {
@@ -14,20 +15,23 @@
       "name": "Name",
       "mail": "E-mail",
       "phone": "Phone number",
-      "location": "Location"
+      "location": "Location",
+      "admin": "Admin"
     }
   },
   "item": {
     "add": "Add item",
     "book": "Book item",
     "title": "Current items near you",
+    "your": "Your items",
     "tags": {
       "name": "Name",
       "description": "Description",
       "location": "Location",
-      "price": "Price",
+      "price": "Price /day",
       "category": "Category"
-    }
+    },
+    "mailPrompt": "Send an email to the owner to arrange the details!"
   },
   "buttons": {
     "close": "Close",

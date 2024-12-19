@@ -32,17 +32,17 @@ const BookItemModal: React.FC<Props> = ({ show, bookItemModalSetter, item }: Pro
                 <Modal.Title>{t('item.book')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form id="bookItem" onSubmit={()=>{submitModal}}>
-                    
-                </form>
+                <p>{t('item.mailPrompt')}</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={()=>{bookItemModalSetter(false)}}>
                     {t('buttons.close')}
                 </Button>
-                <Button variant="primary" type="submit" form='bookItem'>
-                    {t('item.book')}
-                </Button>
+                <a href={"mailto:"+item?.owner.email+"?subject=Lenderr "+item?.name}>
+                    <Button variant="primary" onClick={()=>{}}>
+                        {t('sendMail')}
+                    </Button>
+                </a>
             </Modal.Footer>
         </Modal>
   );
