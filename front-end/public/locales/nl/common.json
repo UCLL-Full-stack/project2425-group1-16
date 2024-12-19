@@ -19,6 +19,7 @@
   },
   "item": {
     "add": "Artikel toevoegen",
+    "book": "Artikel boeken",
     "title": "Artikels in jouw buurt",
     "tags": {
       "name": "Naam",

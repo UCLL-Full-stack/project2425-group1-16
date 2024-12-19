@@ -19,6 +19,7 @@
   },
   "item": {
     "add": "Add item",
+    "book": "Book item",
     "title": "Current items near you",
     "tags": {
       "name": "Name",
