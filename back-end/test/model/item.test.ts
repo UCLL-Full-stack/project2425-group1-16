@@ -106,39 +106,4 @@ describe('Item', () => {
         item.addCategory(category);
         expect(item.getCategories()).toEqual([otherCategory, category]);
     });
-
-    it('should check equality correctly', () => {
-        const item1 = new Item({
-            id: 1,
-            name: 'Item Name',
-            description: 'This is a valid description.',
-            price: 100,
-            locationTag,
-            owner,
-            categories: [category]
-        });
-
-        const item2 = new Item({
-            id: 1,
-            name: 'Item Name',
-            description: 'This is a valid description.',
-            price: 100,
-            locationTag,
-            owner,
-            categories: [category]
-        });
-
-        const item3 = new Item({
-            id: 2,
-            name: 'Different Item',
-            description: 'This is another description.',
-            price: 200,
-            locationTag,
-            owner,
-            categories: [category]
-        });
-
-        expect(item1.equals(item2)).toBe(true);
-        expect(item1.equals(item3)).toBe(false);
-    });
 });

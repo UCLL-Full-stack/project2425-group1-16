@@ -1,34 +1,56 @@
-import { LocationTag } from "../../model/locationTag"
+import { LocationTag } from '../../model/locationTag';
 
-const validDisplayName: string = "Leuven";
-const validLatitude: number = 50.8775;
-const validLongitude: number = 4.70444;
+describe('LocationTag', () => {
+    it('should create a LocationTag instance', () => {
+        const locationTag = new LocationTag({ displayName: 'Test Location', longitude: 50, latitude: 50 });
+        expect(locationTag.getDisplayName()).toBe('Test Location');
+        expect(locationTag.getLongitude()).toBe(50);
+        expect(locationTag.getLatitude()).toBe(50);
+    });
 
-const validDisplayName2: string = "Brussel";
-const validLatitude2: number = 50.84667;
-const validLongitude2: number = 4.35472;
+    it('should throw an error if displayName is not provided', () => {
+        expect(() => new LocationTag({ displayName: '', longitude: 50, latitude: 50 })).toThrow('Display name has to be given.');
+    });
 
+    it('should throw an error if longitude or latitude is out of range', () => {
+        expect(() => new LocationTag({ displayName: 'Test Location', longitude: 200, latitude: 50 })).toThrow('Longitude and latitude must be between -180 and 180 degrees.');
+        expect(() => new LocationTag({ displayName: 'Test Location', longitude: 50, latitude: 200 })).toThrow('Longitude and latitude must be between -180 and 180 degrees.');
+    });
 
-const validLocation: LocationTag = new LocationTag({
-    displayName: validDisplayName,
-    latitude: validLatitude,
-    longitude: validLongitude
-})
+    it('should set and get displayName', () => {
+        const locationTag = new LocationTag({ displayName: 'Test Location', longitude: 50, latitude: 50 });
+        locationTag.setDisplayName('New Location');
+        expect(locationTag.getDisplayName()).toBe('New Location');
+    });
 
-test(`given: valid values for locationTag; when: locationTag is created; then: locationTag is created with those values`, () => {
-    const location: LocationTag = new LocationTag({displayName: validDisplayName, latitude: validLatitude, longitude: validLongitude});
-    expect(location.getId()).toBeUndefined();
-    expect(location.getDisplayName()).toEqual(validDisplayName);
-    expect(location.getLatitude()).toEqual(validLatitude);
-    expect(location.getLongitude()).toEqual(validLongitude);
-})
+    it('should set and get longitude', () => {
+        const locationTag = new LocationTag({ displayName: 'Test Location', longitude: 50, latitude: 50 });
+        locationTag.setLongitude(100);
+        expect(locationTag.getLongitude()).toBe(100);
+    });
 
-test(`given: a valid locationTag and valid locationTag values; when: locationTag is edited with those values; then: locationTag now has these new values`, () => {
-    validLocation.setDisplayName(validDisplayName2);
-    validLocation.setLatitude(validLatitude2);
-    validLocation.setLongitude(validLongitude2);
-    expect(validLocation.getId()).toBeUndefined();
-    expect(validLocation.getDisplayName()).toEqual(validDisplayName2);
-    expect(validLocation.getLatitude()).toEqual(validLatitude2);
-    expect(validLocation.getLongitude()).toEqual(validLongitude2);
-})
+    it('should set and get latitude', () => {
+        const locationTag = new LocationTag({ displayName: 'Test Location', longitude: 50, latitude: 50 });
+        locationTag.setLatitude(100);
+        expect(locationTag.getLatitude()).toBe(100);
+    });
+
+    it('should check equality of two LocationTag instances', () => {
+        const locationTag1 = new LocationTag({ displayName: 'Test Location', longitude: 50, latitude: 50, id: 1 });
+        const locationTag2 = new LocationTag({ displayName: 'Test Location', longitude: 50, latitude: 50, id: 1 });
+        const locationTag3 = new LocationTag({ displayName: 'Another Location', longitude: 60, latitude: 60, id: 2 });
+
+        expect(locationTag1.equals(locationTag2)).toBe(true);
+        expect(locationTag1.equals(locationTag3)).toBe(false);
+    });
+
+    it('should create a LocationTag from LocationTagPrisma', () => {
+        const locationTagPrisma = { id: 1, displayName: 'Test Location', longitude: 50, latitude: 50 };
+        const locationTag = LocationTag.from(locationTagPrisma);
+
+        expect(locationTag.getId()).toBe(1);
+        expect(locationTag.getDisplayName()).toBe('Test Location');
+        expect(locationTag.getLongitude()).toBe(50);
+        expect(locationTag.getLatitude()).toBe(50);
+    });
+});

@@ -1,98 +1,161 @@
-import { Category } from "../../model/category";
-import { Item } from "../../model/item";
-import { Loan, LoanState } from "../../model/loan";
-import { LocationTag } from "../../model/locationTag";
-import { Profile } from "../../model/profile";
+import { Loan } from '../../model/loan';
+import { Item } from '../../model/item';
+import { Profile } from '../../model/profile';
+import { LocationTag } from '../../model/locationTag';
+import { Category } from '../../model/category';
 
-const validStart: Date = new Date(2024, 10, 16);
-const validStart2: Date = new Date(2024, 10, 15);
+describe('Loan', () => {
+    let loanedItem: Item;
+    let loaner: Profile;
 
-const validEnd: Date = new Date (2024, 10, 18);
-const validEnd2: Date = new Date (2024, 10, 17);
+    beforeEach(() => {
+        loanedItem = new Item({
+            id: 1,
+            name: 'Item Name',
+            description: 'This is a valid description.',
+            price: 100,
+            locationTag: new LocationTag({ displayName: 'Location', longitude: 0.324, latitude: -5.4 }),
+            owner: new Profile({
+                username: 'Owner',
+                email: 'owner@example.com',
+                password: 'Password123%',
+                phoneNumber: '1234567890',
+                role: 'USER',
+                locationTag: new LocationTag({ displayName: 'Location', longitude: 0.324, latitude: -5.4}),
+            }),
+            categories: [new Category({ id: 1, name: 'Category' })]
+        });
 
-const validState: LoanState = "PENDING";
-const validState2: LoanState = "ACCEPTED";
+        loaner = new Profile({
+            id: 1,
+            username: 'Loaner',
+            email: 'loaner@example.com',
+            password: 'Password123%',
+            phoneNumber: '123456789',
+            role: 'USER',
+            locationTag: new LocationTag({ displayName: 'Location', longitude: 0.324, latitude: -5.4})
+        });
+    });
 
-const validName: string = "Grasmaaier";
-const validName2: string = "Sfeerverlichting";
+    it('should create a loan with valid properties', () => {
+        const loan = new Loan({
+            start: new Date('2023-01-01'),
+            end: new Date('2023-01-10'),
+            state: 'ACCEPTED',
+            loanedItem,
+            loaner
+        });
 
-const validDescription: string = "Dit is een grasmaaier";
-const validDescription2: string = "Dit is wat sfeerverlichting";
+        expect(loan.getStart()).toEqual(new Date('2023-01-01'));
+        expect(loan.getEnd()).toEqual(new Date('2023-01-10'));
+        expect(loan.getState()).toBe('ACCEPTED');
+        expect(loan.getLoanedItem()).toBe(loanedItem);
+        expect(loan.getLoaner()).toBe(loaner);
+    });
 
-const validPrice: number = 10;
-const validPrice2: number = 20;
+    it('should throw an error if start date is after end date', () => {
+        expect(() => new Loan({
+            start: new Date('2023-01-10'),
+            end: new Date('2023-01-01'),
+            state: 'ACCEPTED',
+            loanedItem,
+            loaner
+        })).toThrow('The start date must be before the end date.');
+    });
 
-const validUsername: string = "Michiel05";
-const validUsername2: string = "Kevin04";
+    it('should set and get start date correctly', () => {
+        const loan = new Loan({
+            start: new Date('2023-01-01'),
+            end: new Date('2023-01-10'),
+            state: 'ACCEPTED',
+            loanedItem,
+            loaner
+        });
 
-const validPassword: string = "K5/#G6es:M(z8,";
-const validPassword2: string = "K4/#G6es:M(z8,";
+        loan.setStart(new Date('2023-01-05'));
+        expect(loan.getStart()).toEqual(new Date('2023-01-05'));
+    });
 
-const validEmail2: string = "Kevin.Hiers@domain.be";
-const validEmail: string = "Michiel.Nijs@domain.be";
+    it('should set and get end date correctly', () => {
+        const loan = new Loan({
+            start: new Date('2023-01-01'),
+            end: new Date('2023-01-10'),
+            state: 'ACCEPTED',
+            loanedItem,
+            loaner
+        });
 
-const validPhoneNumber: string = "0467725913";
-const validPhoneNumber2: string = "0467724913";
+        loan.setEnd(new Date('2023-01-15'));
+        expect(loan.getEnd()).toEqual(new Date('2023-01-15'));
+    });
 
-const validLocation: LocationTag = new LocationTag({
-    displayName: "Leuven",
-    latitude: 50.8775,
-    longitude: 4.70444
-})
+    it('should set and get state correctly', () => {
+        const loan = new Loan({
+            start: new Date('2023-01-01'),
+            end: new Date('2023-01-10'),
+            state: 'PENDING',
+            loanedItem,
+            loaner
+        });
 
-const validLocation2: LocationTag = new LocationTag({
-    displayName: "Brussel",
-    latitude: 50.84667,
-    longitude: 4.35472
-})
+        loan.setState('ACCEPTED');
+        expect(loan.getState()).toBe('ACCEPTED');
+    });
 
-const validProfile: Profile = new Profile({username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, locationTag: validLocation});
-const validProfile2: Profile = new Profile({username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, locationTag: validLocation2});
+    it('should set and get loaned item correctly', () => {
+        const loan = new Loan({
+            start: new Date('2023-01-01'),
+            end: new Date('2023-01-10'),
+            state: 'ACCEPTED',
+            loanedItem,
+            loaner
+        });
 
-const validCategoryName: string = "Tuingereedschap";
-const validCategoryName2: string = "Grasmaaiers";
-const validCategoryName3: string = "Elektronica";
-const validCategoryName4: string = "Verlichting";
-const validCategoryName5: string = "Decoratie";
+        const newLoanedItem = new Item({
+            id: 2,
+            name: 'New Item',
+            description: 'This is another valid description.',
+            price: 200,
+            locationTag: new LocationTag({ displayName: 'New Location', longitude: 0.324, latitude: -5.4 }),
+            owner: new Profile({
+                username: 'New Owner',
+                email: 'newowner@example.com',
+                password: 'Password123%',
+                phoneNumber: '123456789',
+                role: 'USER',
+                locationTag: new LocationTag({
+                    displayName: 'New Location',
+                    longitude: 0.324,
+                    latitude: -5.4
+                })
+            }),
+            categories: [new Category({ id: 2, name: 'New Category' })]
+        });
 
-const validCategory: Category = new Category({name: validCategoryName});
-const validCategory2: Category = new Category({name: validCategoryName3});
-const validCategory3: Category = new Category({name: validCategoryName5});
+        loan.setLoanedItem(newLoanedItem);
+        expect(loan.getLoanedItem()).toBe(newLoanedItem);
+    });
 
-const validParents: Category[] = [validCategory];
-const validParents2: Category[] = [validCategory2, validCategory3];
+    it('should set and get loaner correctly', () => {
+        const loan = new Loan({
+            start: new Date('2023-01-01'),
+            end: new Date('2023-01-10'),
+            state: 'ACCEPTED',
+            loanedItem,
+            loaner
+        });
 
-const validCategory4: Category = new Category({name: validCategoryName2, parents: validParents});
-const validCategory5: Category = new Category({name: validCategoryName4, parents: validParents2});
+        const newLoaner = new Profile({
+            id: 2,
+            username: 'New Loaner',
+            email: 'newloaner@example.com',
+            password: 'Password123%',
+            phoneNumber: '123456789',
+            role: 'USER',
+            locationTag: new LocationTag({ displayName: 'New Location', longitude: 0.324, latitude: -5.4})
+        });
 
-const validCategories: Category[] = [validCategory, validCategory4];
-const validCategories2: Category[] = [validCategory2, validCategory3, validCategory5];
-
-const validItem: Item = new Item({name: validName, description: validDescription, price: validPrice, owner: validProfile, locationTag: validLocation, categories: validCategories});
-const validItem2: Item = new Item({name: validName2, description: validDescription2, price: validPrice2, owner: validProfile2, locationTag: validLocation2, categories: validCategories2});
-
-const validLoan: Loan = new Loan({start: validStart, end: validEnd, state: validState, loanedItem: validItem, loaner: validProfile2});
-
-test(`given: valid values for loan; when: loan is created; then: loan is created with those values`, () => {
-    const loan: Loan = new Loan({start: validStart, end: validEnd, state: validState, loanedItem: validItem, loaner: validProfile2});
-    expect(loan.getId()).toBeUndefined();
-    expect(loan.getStart()).toEqual(validStart);
-    expect(loan.getEnd()).toEqual(validEnd);
-    expect(loan.getState()).toEqual(validState);
-    expect(loan.getLoanedItem()).toEqual(validItem);
-    expect(loan.getLoaner()).toEqual(validProfile2);
-})
-
-test(`given: a valid loan and valid loan values; when: loan is edited with those values; then: loan now has these new values`, () => {
-    validLoan.setStart(validStart2);
-    validLoan.setEnd(validEnd2);
-    validLoan.setState(validState2);
-    validLoan.setLoanedItem(validItem2);
-    validLoan.setLoaner(validProfile);
-    expect(validLoan.getId()).toBeUndefined();
-    expect(validLoan.getStart()).toEqual(validStart2);
-    expect(validLoan.getEnd()).toEqual(validEnd2);
-    expect(validLoan.getState()).toEqual(validState2);
-    expect(validLoan.getLoaner()).toEqual(validProfile);
-    expect(validLoan.getLoanedItem()).toEqual(validItem2);
-})
+        loan.setLoaner(newLoaner);
+        expect(loan.getLoaner()).toBe(newLoaner);
+    });
+});
