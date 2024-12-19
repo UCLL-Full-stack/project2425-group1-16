@@ -54,10 +54,14 @@ const addItem = async (item: ItemAddInput): Promise<Item> => {
     }));
 };
 
+const deleteItemById = async (id: number) => {
+    await itemDb.deleteItemById(id);
+};
 
 export default {
     getAllItems,
     getItemById,
     getItemsByOwner,
-    addItem
+    addItem,
+    deleteItemById
 };

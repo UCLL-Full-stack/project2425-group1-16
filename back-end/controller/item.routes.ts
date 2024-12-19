@@ -235,4 +235,31 @@ itemRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
     }
 });
 
+/**
+ * @swagger
+ * /items/delete/{id}:
+ *  delete:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Delete an item.
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *              required: true
+ *              description: The item's id.
+ *      responses:
+ *          200:
+ *              description: Success.
+ */
+itemRouter.delete('/delete/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await itemService.deleteItemById(Number(req.params.id));
+        res.status(200);
+    } catch (error) {
+        next(error);
+    }
+});
+
 export { itemRouter };

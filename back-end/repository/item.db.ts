@@ -99,9 +99,23 @@ const addItem = async (item: Item): Promise<Item> => {
     }
 };
 
+const deleteItemById = async (id: number) => {
+    try {
+        database.item.delete({
+            where: {
+                id
+            }
+        });
+    } catch (error) {
+        console.error(`Database error: ${error}`);
+        throw new Error(`Database error: ${error}`);
+    }
+}
+
 export default {
     getAllItems,
     getItemById,
     getItemsByOwnerId,
     addItem,
+    deleteItemById
 };
