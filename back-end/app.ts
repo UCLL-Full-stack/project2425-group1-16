@@ -8,6 +8,7 @@ import { itemRouter } from './controller/item.routes';
 import { profileRouter } from './controller/profile.routes';
 import helmet from 'helmet';
 import { expressjwt } from 'express-jwt';
+import { categoryRouter } from './controller/category.routes';
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(
 
 app.use('/items', itemRouter);
 app.use('/profiles', profileRouter);
+app.use('/categories', categoryRouter);
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });

@@ -1,4 +1,3 @@
-import { createDeflate, inflateSync } from 'zlib';
 import { Category } from '../model/category';
 import { Item } from '../model/item';
 import { LocationTag } from '../model/locationTag';
