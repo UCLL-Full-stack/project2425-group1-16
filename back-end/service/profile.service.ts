@@ -45,7 +45,7 @@ const signupUser = async ({
 
     const hashedPasswd = await bcrypt.hash(password, 12);
     const newProfile = new Profile({
-        username, password: hashedPasswd, email, phoneNumber, role,
+        username, password: hashedPasswd, email, phoneNumber, role: 'USER',
         locationTag: new LocationTag({
             displayName: "No location",
             longitude: 0.0,
