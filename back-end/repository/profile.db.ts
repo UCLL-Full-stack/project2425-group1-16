@@ -2,6 +2,7 @@ import { Profile } from "../model/profile";
 import database from "./database";
 import locationTagDb from "./locationTag.db";
 import { LocationTag } from "../model/locationTag";
+import { Role } from "../types";
 
 const getAllProfiles = async (): Promise<Profile[]> => {
     try {
@@ -47,6 +48,19 @@ const getProfileById = async ({ id }: { id: number }): Promise<Profile | null> =
     }
 };
 
+const getProfilesByRole = async ({ role }: { role: Role }): Promise<Profile[]> => {
+    try {
+        const profilesPrisma = await database.profile.findMany({
+            where: { role },
+            include: { locationTag: true }
+        });
+        return profilesPrisma.map((profilePrisma) => Profile.from(profilePrisma));
+    } catch (error) {
+        console.error(`Database error: ${error}`);
+        throw new Error(`Database error: ${error}`);
+    }
+}
+
 const createUser = async (profile: Profile): Promise<Profile> => {
     try {
         let foundLocationTag: LocationTag | null | undefined;
@@ -80,9 +94,20 @@ const createUser = async (profile: Profile): Promise<Profile> => {
     }
 };
 
+const updateRoleForProfile = async ({ id, role }: { id: number, role: Role }): Promise<Profile> => {
+    const updateProfilePrisma = await database.profile.update({
+        where: { id },
+        data: { role },
+        include: { locationTag: true } 
+    });
+    return Profile.from(updateProfilePrisma);
+};
+
 export default {
     getAllProfiles,
     getProfileByEmail,
     getProfileById,
-    createUser
+    getProfilesByRole,
+    createUser,
+    updateRoleForProfile
 };

@@ -25,7 +25,7 @@
     const loggedInToken = sessionStorage.getItem('loggedInToken');
     let token = ""
     if (loggedInToken) { token = (JSON.parse(loggedInToken).token); }
-    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/admins/`, {
+    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/byRole/admins`, {
       method: "GET",
       headers: {
         'Content-type': 'application/json',
@@ -38,7 +38,7 @@
     const loggedInToken = sessionStorage.getItem('loggedInToken');
     let token = ""
     if (loggedInToken) { token = (JSON.parse(loggedInToken).token); }
-    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/users/`, {
+    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/byRole/users`, {
       method: "GET",
       headers: {
         'Content-type': 'application/json',
@@ -51,7 +51,7 @@
     const loggedInToken = sessionStorage.getItem('loggedInToken');
     let token = ""
     if (loggedInToken) { token = (JSON.parse(loggedInToken).token); }
-    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/makeAdmin/`+id, {
+    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/changeRole/admin/`+id, {
       method: "PUT",
       headers: {
         'Content-type': 'application/json',
@@ -64,7 +64,7 @@
     const loggedInToken = sessionStorage.getItem('loggedInToken');
     let token = ""
     if (loggedInToken) { token = (JSON.parse(loggedInToken).token); }
-    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/makeUser/`+id, {
+    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/changeRole/user/`+id, {
       method: "PUT",
       headers: {
         'Content-type': 'application/json',

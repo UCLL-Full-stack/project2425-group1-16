@@ -1,13 +1,14 @@
 import { Profile } from "../model/profile";
 import profileDb from "../repository/profile.db";
 import bcrypt from 'bcrypt';
-import { AuthenticationResponse, LoginInput, ProfileInput } from "../types";
+import { AuthenticationResponse, LoginInput, ProfileInput, Role } from "../types";
 import { generateJwtToken } from "../util/jwt";
 import { LocationTag } from "../model/locationTag";
 
 const getAllProfiles = async (): Promise<Profile[]> => await profileDb.getAllProfiles();
 
 const getProfileByEmail = async (email: string): Promise<Profile> => {
+    if (!email) throw new Error('No email was provided.');
     const profile = await profileDb.getProfileByEmail({ email });
     if (profile == null) throw new Error("No profile found for this email.");
     return profile;
@@ -18,6 +19,11 @@ const getProfileById = async (id: number): Promise<Profile> => {
     const profile = await profileDb.getProfileById({ id });
     if (profile == null) throw new Error("No profile found with this ID.");
     return profile;
+}
+
+const getProfilesByRole = async (role: Role): Promise<Profile[]> => {
+    if (!role) throw new Error('No role was given.');
+    return await profileDb.getProfilesByRole({ role });
 }
 
 const authenticate = async ({ email, password }: LoginInput): Promise<AuthenticationResponse> => {
@@ -64,10 +70,16 @@ const signupUser = async ({
     }
 };
 
+const updateRoleForProfile = async ({ id, role }: { id: number, role: Role}): Promise<Profile> => {
+    return await profileDb.updateRoleForProfile({ id, role });
+};
+
 export default {
     getAllProfiles,
     getProfileByEmail,
     getProfileById,
+    getProfilesByRole,
     authenticate,
-    signupUser
+    signupUser,
+    updateRoleForProfile
 };

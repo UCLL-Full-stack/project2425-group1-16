@@ -120,7 +120,7 @@
 
 import express, { NextFunction, Request, Response } from 'express';
 import profileService from '../service/profile.service';
-import { LoginInput, ProfileInput } from '../types';
+import { LoginInput, ProfileInput, Role } from '../types';
 const profileRouter = express.Router();
 
 /**
@@ -213,6 +213,37 @@ profileRouter.get('/:email', async (req: Request, res: Response, next: NextFunct
 
 /**
  * @swagger
+ * /profiles/byRole/{role}:
+ *  get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get all profiles of a certain role.
+ *      parameters:
+ *          - in: path
+ *            name: role
+ *            schema:
+ *              $ref: '#/components/schemas/Role'
+ *      responses:
+ *          200:
+ *              description: A list of profiles.
+ *              content:
+ *                  application/json:
+ *                  schema:
+ *                      type: array
+ *                      items:
+ *                          $ref: '#/components/schemas/Profile'
+ */
+profileRouter.get('/byRole/:role', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const profiles = await profileService.getProfilesByRole(req.params.role as Role);
+        res.status(200).json(profiles);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
  * /profiles/signup:
  *  post:
  *      summary: Sign up the user.
@@ -265,6 +296,43 @@ profileRouter.post('/login', async (req: Request, res: Response, next: NextFunct
         const loginData = <LoginInput>req.body;
         const authResponse = await profileService.authenticate(loginData);
         res.status(200).json(authResponse);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /profiles/changeRole/{role}/{id}:
+ *  get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Change the role of a profile.
+ *      parameters:
+ *          - in: path
+ *            name: role
+ *            description: The new role for the user.
+ *            schema:
+ *              $ref: '#/components/schemas/Role'
+ *          - in: path
+ *            name: id
+ *            description: The id of the user for the new role to be applied to.
+ *            schema:
+ *              type: number
+ *              format: int64
+ *      responses:
+ *          200:
+ *              description: Success. 
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Profile'
+ */
+profileRouter.put('/changeRole/:role/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const [ role, id ] = [ req.params.role as Role, Number(req.params.id) ];
+        const updatedUser = await profileService.updateRoleForProfile({ role, id });
+        res.status(200).json(updatedUser);
     } catch (error) {
         next(error);
     }
