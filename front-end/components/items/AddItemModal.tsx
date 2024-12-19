@@ -10,10 +10,9 @@ import CategoryService from '@/services/CategoryService';
 type Props = {
   show: boolean;
   addItemModalSetter : (bool: boolean) => void,
-  addItemModal: boolean
 };
 
-const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter, addItemModal }: Props) => {
+const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
     const [profileId, setProfileId] = useState<number|null>(null);
     const [name, setName] = useState<string|null>(null);
     const [description, setDescription] = useState<string|null>(null);
@@ -41,7 +40,7 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter, addItemModal 
         const token = sessionStorage.getItem('loggedInToken');
         if (token) {setProfileId(JSON.parse(token).userId)}
         if (profileId) {getCategories()}
-    }, [addItemModal]);
+    }, [show]);
 
     const resetErrors = () => {
         setNameError(false);

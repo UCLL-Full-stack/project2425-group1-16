@@ -81,7 +81,7 @@ export default function Home() {
         {
           presentSubPage(subPage) 
         }
-        <AddItemModal show={addItemModal} addItemModalSetter={setAddItemModal} addItemModal={addItemModal}/>
+        <AddItemModal show={addItemModal} addItemModalSetter={setAddItemModal}/>
       </main>  
     </>
   );
