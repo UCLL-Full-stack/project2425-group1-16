@@ -1,73 +1,218 @@
-import { Category } from "../../model/category";
-import { Item } from "../../model/item";
-import { LocationTag } from "../../model/locationTag";
-import { Profile } from "../../model/profile";
-import itemDb from "../../repository/item.db";
-import profileDb from "../../repository/profile.db";
-import itemService from "../../service/item.service";
-import profileService from "../../service/profile.service";
+import profileService from '../../service/profile.service';
+import profileDb from '../../repository/profile.db';
+import bcrypt from 'bcrypt';
+import { generateJwtToken } from '../../util/jwt';
+import { Profile } from '../../model/profile';
+import { LocationTag } from '../../model/locationTag';
+import { AuthenticationResponse, LoginInput, ProfileInput } from '../../types';
 
+jest.mock('../../repository/profile.db');
+jest.mock('bcrypt');
+jest.mock('../../util/jwt');
 
-const validUsername: string = "Michiel05";
-const validUsername2: string = "Kevin04";
+let hashedPassword: string;
 
-const validPassword: string = "K5/#G6es:M(z8,";
-const validPassword2: string = "K4/#G6es:M(z8,";
+describe('Profile Service', () => {
+    beforeEach(() => {
+        hashedPassword = bcrypt.hashSync("Password123!", 12);
+        jest.clearAllMocks();
+    });
 
-const validEmail2: string = "Kevin.Hiers@domain.be";
-const validEmail: string = "Michiel.Nijs@domain.be";
+    describe('getAllProfiles', () => {
+        it('should return all profiles', async () => {
+            const profiles = [
+                new Profile({ id: 1, username: 'User1', password: 'Password123!', email: 'user1@example.com', phoneNumber: '+1234567890', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) }),
+                new Profile({ id: 2, username: 'User2', password: 'Password123!', email: 'user2@example.com', phoneNumber: '+1234567890', role: 'USER', locationTag: new LocationTag({ id: 2, displayName: 'Location', longitude: 50, latitude: 50 }) })
+            ];
+            (profileDb.getAllProfiles as jest.Mock).mockResolvedValue(profiles);
 
-const validPhoneNumber: string = "0467725913";
-const validPhoneNumber2: string = "0467724913";
+            const result = await profileService.getAllProfiles();
+            expect(result).toEqual(profiles);
+            expect(profileDb.getAllProfiles).toHaveBeenCalledTimes(1);
+        });
+    });
 
-const validLocation: LocationTag = new LocationTag({
-    displayName: "Leuven",
-    latitude: 50.8775,
-    longitude: 4.70444
-})
+    describe('getProfileByEmail', () => {
+        it('should return a profile by email', async () => {
+            const profile = new Profile({ id: 1, username: 'User1', password: 'Password123!', email: 'user1@example.com', phoneNumber: '+1234567890', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) });
+            (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(profile);
 
-const validLocation2: LocationTag = new LocationTag({
-    displayName: "Brussel",
-    latitude: 50.84667,
-    longitude: 4.35472
-})
+            const result = await profileService.getProfileByEmail('user1@example.com');
+            expect(result).toEqual(profile);
+            expect(profileDb.getProfileByEmail).toHaveBeenCalledWith({ email: 'user1@example.com' });
+        });
 
-const validProfile: Profile = new Profile({id: 1, username: validUsername, password: validPassword, email: validEmail, phoneNumber: validPhoneNumber, locationTag: validLocation});
-const validProfile2: Profile = new Profile({id: 2, username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, locationTag: validLocation2});
+        it('should throw an error if profile not found', async () => {
+            (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(null);
 
+            await expect(profileService.getProfileByEmail('user1@example.com')).rejects.toThrow('No profile found for this email.');
+            expect(profileDb.getProfileByEmail).toHaveBeenCalledWith({ email: 'user1@example.com' });
+        });
+    });
 
-let getProfileByEmailMock: jest.Mock;
+    describe('getProfileById', () => {
+        it('should return a profile by id', async () => {
+            const profile = new Profile({
+                id: 1,
+                username: 'User1',
+                password: 'Password123!',
+                email: 'user1@example.com',
+                phoneNumber: '+1234567890',
+                role: 'USER',
+                locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 })
+            });
+            (profileDb.getProfileById as jest.Mock).mockResolvedValue(profile);
 
-beforeEach(() => {
-    getProfileByEmailMock = jest.fn();
-});
+            const result = await profileService.getProfileById(1);
+            expect(result).toEqual(profile);
+            expect(profileDb.getProfileById).toHaveBeenCalledWith({ id: 1 });
+        });
 
-afterEach(() => {
-    jest.clearAllMocks();
-});
+        it('should throw an error if profile not found', async () => {
+            (profileDb.getProfileById as jest.Mock).mockResolvedValue(null);
 
-test('given a valid profile email, when a profile is requested by email, then the profile with that email is returned', () => {
-    //given
-    profileDb.getProfileByEmail = getProfileByEmailMock.mockReturnValue(validProfile);
-    const profileEmail = "Kevin.Hiers@domain.be";
-    
-    //when
-    const getProfileByEmail = () => profileService.getProfileByEmail(profileEmail);
-    const result = getProfileByEmail();
+            await expect(profileService.getProfileById(1)).rejects.toThrow('No profile found with this ID.');
+            expect(profileDb.getProfileById).toHaveBeenCalledWith({ id: 1 });
+        });
 
-    //then
-    expect(getProfileByEmailMock).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(validProfile);
-});
+        it('should throw an error if id is null', async () => {
+            await expect(profileService.getProfileById(null as unknown as number)).rejects.toThrow('No profile id was given.');
+        });
+    });
 
-test('given an invalid profile email, when a profile is requested by email, then an error is thrown', () => {
-    //given
-    profileDb.getProfileByEmail = getProfileByEmailMock.mockReturnValue(null);
-    const profileEmail = "notanemail";
-    
-    //when
-    const getProfile = () => profileService.getProfileByEmail(profileEmail);
+    describe('authenticate', () => {
+        it('should authenticate a user and return a token', async () => {
+            const profile = new Profile({
+                id: 1,
+                username: 'User1',
+                email: 'user1@example.com',
+                password: 'Password123%',
+                phoneNumber: '+1234567890',
+                role: 'USER',
+                locationTag: new LocationTag({
+                    id: 1,
+                    displayName: 'Location',
+                    longitude: 50,
+                    latitude: 50
+                })
+            });
+            (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(profile);
+            (bcrypt.compare as jest.Mock).mockResolvedValue(true);
+            (generateJwtToken as jest.Mock).mockReturnValue('token');
 
-    //then
-    expect(getProfile).toThrow("No profile found for this email");
+            const loginInput: LoginInput = { email: 'user1@example.com', password: 'password' };
+            const result: AuthenticationResponse = await profileService.authenticate(loginInput);
+
+            expect(result).toEqual({ token: 'token', userId: 1, role: 'USER' });
+            expect(profileDb.getProfileByEmail).toHaveBeenCalledWith({ email: 'user1@example.com' });
+            expect(bcrypt.compare).toHaveBeenCalledWith('password', 'Password123%');
+            expect(generateJwtToken).toHaveBeenCalledWith({ userId: 1, role: 'USER' });
+        });
+
+        it('should throw an error if profile not found', async () => {
+            (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(null);
+
+            const loginInput: LoginInput = { email: 'user1@example.com', password: 'password' };
+            await expect(profileService.authenticate(loginInput)).rejects.toThrow("We couldn't log you in. Please check your credentials.");
+            expect(profileDb.getProfileByEmail).toHaveBeenCalledWith({ email: 'user1@example.com' });
+        });
+
+        it('should throw an error if password does not match', async () => {
+            const profile = new Profile({ id: 1, username: 'User1', email: 'user1@example.com', password: hashedPassword, phoneNumber: '+1234567890', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) });
+            (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(profile);
+            (bcrypt.compare as jest.Mock).mockResolvedValue(false);
+
+            const loginInput: LoginInput = { email: 'user1@example.com', password: 'password' };
+            await expect(profileService.authenticate(loginInput)).rejects.toThrow("We couldn't log you in. Please check your credentials.");
+            expect(profileDb.getProfileByEmail).toHaveBeenCalledWith({ email: 'user1@example.com' });
+            expect(bcrypt.compare).toHaveBeenCalledWith('password', hashedPassword);
+        });
+    });
+
+    describe('signupUser', () => {
+        it('should sign up a new user and return a token', async () => {
+            const profileInput: ProfileInput = {
+                username: 'User1',
+                password: 'password',
+                email: 'user1@example.com',
+                phoneNumber: '+1234567890',
+                role: 'USER',
+                locationTag: {
+                    displayName: 'No location',
+                    longitude: 0.0,
+                    latitude: 0.0
+                }
+            };
+
+            const newProfile = new Profile({
+                username: 'User1',
+                password: hashedPassword,
+                email: 'user1@example.com',
+                phoneNumber: '+1234567890',
+                role: 'USER',
+                locationTag: new LocationTag({
+                    displayName: 'No location',
+                    longitude: 0.0,
+                    latitude: 0.0
+                })
+            });
+
+            const dbResult = new Profile({
+                id: 1,
+                username: 'User1',
+                password: hashedPassword,
+                email: 'user1@example.com',
+                phoneNumber: '+1234567890',
+                role: 'USER',
+                locationTag: new LocationTag({
+                    displayName: 'No location',
+                    longitude: 0.0,
+                    latitude: 0.0
+                })
+            });
+
+            (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(null);
+            (bcrypt.hash as jest.Mock).mockResolvedValue(hashedPassword);
+            (profileDb.createUser as jest.Mock).mockResolvedValue(dbResult);
+            (generateJwtToken as jest.Mock).mockReturnValue('token');
+
+            const result: AuthenticationResponse = await profileService.signupUser(profileInput);
+
+            expect(result).toEqual({ token: 'token', userId: 1, role: 'USER' });
+            expect(profileDb.getProfileByEmail).toHaveBeenCalledWith({ email: 'user1@example.com' });
+            expect(bcrypt.hash).toHaveBeenCalledWith('password', 12);
+            expect(profileDb.createUser).toHaveBeenCalledWith(expect.any(Profile));
+            expect(generateJwtToken).toHaveBeenCalledWith({ userId: 1, role: 'USER' });
+        });
+
+        it('should throw an error if email already exists', async () => {
+            const profileInput: ProfileInput = {
+                username: 'User1',
+                password: 'password',
+                email: 'user1@example.com',
+                phoneNumber: '+1234567890',
+                role: 'USER',
+                locationTag: {
+                    displayName: 'No location',
+                    longitude: 0.0,
+                    latitude: 0.0
+                }
+            };
+
+            const existingProfile = new Profile({ 
+                id: 1, 
+                username: 'User1', 
+                password: 'Password123!', 
+                email: 'user1@example.com', 
+                phoneNumber: '+1234567890', 
+                role: 'USER', 
+                locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) 
+            });
+
+            (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(existingProfile);
+
+            await expect(profileService.signupUser(profileInput)).rejects.toThrow('A user with email address user1@example.com already exists.');
+            expect(profileDb.getProfileByEmail).toHaveBeenCalledWith({ email: 'user1@example.com' });
+        });
+    });
 });
