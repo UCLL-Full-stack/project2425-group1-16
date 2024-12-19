@@ -24,7 +24,8 @@
       "name": "Naam",
       "description": "Beschrijving",
       "location": "Locatie",
-      "price": "Prijs"
+      "price": "Prijs",
+      "category": "Categorie"
     }
   },
   "buttons": {

@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ItemService from '@/services/ItemService';
 import { useTranslation } from 'react-i18next';
+import CurrencyInput from 'react-currency-input-field';
 
 type Props = {
   show: boolean;
@@ -13,7 +14,8 @@ type Props = {
 const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
     const [name, setName] = useState<string|null>(null);
     const [description, setDescription] = useState<string|null>(null);
-    const [price, setPrice] = useState<number|null>(null);
+    const [price, setPrice] = useState<string>("");
+    const [category, setCategory] = useState<string|null>(null);
     const [nameError, setNameError] = useState<boolean>(false);
     const [descriptionError, setDescriptionError] = useState<boolean>(false);
     const [priceError, setPriceError] = useState<boolean>(false);
@@ -38,9 +40,9 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
             setPriceError(true);
         }
         if (!nameError && !descriptionError && !priceError && name && description && price) {
-            const stringUser = localStorage.getItem('loggedInProfile')
-            if (stringUser) {
-               const currentUser: Profile = JSON.parse(stringUser);
+            const tokenObj = localStorage.getItem('loggedInToken')
+            if (tokenObj) {
+               const profileId: number = JSON.parse(tokenObj).userId;
             //    const newItem: Item = {name: name, description: description, price: price, location: currentUser.location, owner: currentUser, categories: }
             //     try {
             //         const response = await ItemService.addItem(newItem);
@@ -73,7 +75,14 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
                     </div>
                     <div>
                         <p>{t('item.tags.price')}</p>
-                        <input type="number" onChange={text => setPrice(text.target.valueAsNumber)}/>
+                        <CurrencyInput decimalsLimit={2} fixedDecimalLength={2} suffix='€' placeholder='0' onValueChange={(value, name, values) => {if (values?.float) {setPrice(values.float.toString())} else {setPrice("")}}}/>
+                    </div>
+                    <div>
+                        <p>{t('item.tags.category')}</p>
+                        <select onChange={choice => setCategory(choice.target.value)}>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                        </select>
                     </div>
                 </form>
             </Modal.Body>

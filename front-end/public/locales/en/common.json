@@ -24,7 +24,8 @@
       "name": "Name",
       "description": "Description",
       "location": "Location",
-      "price": "Price"
+      "price": "Price",
+      "category": "Category"
     }
   },
   "buttons": {
