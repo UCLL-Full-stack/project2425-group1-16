@@ -10,10 +10,10 @@ import CategoryService from '@/services/CategoryService';
 type Props = {
   show: boolean;
   addItemModalSetter : (bool: boolean) => void,
-  addItemModal: boolean
+  bookItemModal: boolean
 };
 
-const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter, addItemModal }: Props) => {
+const BookItemModal: React.FC<Props> = ({ show, addItemModalSetter, bookItemModal }: Props) => {
     const [profileId, setProfileId] = useState<number|null>(null);
     const [name, setName] = useState<string|null>(null);
     const [description, setDescription] = useState<string|null>(null);
@@ -41,7 +41,7 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter, addItemModal 
         const token = sessionStorage.getItem('loggedInToken');
         if (token) {setProfileId(JSON.parse(token).userId)}
         if (profileId) {getCategories()}
-    }, [addItemModal]);
+    }, [bookItemModal]);
 
     const resetErrors = () => {
         setNameError(false);
@@ -121,4 +121,4 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter, addItemModal 
   );
 };
 
-export default AddItemModal;
+export default BookItemModal;
