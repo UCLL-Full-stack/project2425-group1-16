@@ -10,9 +10,10 @@ import CategoryService from '@/services/CategoryService';
 type Props = {
   show: boolean;
   bookItemModalSetter : (bool: boolean) => void,
+  item: Item|null,
 };
 
-const BookItemModal: React.FC<Props> = ({ show, bookItemModalSetter }: Props) => {
+const BookItemModal: React.FC<Props> = ({ show, bookItemModalSetter, item }: Props) => {
     const [profileId, setProfileId] = useState<number|null>(null);
     const { t } = useTranslation();
 

@@ -17,6 +17,7 @@ import {GetServerSideProps} from "next";
 import {serverSideTranslations} from "next-i18next/serverSideTranslations";
 import {useTranslation} from "next-i18next";
 import { useRouter } from "next/router";
+import BookItemModal from "@/components/items/BookItemModal";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,6 +29,7 @@ export default function ItemPage() {
   const [subPage, setSubPage] = useState<LoadedPage>('ITEM_OVERVIEW');
   const [profileId, setProfileId] = useState<number | null>(null);
   const [addItemModal, setAddItemModal] = useState<boolean>(false);
+  const [bookItemModal, setBookItemModal] = useState<boolean>(false);
   const [item, setItem] = useState<Item|null>(null);
   const { t } = useTranslation();
 
@@ -70,7 +72,7 @@ export default function ItemPage() {
         router.push('/');
 
       case "ITEM_OVERVIEW":
-        return <ItemOverview item={item}/>
+        return <ItemOverview item={item} bookItemModalSetter={setBookItemModal}/>
       
       case "OWNED_ITEMS":
         router.push('/');
@@ -88,6 +90,7 @@ export default function ItemPage() {
           presentSubPage(subPage) 
         }
         <AddItemModal show={addItemModal} addItemModalSetter={setAddItemModal}/>
+        <BookItemModal show={bookItemModal} bookItemModalSetter={setBookItemModal} item={item}/>
       </main>  
     </>
   );
