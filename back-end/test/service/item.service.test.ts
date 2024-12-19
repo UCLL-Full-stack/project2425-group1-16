@@ -27,7 +27,6 @@ describe('Item Service', () => {
                 username: 'Owner', 
                 password: 'Password123!', 
                 email: 'owner@example.com', 
-                phoneNumber: '+1234567890', 
                 role: 'USER', 
                 locationTag: locationTag 
             });
@@ -52,7 +51,7 @@ describe('Item Service', () => {
                 description: 'Description 1',
                 price: 100,
                 locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }),
-                owner: new Profile({ id: 1, username: 'Owner', password: 'Password123!', email: 'owner@example.com', phoneNumber: '+1234567890', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) }),
+                owner: new Profile({ id: 1, username: 'Owner', password: 'Password123!', email: 'owner@example.com', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) }),
                 categories: [new Category({ id: 1, name: 'Category' })]
             });
             (itemDb.getItemById as jest.Mock).mockResolvedValue(item);
@@ -91,7 +90,6 @@ describe('Item Service', () => {
                 username: 'Owner', 
                 password: 'Password123!', 
                 email: 'owner@example.com', 
-                phoneNumber: '+1234567890', 
                 role: 'USER', 
                 locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) 
             });
@@ -160,7 +158,6 @@ describe('Item Service', () => {
                 username: 'Owner', 
                 password: 'Password123!', 
                 email: 'owner@example.com', 
-                phoneNumber: '+1234567890', 
                 role: 'USER', 
                 locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) 
             });
@@ -213,7 +210,6 @@ describe('Item Service', () => {
                 username: 'Owner', 
                 password: 'Password123!', 
                 email: 'owner@example.com', 
-                phoneNumber: '+1234567890', 
                 role: 'USER', 
                 locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) 
             });

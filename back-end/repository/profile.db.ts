@@ -66,7 +66,6 @@ const createUser = async (profile: Profile): Promise<Profile> => {
                 username: profile.getUsername(),
                 password: profile.getPassword(),
                 email: profile.getEmail(),
-                phoneNumber: profile.getPhoneNumber(),
                 role: profile.getRole(),
                 locationTag: {
                     connect: { id: profile.getLocationTag().getId() ?? foundLocationTag!.getId()}

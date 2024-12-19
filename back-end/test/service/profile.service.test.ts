@@ -21,8 +21,8 @@ describe('Profile Service', () => {
     describe('getAllProfiles', () => {
         it('should return all profiles', async () => {
             const profiles = [
-                new Profile({ id: 1, username: 'User1', password: 'Password123!', email: 'user1@example.com', phoneNumber: '+1234567890', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) }),
-                new Profile({ id: 2, username: 'User2', password: 'Password123!', email: 'user2@example.com', phoneNumber: '+1234567890', role: 'USER', locationTag: new LocationTag({ id: 2, displayName: 'Location', longitude: 50, latitude: 50 }) })
+                new Profile({ id: 1, username: 'User1', password: 'Password123!', email: 'user1@example.com', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) }),
+                new Profile({ id: 2, username: 'User2', password: 'Password123!', email: 'user2@example.com', role: 'USER', locationTag: new LocationTag({ id: 2, displayName: 'Location', longitude: 50, latitude: 50 }) })
             ];
             (profileDb.getAllProfiles as jest.Mock).mockResolvedValue(profiles);
 
@@ -34,7 +34,7 @@ describe('Profile Service', () => {
 
     describe('getProfileByEmail', () => {
         it('should return a profile by email', async () => {
-            const profile = new Profile({ id: 1, username: 'User1', password: 'Password123!', email: 'user1@example.com', phoneNumber: '+1234567890', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) });
+            const profile = new Profile({ id: 1, username: 'User1', password: 'Password123!', email: 'user1@example.com', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) });
             (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(profile);
 
             const result = await profileService.getProfileByEmail('user1@example.com');
@@ -57,7 +57,6 @@ describe('Profile Service', () => {
                 username: 'User1',
                 password: 'Password123!',
                 email: 'user1@example.com',
-                phoneNumber: '+1234567890',
                 role: 'USER',
                 locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 })
             });
@@ -87,7 +86,6 @@ describe('Profile Service', () => {
                 username: 'User1',
                 email: 'user1@example.com',
                 password: 'Password123%',
-                phoneNumber: '+1234567890',
                 role: 'USER',
                 locationTag: new LocationTag({
                     id: 1,
@@ -118,7 +116,7 @@ describe('Profile Service', () => {
         });
 
         it('should throw an error if password does not match', async () => {
-            const profile = new Profile({ id: 1, username: 'User1', email: 'user1@example.com', password: hashedPassword, phoneNumber: '+1234567890', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) });
+            const profile = new Profile({ id: 1, username: 'User1', email: 'user1@example.com', password: hashedPassword, role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) });
             (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(profile);
             (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
@@ -135,7 +133,6 @@ describe('Profile Service', () => {
                 username: 'User1',
                 password: 'password',
                 email: 'user1@example.com',
-                phoneNumber: '+1234567890',
                 role: 'USER',
                 locationTag: {
                     displayName: 'No location',
@@ -148,7 +145,6 @@ describe('Profile Service', () => {
                 username: 'User1',
                 password: hashedPassword,
                 email: 'user1@example.com',
-                phoneNumber: '+1234567890',
                 role: 'USER',
                 locationTag: new LocationTag({
                     displayName: 'No location',
@@ -162,7 +158,6 @@ describe('Profile Service', () => {
                 username: 'User1',
                 password: hashedPassword,
                 email: 'user1@example.com',
-                phoneNumber: '+1234567890',
                 role: 'USER',
                 locationTag: new LocationTag({
                     displayName: 'No location',
@@ -190,7 +185,6 @@ describe('Profile Service', () => {
                 username: 'User1',
                 password: 'password',
                 email: 'user1@example.com',
-                phoneNumber: '+1234567890',
                 role: 'USER',
                 locationTag: {
                     displayName: 'No location',
@@ -204,7 +198,6 @@ describe('Profile Service', () => {
                 username: 'User1', 
                 password: 'Password123!', 
                 email: 'user1@example.com', 
-                phoneNumber: '+1234567890', 
                 role: 'USER', 
                 locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) 
             });

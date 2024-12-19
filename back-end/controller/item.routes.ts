@@ -37,9 +37,6 @@
  *            email:
  *              type: string
  *              description: Email
- *            phonenumber:
- *              type: string
- *              description: Phonenumber
  *            locationTag:
  *              $ref: '#/components/schemas/LocationTag'
  *      Category:
@@ -176,6 +173,39 @@ itemRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
 
 /**
  * @swagger
+ * /items/byOwner/{id}:
+ *  get:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Get a list of items by owner.
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *              required: true
+ *              description: The owner's ID.
+ *      responses:
+ *          200:
+ *              description: A list of items owner by the requested user.
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Item'
+ */
+itemRouter.get('/byOwner/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const item = await itemService.getItemsByOwner(Number(req.params.id));
+        res.status(200).json(item);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
  * /items:
  *  post:
  *      security:
@@ -200,6 +230,33 @@ itemRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
         const item = <ItemAddInput>req.body;
         const newItem = await itemService.addItem(item);
         res.status(200).json(newItem);
+    } catch (error) {
+        next(error);
+    }
+});
+
+/**
+ * @swagger
+ * /items/delete/{id}:
+ *  delete:
+ *      security:
+ *          - bearerAuth: []
+ *      summary: Delete an item.
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: integer
+ *              required: true
+ *              description: The item's id.
+ *      responses:
+ *          200:
+ *              description: Success.
+ */
+itemRouter.delete('/delete/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await itemService.deleteItemById(Number(req.params.id));
+        res.status(200);
     } catch (error) {
         next(error);
     }

@@ -40,6 +40,27 @@ const getItemById = async ({ itemId }: { itemId: number }): Promise<Item | null>
     }
 };
 
+const getItemsByOwnerId = async ({ id }: { id: number }): Promise<Item[]> => {
+    try {
+        const itemsPrisma = await database.item.findMany({
+            where: {
+                ownerId: id
+            },
+            include: {
+                owner: {
+                    include: { locationTag: true }
+                },
+                locationTag: true,
+                categories: true,
+            }
+        });
+        return itemsPrisma.map((itemPrisma) => Item.from(itemPrisma));
+    } catch (error) {
+        console.error(`Database error: ${error}`);
+        throw new Error(`Database error: ${error}`);
+    }
+};
+
 const addItem = async (item: Item): Promise<Item> => {
     try {
         const itemPrisma = await database.item.create({
@@ -78,8 +99,23 @@ const addItem = async (item: Item): Promise<Item> => {
     }
 };
 
+const deleteItemById = async (id: number) => {
+    try {
+        database.item.delete({
+            where: {
+                id
+            }
+        });
+    } catch (error) {
+        console.error(`Database error: ${error}`);
+        throw new Error(`Database error: ${error}`);
+    }
+}
+
 export default {
     getAllItems,
     getItemById,
+    getItemsByOwnerId,
     addItem,
+    deleteItemById
 };

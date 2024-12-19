@@ -11,53 +11,46 @@ export class Profile {
     private username: string;
     private password: string;
     private email: string;
-    private phoneNumber: string;
     private role: Role;
 
     private locationTag: LocationTag;
 
     constructor(
-        { id, username, password, email, phoneNumber, role, locationTag }
+        { id, username, password, email, role, locationTag }
     : {
         id?: number,
         username: string,
         password: string,
         email: string,
-        phoneNumber: string,
         role: Role,
 
         locationTag: LocationTag,
     }) {
-        this.validate({ username, password, email, phoneNumber, role, locationTag });
+        this.validate({ username, password, email, role, locationTag });
 
         this.id = id
         this.username = username;
         this.password = password;
         this.email = email;
-        this.phoneNumber = phoneNumber;
         this.role = role;
 
         this.locationTag = locationTag;
     }
 
-    validate({ username, password, email, phoneNumber, role, locationTag }
+    validate({ username, password, email, role, locationTag }
     : {
         username: string,
         password: string,
         email: string,
-        phoneNumber: string,
         role: Role,
         locationTag: LocationTag,
     }) {
         if (!username?.trim())      throw new Error('A username must be given.');
         if (!password?.trim())      throw new Error('A password must be given.');
         if (!email?.trim())         throw new Error('A email must be given.');
-        if (!phoneNumber?.trim())   throw new Error('A phone number must be given.');
         if (!role)                  throw new Error('A role must be given.');
         if (!locationTag)           throw new Error('A location must be given.');
 
-        if (!phoneNumber.trim().match(/^\+?\d{8,15}$/)) 
-            throw new Error('A phone number can only consist of numbers, and be 8 to 15 characters in length.');
         if (password.trim().length < 8)
             throw new Error('A password has to be at least 8 characters in lenght.');
         if (!password.trim().match(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!-/:-@\\[-`\\{-~]).*$/))
@@ -94,14 +87,6 @@ export class Profile {
         this.email = email;
     }
 
-    public getPhoneNumber(): string {
-        return this.phoneNumber;
-    }
-
-    public setPhoneNumber(phoneNumber: string) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public getLocationTag(): LocationTag {
         return this.locationTag;
     }
@@ -123,19 +108,17 @@ export class Profile {
             this.id === other.getId() &&
             this.username === other.getUsername() &&
             this.email === other.getEmail() &&
-            this.phoneNumber === other.getPhoneNumber() &&
             this.password === other.getPassword() &&
             this.locationTag.equals(other.getLocationTag())
         );
     }
 
-    static from({id, username, password, email, phoneNumber, role, locationTag}: ProfilePrisma & { locationTag: LocationTagPrisma }): Profile {
+    static from({id, username, password, email, role, locationTag}: ProfilePrisma & { locationTag: LocationTagPrisma }): Profile {
         return new Profile({
             id,
             username,
             password,
             email,
-            phoneNumber,
             role,
             locationTag: LocationTag.from(locationTag)
         });

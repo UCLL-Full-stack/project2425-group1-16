@@ -56,7 +56,6 @@ const main = async () => {
             username: 'exampleUser',
             password: await bcrypt.hash('Password123%', 12),
             email: 'exampleUser@example.com',
-            phoneNumber: '1234567890',
             role: 'USER',
             locationTag: { connect: { id: locationLeuven.id } }
         }
@@ -67,7 +66,6 @@ const main = async () => {
             username: 'exampleAdmin',
             password: await bcrypt.hash('Password123%', 12),
             email: 'exampleAdmin@example.com',
-            phoneNumber: '1234567891',
             role: 'ADMIN',
             locationTag: { connect: { id: locationHeist.id } }
         }
@@ -78,7 +76,6 @@ const main = async () => {
             username: 'exampleSuperAdmin',
             password: await bcrypt.hash('Password123%', 12),
             email: 'exampleSuperAdmin@example.com',
-            phoneNumber: '1234567892',
             role: 'SUPERADMIN',
             locationTag: { connect: { id: noLocation.id } }
         }

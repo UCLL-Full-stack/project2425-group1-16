@@ -20,7 +20,6 @@ export type Profile = {
     username: string,
     password: string,
     email: string,
-    phoneNumber: string,
     locationTag: LocationTag
 };
 
