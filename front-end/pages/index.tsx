@@ -46,8 +46,11 @@ export default function Home() {
     const loggedInToken = sessionStorage.getItem('loggedInToken');
     if (loggedInToken) { setProfileId(JSON.parse(loggedInToken).userId); }
     setAddItemModal(false)
-    getItems();   
   }, []);
+
+  useEffect(() => {
+    getItems();   
+  }, [profileId])
 
   const presentSubPage = (subPage: LoadedPage) => {
     if (profileId == null) {
