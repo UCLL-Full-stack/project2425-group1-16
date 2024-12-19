@@ -1,102 +1,245 @@
-import { Category } from "../../model/category";
-import { Item } from "../../model/item";
-import { LocationTag } from "../../model/locationTag";
-import { Profile } from "../../model/profile";
-import itemDb from "../../repository/item.db";
-import itemService from "../../service/item.service";
+import itemService from '../../service/item.service';
+import itemDb from '../../repository/item.db';
+import locationTagDb from '../../repository/locationTag.db';
+import profileDb from '../../repository/profile.db';
+import categoryDb from '../../repository/category.db';
+import { Item } from '../../model/item';
+import { LocationTag } from '../../model/locationTag';
+import { Profile } from '../../model/profile';
+import { Category } from '../../model/category';
+import { ItemAddInput } from '../../types';
 
+jest.mock('../../repository/item.db');
+jest.mock('../../repository/locationTag.db');
+jest.mock('../../repository/profile.db');
+jest.mock('../../repository/category.db');
 
-const validName: string = "Grasmaaier";
-const validName2: string = "Sfeerverlichting";
+describe('Item Service', () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
 
-const validDescription: string = "Dit is een grasmaaier";
-const validDescription2: string = "Dit is wat sfeerverlichting";
+    describe('getAllItems', () => {
+        it('should return all items', async () => {
+            const locationTag = new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 });
+            const owner = new Profile({ 
+                id: 1, 
+                username: 'Owner', 
+                password: 'Password123!', 
+                email: 'owner@example.com', 
+                phoneNumber: '+1234567890', 
+                role: 'USER', 
+                locationTag: locationTag 
+            });
+            const category = new Category({ id: 1, name: 'Category' });
+            const items = [
+                new Item({ id: 1, name: 'Item 1', description: 'Description 1', price: 100, locationTag, owner, categories: [category] }),
+                new Item({ id: 2, name: 'Item 2', description: 'Description 2', price: 200, locationTag, owner, categories: [category] })
+            ];
+            (itemDb.getAllItems as jest.Mock).mockResolvedValue(items);
 
-const validPrice: number = 10;
-const validPrice2: number = 20;
+            const result = await itemService.getAllItems();
+            expect(result).toEqual(items);
+            expect(itemDb.getAllItems).toHaveBeenCalledTimes(1);
+        });
+    });
 
-const validUsername: string = "Michiel05";
-const validUsername2: string = "Kevin04";
+    describe('getItemById', () => {
+        it('should return an item by id', async () => {
+            const item = new Item({
+                id: 1,
+                name: 'Item 1',
+                description: 'Description 1',
+                price: 100,
+                locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }),
+                owner: new Profile({ id: 1, username: 'Owner', password: 'Password123!', email: 'owner@example.com', phoneNumber: '+1234567890', role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) }),
+                categories: [new Category({ id: 1, name: 'Category' })]
+            });
+            (itemDb.getItemById as jest.Mock).mockResolvedValue(item);
 
-const validPassword: string = "K5/#G6es:M(z8,";
-const validPassword2: string = "K4/#G6es:M(z8,";
+            const result = await itemService.getItemById(1);
+            expect(result).toEqual(item);
+            expect(itemDb.getItemById).toHaveBeenCalledWith({ itemId: 1 });
+        });
 
-const validEmail2: string = "Kevin.Hiers@domain.be";
-const validEmail: string = "Michiel.Nijs@domain.be";
+        it('should throw an error if item not found', async () => {
+            (itemDb.getItemById as jest.Mock).mockResolvedValue(null);
 
-const validPhoneNumber: string = "0467725913";
-const validPhoneNumber2: string = "0467724913";
+            await expect(itemService.getItemById(1)).rejects.toThrow('No item found for this id');
+            expect(itemDb.getItemById).toHaveBeenCalledWith({ itemId: 1 });
+        });
+    });
 
-const validLocation: LocationTag = new LocationTag({
-    displayName: "Leuven",
-    latitude: 50.8775,
-    longitude: 4.70444
-})
+    describe('addItem', () => {
+        it('should add a new item', async () => {
+            const itemInput: ItemAddInput = {
+                name: 'New Item',
+                description: 'Description',
+                price: 100,
+                locationTag: { displayName: 'Location', longitude: 50, latitude: 50 },
+                ownerId: 1,
+                categories: [{
+                    id: 1,
+                    name: 'Category',
+                    parents: [],
+                    children: []
+                }]
+            };
 
-const validLocation2: LocationTag = new LocationTag({
-    displayName: "Brussel",
-    latitude: 50.84667,
-    longitude: 4.35472
-})
+            const owner = new Profile({ 
+                id: 1, 
+                username: 'Owner', 
+                password: 'Password123!', 
+                email: 'owner@example.com', 
+                phoneNumber: '+1234567890', 
+                role: 'USER', 
+                locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) 
+            });
+            const locationTag = new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 });
+            const category = new Category({ id: 1, name: 'Category' });
+            const newItem = new Item({
+                name: 'New Item',
+                description: 'Description',
+                price: 100,
+                locationTag,
+                owner,
+                categories: [category]
+            });
 
-const validProfile1: Profile = new Profile({username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, role: 'USER', locationTag: validLocation2});
-const validProfile2: Profile = new Profile({username: validUsername2, password: validPassword2, email: validEmail2, phoneNumber: validPhoneNumber2, role: 'ADMIN', locationTag: validLocation2});
+            (profileDb.getProfileById as jest.Mock).mockResolvedValue(owner);
+            (locationTagDb.getLocationTagByCoords as jest.Mock).mockResolvedValue(locationTag);
+            (categoryDb.getCategoryById as jest.Mock).mockResolvedValue(category);
+            (itemDb.addItem as jest.Mock).mockResolvedValue(newItem);
 
-const validCategoryName: string = "Tuingereedschap";
-const validCategoryName2: string = "Grasmaaiers";
-const validCategoryName3: string = "Elektronica";
-const validCategoryName4: string = "Verlichting";
-const validCategoryName5: string = "Decoratie";
+            const result = await itemService.addItem(itemInput);
+            expect(result).toEqual(newItem);
+            expect(profileDb.getProfileById).toHaveBeenCalledWith({ id: itemInput.ownerId });
+            expect(locationTagDb.getLocationTagByCoords).toHaveBeenCalledWith(itemInput.locationTag);
+            expect(categoryDb.getCategoryById).toHaveBeenCalledWith({ id: 1 });
+            expect(itemDb.addItem).toHaveBeenCalledWith(expect.any(Item));
+        });
 
-const validCategory: Category = new Category({ name: validCategoryName });
-const validCategory2: Category = new Category({ name: validCategoryName3 });
-const validCategory3: Category = new Category({ name: validCategoryName5 });
+        it('should throw an error if owner not found', async () => {
+            const itemInput: ItemAddInput = {
+                name: 'New Item',
+                description: 'Description',
+                price: 100,
+                locationTag: { displayName: 'Location', longitude: 50, latitude: 50 },
+                ownerId: 1,
+                categories: [{
+                    id: 1,
+                    name: '',
+                    parents: [],
+                    children: []
+                }]
+            };
 
-const validParents: Category[] = [validCategory];
-const validParents2: Category[] = [validCategory2, validCategory3];
+            (profileDb.getProfileById as jest.Mock).mockResolvedValue(null);
 
-const validCategory4: Category = new Category({name: validCategoryName2, parents: validParents});
-const validCategory5: Category = new Category({name: validCategoryName4, parents: validParents2});
+            await expect(itemService.addItem(itemInput)).rejects.toThrow('Owner not found');
+            expect(profileDb.getProfileById).toHaveBeenCalledWith({ id: itemInput.ownerId });
+        });
 
-const validCategories: Category[] = [validCategory, validCategory4];
-const validCategories2: Category[] = [validCategory2, validCategory3, validCategory5];
+        it('should create a new location tag if not found', async () => {
+            const itemInput: ItemAddInput = {
+                name: 'New Item',
+                description: 'Description',
+                price: 100,
+                locationTag: { displayName: 'New Location', longitude: 50, latitude: 50 },
+                ownerId: 1,
+                categories: [{
+                    id: 1,
+                    name: '',
+                    parents: [],
+                    children: []
+                }]
+            };
 
-const validItem: Item = new Item({id: 1, name: validName, description: validDescription, price: validPrice, owner: validProfile1, locationTag: validLocation, categories: validCategories});
-const validItem2: Item = new Item({id:2, name: validName2, description: validDescription2, price: validPrice2, owner: validProfile2, locationTag: validLocation2, categories: validCategories2});
+            const owner = new Profile({ 
+                id: 1, 
+                username: 'Owner', 
+                password: 'Password123!', 
+                email: 'owner@example.com', 
+                phoneNumber: '+1234567890', 
+                role: 'USER', 
+                locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) 
+            });
+            const newLocationTag = new LocationTag({ displayName: 'New Location', longitude: 50, latitude: 50 });
+            const category = new Category({ id: 1, name: 'Category' });
+            const newItem = new Item({
+                name: 'New Item',
+                description: 'Description',
+                price: 100,
+                locationTag: newLocationTag,
+                owner,
+                categories: [category]
+            });
 
+            (profileDb.getProfileById as jest.Mock).mockResolvedValue(owner);
+            (locationTagDb.getLocationTagByCoords as jest.Mock).mockResolvedValue(null);
+            (categoryDb.getCategoryById as jest.Mock).mockResolvedValue(category);
+            (itemDb.addItem as jest.Mock).mockResolvedValue(newItem);
 
-let getItemByIdMock: jest.Mock;
+            const result = await itemService.addItem(itemInput);
+            expect(result).toEqual(newItem);
+            expect(profileDb.getProfileById).toHaveBeenCalledWith({ id: itemInput.ownerId });
+            expect(locationTagDb.getLocationTagByCoords).toHaveBeenCalledWith(itemInput.locationTag);
+            expect(categoryDb.getCategoryById).toHaveBeenCalledWith({ id: 1 });
+            expect(itemDb.addItem).toHaveBeenCalledWith(expect.any(Item));
+        });
 
-beforeEach(() => {
-    getItemByIdMock = jest.fn();
-});
+        it('should filter out invalid categories', async () => {
+            const itemInput: ItemAddInput = {
+                name: 'New Item',
+                description: 'Description',
+                price: 100,
+                locationTag: { displayName: 'Location', longitude: 50, latitude: 50 },
+                ownerId: 1,
+                categories: [{
+                    id: 1,
+                    name: '',
+                    parents: [],
+                    children: []
+                }, {
+                    id: 2,
+                    name: '',
+                    parents: [],
+                    children: []
+                }]
+            };
 
-afterEach(() => {
-    jest.clearAllMocks();
-});
+            const owner = new Profile({ 
+                id: 1, 
+                username: 'Owner', 
+                password: 'Password123!', 
+                email: 'owner@example.com', 
+                phoneNumber: '+1234567890', 
+                role: 'USER', 
+                locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) 
+            });
+            const locationTag = new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 });
+            const category1 = new Category({ id: 1, name: 'Category 1' });
+            const newItem = new Item({
+                name: 'New Item',
+                description: 'Description',
+                price: 100,
+                locationTag,
+                owner,
+                categories: [category1]
+            });
 
-test('given a valid item id, when an item is requested by id, then the item with that id is returned', () => {
-    //given
-    itemDb.getItemById = getItemByIdMock.mockReturnValue(validItem);
-    const itemId = 1;
-    
-    //when
-    const getItemById = () => itemService.getItemById(itemId);
-    const result = getItemById();
+            (profileDb.getProfileById as jest.Mock).mockResolvedValue(owner);
+            (locationTagDb.getLocationTagByCoords as jest.Mock).mockResolvedValue(locationTag);
+            (categoryDb.getCategoryById as jest.Mock).mockResolvedValueOnce(category1).mockResolvedValueOnce(null);
+            (itemDb.addItem as jest.Mock).mockResolvedValue(newItem);
 
-    //then
-    expect(getItemByIdMock).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(validItem);
-});
-
-test('given an invalid item id, when an item is requested by id, then an error is thrown', () => {
-    //given
-    itemDb.getItemById = getItemByIdMock.mockReturnValue(null);
-    const itemId = 4;
-    
-    //when
-    const getItem = () => itemService.getItemById(itemId);
-
-    //then
-    expect(getItem).toThrow("No item found for this id");
+            const result = await itemService.addItem(itemInput);
+            expect(result).toEqual(newItem);
+            expect(profileDb.getProfileById).toHaveBeenCalledWith({ id: itemInput.ownerId });
+            expect(locationTagDb.getLocationTagByCoords).toHaveBeenCalledWith(itemInput.locationTag);
+            expect(categoryDb.getCategoryById).toHaveBeenCalledWith({ id: 1 });
+            expect(categoryDb.getCategoryById).toHaveBeenCalledWith({ id: 2 });
+            expect(itemDb.addItem).toHaveBeenCalledWith(expect.any(Item));
+        });
+    });
 });
