@@ -26,7 +26,7 @@
       "name": "Naam",
       "description": "Beschrijving",
       "location": "Locatie",
-      "price": "Prijs",
+      "price": "Prijs /dag",
       "category": "Categorie"
     },
     "mailPrompt": "Verzend een email naar de eigenaar om de details te bespreken!"
