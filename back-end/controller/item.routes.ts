@@ -37,9 +37,6 @@
  *            email:
  *              type: string
  *              description: Email
- *            phonenumber:
- *              type: string
- *              description: Phonenumber
  *            locationTag:
  *              $ref: '#/components/schemas/LocationTag'
  *      Category:

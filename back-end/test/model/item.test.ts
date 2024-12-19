@@ -14,7 +14,6 @@ describe('Item', () => {
             username: 'Owner',
             email: 'owner@example.com',
             password: 'Password123%',
-            phoneNumber: '957400245',
             role: 'USER',
             locationTag: locationTag
         });

@@ -40,9 +40,6 @@
  *            email:
  *              type: string
  *              description: Email
- *            phoneNumber:
- *              type: string
- *              description: Phonenumber
  *            locationTag:
  *              $ref: '#/components/schemas/LocationTag'
  *            role:
@@ -59,9 +56,6 @@
  *            email:
  *              type: string
  *              description: Email
- *            phoneNumber:
- *              type: string
- *              description: Phonenumber
  *      LoginInput:
  *          type: object
  *          properties:

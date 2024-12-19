@@ -17,7 +17,6 @@ model Profile {
     username        String          @unique
     password        String
     email           String          @unique
-    phoneNumber     String          @unique
     role            Role            @default(USER)
     
     items           Item[]

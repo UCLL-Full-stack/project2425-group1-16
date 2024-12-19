@@ -26,7 +26,6 @@ export type ProfileInput = {
     username: string,
     password: string,
     email: string,
-    phoneNumber: string,
     role: Role,
     locationTag: LocationTagInput,
 };

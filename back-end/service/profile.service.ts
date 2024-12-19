@@ -40,7 +40,7 @@ const authenticate = async ({ email, password }: LoginInput): Promise<Authentica
 };
 
 const signupUser = async ({
-    username, password, email, phoneNumber
+    username, password, email
 }: ProfileInput): Promise<AuthenticationResponse> => {
     
     const inDb = await profileDb.getProfileByEmail({ email });
@@ -48,7 +48,7 @@ const signupUser = async ({
 
     const hashedPasswd = await bcrypt.hash(password, 12);
     const newProfile = new Profile({
-        username, password: hashedPasswd, email, phoneNumber, role: 'USER',
+        username, password: hashedPasswd, email, role: 'USER',
         locationTag: new LocationTag({
             displayName: "No location",
             longitude: 0.0,
