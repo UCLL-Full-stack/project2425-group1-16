@@ -23,11 +23,13 @@ const getProfileById = async (id: number): Promise<Profile> => {
 const authenticate = async ({ email, password }: LoginInput): Promise<AuthenticationResponse> => {
     const AUTH_ERROR = new Error("We couldn't log you in. Please check your credentials.");
 
+    if (!password) throw AUTH_ERROR;
+
     const profile = await profileDb.getProfileByEmail({ email });
     if (!profile) throw AUTH_ERROR;
     if (profile.getId() == null) throw new Error(`This user (${profile.getUsername()}) does not have an id.`);
 
-    const passwdEquals = await bcrypt.compare(password, profile.getPassword());    
+    const passwdEquals = await bcrypt.compare(password, profile.getPassword());
     if (!passwdEquals) throw AUTH_ERROR;
 
     return {
