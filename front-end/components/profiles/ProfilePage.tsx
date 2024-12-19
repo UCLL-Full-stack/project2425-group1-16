@@ -39,10 +39,6 @@ const ProfilePage: React.FC<Props> = ({ profileId }: Props) => {
                     <td>{profile.email}</td>
                 </tr>
                 <tr>
-                    <td>{t('profile.tags.phone')}</td>
-                    <td>{profile.phoneNumber}</td>
-                </tr>
-                <tr>
                     <td>{t('profile.tags.location')}</td>
                     <td>{profile.locationTag.displayName}</td>
                 </tr>

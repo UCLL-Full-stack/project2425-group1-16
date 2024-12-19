@@ -22,10 +22,6 @@ const BookItemModal: React.FC<Props> = ({ show, bookItemModalSetter, item }: Pro
         if (token) {setProfileId(JSON.parse(token).userId)}
     }, [show]);
 
-    const submitModal = async () => {
-        event?.preventDefault();
-    };
-
     return (
         <Modal show={show} onHide={()=>{bookItemModalSetter(false)}}>
             <Modal.Header closeButton>
