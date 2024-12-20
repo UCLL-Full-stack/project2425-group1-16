@@ -32,6 +32,11 @@
       "category": "Category",
       "owner": "Owner"
     },
+    "error": {
+      "name": "Invalid name",
+      "description": "Invalid description",
+      "price": "Invalid price"
+    },
     "mailPrompt": "Send an email to the owner to arrange the details!"
   },
   "buttons": {
