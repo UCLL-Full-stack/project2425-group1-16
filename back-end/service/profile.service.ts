@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { AuthenticationResponse, LoginInput, ProfileInput, Role } from "../types";
 import { generateJwtToken } from "../util/jwt";
 import { LocationTag } from "../model/locationTag";
+import locationTagDb from "../repository/locationTag.db";
 
 const getAllProfiles = async (): Promise<Profile[]> => await profileDb.getAllProfiles();
 
@@ -62,7 +63,8 @@ const signupUser = async ({
         })
     });
 
-    const dbResult = await profileDb.createUser(newProfile);
+    const defaultLocation = await locationTagDb.getDefault();
+    const dbResult = await profileDb.createUser(newProfile, defaultLocation);
     return {
         token: generateJwtToken({ userId: dbResult.getId()!, role: dbResult.getRole() }),
         userId: dbResult.getId()!,

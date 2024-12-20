@@ -54,8 +54,25 @@ const getLocationTagByCoords = async ({ longitude, latitude }: { longitude: numb
     }
 }
 
+const getDefault = async (): Promise<LocationTag> => {
+    try {
+        const defaultLocation = await database.locationTag.findFirst({
+            where: {
+                longitude: 0,
+                latitude: 0
+            }
+        });
+        if (!defaultLocation) throw new Error('No default location present in the database.');
+        return LocationTag.from(defaultLocation);
+    } catch (error) {
+        console.error(`Database error: ${error}`);
+        throw new Error(`Database error: ${error}`);
+    }
+};
+
 export default {
     getAllLocationTags,
     getLocationTagById,
-    getLocationTagByCoords
+    getLocationTagByCoords,
+    getDefault,
 }

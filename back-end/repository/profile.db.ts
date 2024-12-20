@@ -61,20 +61,8 @@ const getProfilesByRole = async ({ role }: { role: Role }): Promise<Profile[]> =
     }
 }
 
-const createUser = async (profile: Profile): Promise<Profile> => {
+const createUser = async (profile: Profile, locationTag: LocationTag): Promise<Profile> => {
     try {
-        let foundLocationTag: LocationTag | null | undefined;
-        if (profile.getLocationTag().getId() == null) {
-            foundLocationTag = await locationTagDb.getLocationTagByCoords({
-                longitude: profile.getLocationTag().getLongitude(),
-                latitude: profile.getLocationTag().getLatitude(),
-            });
-        }
-
-        if (foundLocationTag == undefined && profile.getLocationTag().getId() == undefined) {
-            throw new Error('No suitable source for profile location');
-        }
-
         const createdUser = await database.profile.create({
             data: {
                 username: profile.getUsername(),
@@ -82,7 +70,7 @@ const createUser = async (profile: Profile): Promise<Profile> => {
                 email: profile.getEmail(),
                 role: profile.getRole(),
                 locationTag: {
-                    connect: { id: profile.getLocationTag().getId() ?? foundLocationTag!.getId()}
+                    connect: { id: locationTag.getId() }
                 }
             },
             include: { locationTag: true }
