@@ -255,8 +255,9 @@ itemRouter.post('/', async (req: Request, res: Response, next: NextFunction) => 
  */
 itemRouter.delete('/delete/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        await itemService.deleteItemById(Number(req.params.id));
-        res.status(200);
+        const id = Number(req.params.id);
+        await itemService.deleteItemById(id);
+        res.status(200).end();
     } catch (error) {
         next(error);
     }
