@@ -81,7 +81,7 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
                 <Modal.Title>{t('item.add')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <form id="addItem" onSubmit={()=>{submitModal}}>
+                <form id="addItem" onSubmit={submitModal}>
                     <div>
                         <p>{t('item.tags.name')}</p>
                         <input type="text" onChange={text => setName(text.target.value)}/>
