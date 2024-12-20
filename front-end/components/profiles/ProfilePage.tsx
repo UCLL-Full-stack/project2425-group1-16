@@ -30,18 +30,20 @@ const ProfilePage: React.FC<Props> = ({ profileId }: Props) => {
     return (
         profile ?
             <table>
-                <tr>
-                    <td>{t('profile.tags.name')}</td>
-                    <td>{profile.username}</td>
-                </tr>
-                <tr>
-                    <td>{t('profile.tags.mail')}</td>
-                    <td>{profile.email}</td>
-                </tr>
-                <tr>
-                    <td>{t('profile.tags.location')}</td>
-                    <td>{profile.locationTag.displayName}</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>{t('profile.tags.name')}</td>
+                        <td>{profile.username}</td>
+                    </tr>
+                    <tr>
+                        <td>{t('profile.tags.mail')}</td>
+                        <td>{profile.email}</td>
+                    </tr>
+                    <tr>
+                        <td>{t('profile.tags.location')}</td>
+                        <td>{profile.locationTag.displayName}</td>
+                    </tr>
+                </tbody>
             </table>
         :
             <p>You are currently not logged in.</p>
