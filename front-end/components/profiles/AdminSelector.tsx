@@ -87,8 +87,8 @@ const AdminSelector: React.FC<Props> = ({ profileId }: Props) => {
                 <tbody>
                     {admins.map((profile, index) => (
                     <tr key={index} onClick={() => {makeUser(profile.id)}} role="button">
-                        <td>{profile.username}</td>
-                        <td>{profile.email}</td>
+                        <td key={index}>{profile.username}</td>
+                        <td key={index}>{profile.email}</td>
                     </tr>
                     ))}
                 </tbody>
@@ -104,8 +104,8 @@ const AdminSelector: React.FC<Props> = ({ profileId }: Props) => {
                 <tbody>
                     {users.map((profile, index) => (
                     <tr key={index} onClick={() => {makeAdmin(profile.id)}} role="button">
-                        <td>{profile.username}</td>
-                        <td>{profile.email}</td>
+                        <td key={index}>{profile.username}</td>
+                        <td key={index}>{profile.email}</td>
                     </tr>
                     ))}
                 </tbody>

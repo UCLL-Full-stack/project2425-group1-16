@@ -69,7 +69,7 @@ const ItemsOverview: React.FC<Props> = ({ items, profileId, selectedItemId, setS
               All
             </button>
             {categories.map((category, index) => (
-              <button
+              <button key={index}
               style={{border: "none"}}
               onClick={() => filterBy(category)}
             >
@@ -94,10 +94,10 @@ const ItemsOverview: React.FC<Props> = ({ items, profileId, selectedItemId, setS
             <tbody>
                 {filteredItems.map((item, index) => (
                 <tr key={index} onClick={() => {goToOverviewPage(item.id)}} role="button">
-                    <td>{item.name}</td>
-                    <td>{item.description}</td>
-                    <td>{item.locationTag.displayName}</td>
-                    <td>€ {item.price}</td>
+                    <td key={index}>{item.name}</td>
+                    <td key={index}>{item.description}</td>
+                    <td key={index}>{item.locationTag.displayName}</td>
+                    <td key={index}>€ {item.price}</td>
                 </tr>
                 ))}
             </tbody>
