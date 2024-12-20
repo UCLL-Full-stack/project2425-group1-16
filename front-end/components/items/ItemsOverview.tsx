@@ -61,24 +61,22 @@ const ItemsOverview: React.FC<Props> = ({ items, profileId, selectedItemId, setS
     <>
       {categories && profileId && (
         <>
-          <nav className="nav justify-content-center">
-        <button
-          className="nav-link px-4 fs-5 text-white bg-transparent"
-          style={{border: "none"}}
-          onClick={() => setFilteredItems(items)}
-        >
-          All
-        </button>
-        {categories.map((category, index) => (
-          <button
-          className="nav-link px-4 fs-5 text-white bg-transparent"
-          style={{border: "none"}}
-          onClick={() => filterBy(category)}
-        >
-          {category.name}
-        </button>
-        ))}
-      </nav>
+          <div className="justify-content-center">
+            <button
+              style={{border: "none"}}
+              onClick={() => setFilteredItems(items)}
+            >
+              All
+            </button>
+            {categories.map((category, index) => (
+              <button
+              style={{border: "none"}}
+              onClick={() => filterBy(category)}
+            >
+              {category.name}
+            </button>
+            ))}
+      </div>
         </>
       )}
       {items && profileId && (
