@@ -78,37 +78,37 @@ const AdminSelector: React.FC<Props> = ({ profileId }: Props) => {
         <>
             <h2>{t('profile.tags.admin')}</h2>
             <table className="table table-hover">
-            <thead>
-                <tr>
-                <th scope="col">{t('profile.tags.name')}</th>
-                <th scope="col">{t('profile.tags.mail')}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {admins.map((profile, index) => (
-                <tr key={index} onClick={() => {makeUser(profile.id)}} role="button">
-                    <td>{profile.username}</td>
-                    <td>{profile.email}</td>
-                </tr>
-                ))}
-            </tbody>
+                <thead>
+                    <tr>
+                        <th scope="col">{t('profile.tags.name')}</th>
+                        <th scope="col">{t('profile.tags.mail')}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {admins.map((profile, index) => (
+                    <tr key={index} onClick={() => {makeUser(profile.id)}} role="button">
+                        <td>{profile.username}</td>
+                        <td>{profile.email}</td>
+                    </tr>
+                    ))}
+                </tbody>
             </table>
             <h2>Users</h2>
             <table className="table table-hover">
-            <thead>
-                <tr>
-                <th scope="col">{t('profile.tags.name')}</th>
-                <th scope="col">{t('profile.tags.mail')}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {users.map((profile, index) => (
-                <tr key={index} onClick={() => {makeAdmin(profile.id)}} role="button">
-                    <td>{profile.username}</td>
-                    <td>{profile.email}</td>
-                </tr>
-                ))}
-            </tbody>
+                <thead>
+                    <tr>
+                        <th scope="col">{t('profile.tags.name')}</th>
+                        <th scope="col">{t('profile.tags.mail')}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map((profile, index) => (
+                    <tr key={index} onClick={() => {makeAdmin(profile.id)}} role="button">
+                        <td>{profile.username}</td>
+                        <td>{profile.email}</td>
+                    </tr>
+                    ))}
+                </tbody>
             </table>
         </>
       )}
