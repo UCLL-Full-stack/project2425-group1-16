@@ -59,7 +59,33 @@ const LoginPage: React.FC<Props> = ({ profileId, setProfileId }: Props) => {
                     <button onClick={()=>{router.push('/register')}}>Register</button>
                 </div>
             </form>
-            
+            <h2 style={{marginTop: "30px"}}>Login combinations</h2>
+            <table className="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Emails</th>
+                    <th scope="col">Passwords</th>
+                    <th scope="col">Role's</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>exampleUser@example.com</td>
+                    <td>Password123%</td>
+                    <td>USER</td>
+                </tr>
+                <tr>
+                    <td>exampleAdmin@example.com</td>
+                    <td>Password123%</td>
+                    <td>ADMIN</td>
+                </tr>
+                <tr>
+                    <td>exampleSuperAdmin@example.com</td>
+                    <td>Password123%</td>
+                    <td>SUPERADMIN</td>
+                </tr>
+            </tbody>
+            </table>
           </>
         )}
       </>
