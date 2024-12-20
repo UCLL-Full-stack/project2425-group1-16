@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Category, Item } from '@/types';
+import { Category, Item, Role } from '@/types';
 import { useTranslation } from 'react-i18next';
 import CurrencyInput from 'react-currency-input-field';
 import CategoryService from '@/services/CategoryService';
@@ -19,6 +19,7 @@ const ItemOverview: React.FC<Props> = ({ item, bookItemModalSetter, profileId }:
   const [price, setPrice] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [categories, setCategories] = useState<Category[]>([]);
+  const [role, setRole] = useState<Role|null>(null);
   const router = useRouter();
   
   const getCategories = async () => {
@@ -40,6 +41,8 @@ const ItemOverview: React.FC<Props> = ({ item, bookItemModalSetter, profileId }:
       setPrice(item.price.toString());
       setCategory(item.categories[0].name)
       getCategories();
+      const role = localStorage.getItem('role')
+      if (role) {setRole(JSON.parse(role))}
     }
     
   }, [item])
@@ -84,6 +87,12 @@ const ItemOverview: React.FC<Props> = ({ item, bookItemModalSetter, profileId }:
               <td>{t('item.tags.location')}:</td>
               <td>{item.locationTag.displayName}</td>
             </tr>
+            {role == "ADMIN" && (
+              <tr>
+                <td>{t('item.tags.owner')}:</td>
+                <td>{item.owner.username}</td>
+              </tr>
+            )}
           </table>
           <button 
             onClick={() => {bookItemModalSetter(true)}}

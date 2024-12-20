@@ -29,7 +29,8 @@
       "description": "Beschrijving",
       "location": "Locatie",
       "price": "Prijs /dag",
-      "category": "Categorie"
+      "category": "Categorie",
+      "owner": "Eigenaar"
     },
     "mailPrompt": "Verzend een email naar de eigenaar om de details te bespreken!"
   },
