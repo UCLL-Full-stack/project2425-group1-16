@@ -25,7 +25,7 @@ const getProfileById = async (id: number): Promise<Profile> => {
 
 const getProfilesByRole = async (role: Role, token: string): Promise<Profile[]> => {
     if (!role) throw new Error('No role was given.');
-    if (!verifyUserRole({ token, wantedRole: role }))
+    if (!await verifyUserRole({ token, wantedRole: role }))
         throw new Error("You don't have the right role to make this request.");
 
     return await profileDb.getProfilesByRole({ role });
@@ -77,7 +77,7 @@ const signupUser = async ({
 };
 
 const updateRoleForProfile = async ({ id, role, token }: { id: number, role: Role, token: string}): Promise<Profile> => {
-    if (!verifyUserRole({ token, wantedRole: role }))
+    if (!await verifyUserRole({ token, wantedRole: role }))
         throw new Error("You don't have the right role to make this request.");
 
     return await profileDb.updateRoleForProfile({ id, role });
