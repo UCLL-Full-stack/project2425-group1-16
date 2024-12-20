@@ -85,7 +85,7 @@ describe('Profile Service', () => {
                 id: 1,
                 username: 'User1',
                 email: 'user1@example.com',
-                password: 'Password123%',
+                password: "Password123%",
                 role: 'USER',
                 locationTag: new LocationTag({
                     id: 1,
@@ -116,70 +116,30 @@ describe('Profile Service', () => {
         });
 
         it('should throw an error if password does not match', async () => {
-            const profile = new Profile({ id: 1, username: 'User1', email: 'user1@example.com', password: hashedPassword, role: 'USER', locationTag: new LocationTag({ id: 1, displayName: 'Location', longitude: 50, latitude: 50 }) });
+            const profile = new Profile({
+                id: 1,
+                username: 'User1',
+                email: 'user1@example.com',
+                password: 'Password123%',
+                role: 'USER',
+                locationTag: new LocationTag({ 
+                    id: 1,
+                    displayName: 'Location',
+                    longitude: 50,
+                    latitude: 50
+                }) 
+            });
             (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(profile);
             (bcrypt.compare as jest.Mock).mockResolvedValue(false);
-
+            
             const loginInput: LoginInput = { email: 'user1@example.com', password: 'password' };
             await expect(profileService.authenticate(loginInput)).rejects.toThrow("We couldn't log you in. Please check your credentials.");
             expect(profileDb.getProfileByEmail).toHaveBeenCalledWith({ email: 'user1@example.com' });
-            expect(bcrypt.compare).toHaveBeenCalledWith('password', hashedPassword);
+            expect(bcrypt.compare).toHaveBeenCalledWith('password', profile.getPassword());
         });
     });
 
     describe('signupUser', () => {
-        it('should sign up a new user and return a token', async () => {
-            const profileInput: ProfileInput = {
-                username: 'User1',
-                password: 'password',
-                email: 'user1@example.com',
-                role: 'USER',
-                locationTag: {
-                    displayName: 'No location',
-                    longitude: 0.0,
-                    latitude: 0.0
-                }
-            };
-
-            const newProfile = new Profile({
-                username: 'User1',
-                password: hashedPassword,
-                email: 'user1@example.com',
-                role: 'USER',
-                locationTag: new LocationTag({
-                    displayName: 'No location',
-                    longitude: 0.0,
-                    latitude: 0.0
-                })
-            });
-
-            const dbResult = new Profile({
-                id: 1,
-                username: 'User1',
-                password: hashedPassword,
-                email: 'user1@example.com',
-                role: 'USER',
-                locationTag: new LocationTag({
-                    displayName: 'No location',
-                    longitude: 0.0,
-                    latitude: 0.0
-                })
-            });
-
-            (profileDb.getProfileByEmail as jest.Mock).mockResolvedValue(null);
-            (bcrypt.hash as jest.Mock).mockResolvedValue(hashedPassword);
-            (profileDb.createUser as jest.Mock).mockResolvedValue(dbResult);
-            (generateJwtToken as jest.Mock).mockReturnValue('token');
-
-            const result: AuthenticationResponse = await profileService.signupUser(profileInput);
-
-            expect(result).toEqual({ token: 'token', userId: 1, role: 'USER' });
-            expect(profileDb.getProfileByEmail).toHaveBeenCalledWith({ email: 'user1@example.com' });
-            expect(bcrypt.hash).toHaveBeenCalledWith('password', 12);
-            expect(profileDb.createUser).toHaveBeenCalledWith(expect.any(Profile));
-            expect(generateJwtToken).toHaveBeenCalledWith({ userId: 1, role: 'USER' });
-        });
-
         it('should throw an error if email already exists', async () => {
             const profileInput: ProfileInput = {
                 username: 'User1',

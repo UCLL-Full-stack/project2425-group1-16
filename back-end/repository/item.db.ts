@@ -101,7 +101,7 @@ const addItem = async (item: Item): Promise<Item> => {
 
 const deleteItemById = async (id: number) => {
     try {
-        database.item.delete({
+        await database.item.delete({
             where: {
                 id
             }
