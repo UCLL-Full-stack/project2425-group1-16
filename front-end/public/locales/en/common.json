@@ -29,7 +29,8 @@
       "description": "Description",
       "location": "Location",
       "price": "Price /day",
-      "category": "Category"
+      "category": "Category",
+      "owner": "Owner"
     },
     "mailPrompt": "Send an email to the owner to arrange the details!"
   },

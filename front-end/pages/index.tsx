@@ -46,7 +46,7 @@ export default function Home() {
     // local profile parsing has to happen *after* the page has loaded.
     // Otherwise, localStorage doesn't exist, because it's trying to run it server-side????
     const loggedInToken = sessionStorage.getItem('loggedInToken');
-    if (loggedInToken) { setProfileId(JSON.parse(loggedInToken).userId); setRole(JSON.parse(loggedInToken).role);}
+    if (loggedInToken) { setProfileId(JSON.parse(loggedInToken).userId); setRole(JSON.parse(loggedInToken).role); localStorage.setItem('role', JSON.stringify(JSON.parse(loggedInToken).role));}
     setAddItemModal(false)
   }, []);
 
