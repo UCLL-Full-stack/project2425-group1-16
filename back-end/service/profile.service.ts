@@ -5,6 +5,7 @@ import { AuthenticationResponse, LoginInput, ProfileInput, Role } from "../types
 import { generateJwtToken } from "../util/jwt";
 import { LocationTag } from "../model/locationTag";
 import locationTagDb from "../repository/locationTag.db";
+import { decode } from 'jsonwebtoken';
 
 const getAllProfiles = async (): Promise<Profile[]> => await profileDb.getAllProfiles();
 
@@ -22,8 +23,11 @@ const getProfileById = async (id: number): Promise<Profile> => {
     return profile;
 }
 
-const getProfilesByRole = async (role: Role): Promise<Profile[]> => {
+const getProfilesByRole = async (role: Role, token: string): Promise<Profile[]> => {
     if (!role) throw new Error('No role was given.');
+    if (!verifyUserRole({ token, wantedRole: role }))
+        throw new Error("You don't have the right role to make this request.");
+
     return await profileDb.getProfilesByRole({ role });
 }
 
@@ -72,8 +76,19 @@ const signupUser = async ({
     }
 };
 
-const updateRoleForProfile = async ({ id, role }: { id: number, role: Role}): Promise<Profile> => {
+const updateRoleForProfile = async ({ id, role, token }: { id: number, role: Role, token: string}): Promise<Profile> => {
+    if (!verifyUserRole({ token, wantedRole: role }))
+        throw new Error("You don't have the right role to make this request.");
+
     return await profileDb.updateRoleForProfile({ id, role });
+};
+
+const verifyUserRole = async ({ token, wantedRole }: { token: string, wantedRole: Role }): Promise<boolean> => {
+    const decodedToken = decode(token);
+
+    if (!decodedToken || typeof decodedToken !== 'object')
+        throw new Error('This is not a valid token.');
+    return decodedToken.role == wantedRole;
 };
 
 export default {

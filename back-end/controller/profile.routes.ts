@@ -235,7 +235,10 @@ profileRouter.get('/:email', async (req: Request, res: Response, next: NextFunct
  */
 profileRouter.get('/byRole/:role', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const profiles = await profileService.getProfilesByRole(req.params.role as Role);
+        const token = req.headers.authorization?.split(' ')[1];
+        if (token === undefined) throw new Error('No JWT token was supplied.');
+        
+        const profiles = await profileService.getProfilesByRole(req.params.role as Role, token!);
         res.status(200).json(profiles);
     } catch (error) {
         next(error);
@@ -330,8 +333,11 @@ profileRouter.post('/login', async (req: Request, res: Response, next: NextFunct
  */
 profileRouter.put('/changeRole/:role/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (token === undefined) throw new Error('No JWT token was supplied.');
+        
         const [ role, id ] = [ req.params.role as Role, Number(req.params.id) ];
-        const updatedUser = await profileService.updateRoleForProfile({ role, id });
+        const updatedUser = await profileService.updateRoleForProfile({ role, id, token });
         res.status(200).json(updatedUser);
     } catch (error) {
         next(error);
