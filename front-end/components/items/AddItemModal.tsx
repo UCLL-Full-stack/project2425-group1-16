@@ -61,7 +61,7 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
             setPriceError(t('item.error.price'));
         }
         if (name && description && price && category) {
-            const tokenObj = localStorage.getItem('loggedInToken')
+            const tokenObj = sessionStorage.getItem('loggedInToken')
             if (tokenObj) {
                const profileId: number = JSON.parse(tokenObj).userId;
                 try {
