@@ -32,6 +32,11 @@
       "category": "Categorie",
       "owner": "Eigenaar"
     },
+    "error": {
+      "name": "Ongeldige naam",
+      "description": "Ongeldige beschrijving",
+      "price": "Ongeldige prijs"
+    },
     "mailPrompt": "Verzend een email naar de eigenaar om de details te bespreken!"
   },
   "buttons": {

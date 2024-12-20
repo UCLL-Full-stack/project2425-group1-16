@@ -2,6 +2,7 @@ import ProfileService from "@/services/ProfileService";
 import { Profile, TokenObj } from "@/types";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { global } from "styled-jsx/css";
 
 type Props = {
     profileId: number | null;
@@ -12,10 +13,12 @@ const LoginPage: React.FC<Props> = ({ profileId, setProfileId }: Props) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [tokenObj, setTokenObj] = useState<TokenObj|null>(null);
+    const [loginError, setLoginError] = useState<String|null>(null);
     const router = useRouter();
 
     const loginByEmailAndPassword = async (event: React.FormEvent) => {
         event?.preventDefault();
+        setLoginError(null);
         try {
             const response = await ProfileService.login({email: email, password: password});
             if (response.status == 200) {
@@ -25,8 +28,10 @@ const LoginPage: React.FC<Props> = ({ profileId, setProfileId }: Props) => {
                     setProfileId(tokenObj.userId);
                     sessionStorage.setItem('loggedInToken', JSON.stringify(tokenObj));
                 } else {
-                    throw Error("Password is incorrect");
+                    setLoginError("Password or email incorrect")
                 }
+            } else {
+                setLoginError("Password or email incorrect")
             }
         } catch (error) {
             console.log(error)
@@ -47,6 +52,7 @@ const LoginPage: React.FC<Props> = ({ profileId, setProfileId }: Props) => {
                 <div>
                     <p>Password</p>
                     <input type="text" onChange={text => setPassword(text.target.value)}/>
+                    <p style={{color: "#FF0000"}}>{loginError}</p>
                 </div>
                 <div>
                     <button type="submit">Login</button>

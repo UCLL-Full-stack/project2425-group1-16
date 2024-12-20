@@ -19,9 +19,9 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
     const [price, setPrice] = useState<string>("");
     const [category, setCategory] = useState<string|null>(null);
     const [categories, setCategories] = useState<Category[]>([]);
-    const [nameError, setNameError] = useState<boolean>(false);
-    const [descriptionError, setDescriptionError] = useState<boolean>(false);
-    const [priceError, setPriceError] = useState<boolean>(false);
+    const [nameError, setNameError] = useState<String|null>(null);
+    const [descriptionError, setDescriptionError] = useState<String|null>(null);
+    const [priceError, setPriceError] = useState<String|null>(null);
     const { t } = useTranslation();
 
     const getCategories = async () => {
@@ -43,27 +43,24 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
     }, [show]);
 
     const resetErrors = () => {
-        setNameError(false);
-        setDescriptionError(false);
-        setPriceError(false);
+        setNameError(null);
+        setDescriptionError(null);
+        setPriceError(null);
     }
 
     const submitModal = async (event: React.FormEvent) => {
         event?.preventDefault();
         resetErrors()
         if (!name) {
-            setNameError(true);
+            setNameError(t('item.error.name'));
         }
         if (!description) {
-            setDescriptionError(true);
+            setDescriptionError(t('item.error.description'));
         }
         if (!price) {
-            setPriceError(true);
+            setPriceError(t('item.error.price'));
         }
-        if (!category) {
-            
-        }
-        if (!nameError && !descriptionError && !priceError && name && description && price && category) {
+        if (name && description && price && category) {
             const tokenObj = localStorage.getItem('loggedInToken')
             if (tokenObj) {
                const profileId: number = JSON.parse(tokenObj).userId;
@@ -88,14 +85,17 @@ const AddItemModal: React.FC<Props> = ({ show, addItemModalSetter }: Props) => {
                     <div>
                         <p>{t('item.tags.name')}</p>
                         <input type="text" onChange={text => setName(text.target.value)}/>
+                        <p style={{color: "#FF0000"}}>{nameError}</p>
                     </div>
                     <div>
                         <p>{t('item.tags.description')}</p>
                         <input type="text" onChange={text => setDescription(text.target.value)}/>
+                        <p style={{color: "#FF0000"}}>{descriptionError}</p>
                     </div>
                     <div>
                         <p>{t('item.tags.price')}</p>
                         <CurrencyInput decimalsLimit={2} prefix='€' placeholder='0' onValueChange={(value, name, values) => {if (values?.float) {setPrice(values.float.toString())} else {setPrice("")}}}/>
+                        <p style={{color: "#FF0000"}}>{priceError}</p>
                     </div>
                     <div>
                         <p>{t('item.tags.category')}</p>
