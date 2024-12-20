@@ -25,8 +25,8 @@ const LoginPage: React.FC<Props> = ({ profileId, setProfileId }: Props) => {
                 const json = await response.json();
                 setTokenObj(json);
                 if (tokenObj) {
-                    setProfileId(tokenObj.userId);
                     sessionStorage.setItem('loggedInToken', JSON.stringify(tokenObj));
+                    setProfileId(tokenObj.userId);
                 } else {
                     setLoginError("Password or email incorrect")
                 }
