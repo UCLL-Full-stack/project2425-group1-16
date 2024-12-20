@@ -49,7 +49,7 @@ const ItemsOverview: React.FC<Props> = ({ items, profileId, selectedItemId, setS
     const filtered: Item[] = [];
     for (var item of items) {
       for (var itemCategory of item.categories) {
-        if (itemCategory == category) {
+        if (itemCategory.name == category.name) {
           filtered.push(item)
         }
       }
