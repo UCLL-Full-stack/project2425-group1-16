@@ -34,7 +34,7 @@ const ItemsOverview: React.FC<Props> = ({ items, profileId, selectedItemId, setS
 
   useEffect(()=>{
     if (profileId) {getCategories()}
-  },[])
+  },[profileId])
 
   const goToOverviewPage = async (itemId: number | undefined) => {
     if (itemId == null) {
